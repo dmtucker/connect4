@@ -1,0 +1,1614 @@
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\cc8CfiFm.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 18, 4
+  12              		.thumb
+  13              		.file	"main.c"
+  14              		.section	.debug_abbrev,"",%progbits
+  15              	.Ldebug_abbrev0:
+  16              		.section	.debug_info,"",%progbits
+  17              	.Ldebug_info0:
+  18              		.section	.debug_line,"",%progbits
+  19              	.Ldebug_line0:
+  20 0000 04010000 		.text
+  20      02005300 
+  20      00000201 
+  20      FB0E0D00 
+  20      01010101 
+  21              	.Ltext0:
+  22              		.cfi_sections	.debug_frame
+  23              		.global	gear
+  24              		.data
+  25              		.align	1
+  26              		.type	gear, %object
+  27              		.size	gear, 2
+  28              	gear:
+  29 0000 0200     		.short	2
+  30              		.section	.text.gear_label,"ax",%progbits
+  31              		.align	2
+  32              		.global	gear_label
+  33              		.thumb
+  34              		.thumb_func
+  35              		.type	gear_label, %function
+  36              	gear_label:
+  37              	.LFB29:
+  38              		.file 1 ".\\main.c"
+   1:.\main.c      **** #define DURATION 3 //seconds
+   2:.\main.c      **** #define TRIALS   1 //[0,9]
+   3:.\main.c      **** 
+   4:.\main.c      **** #define GO   0x04
+   5:.\main.c      **** #define IDLE 0x00
+   6:.\main.c      **** #define REV  0x01
+   7:.\main.c      **** #define STOP 0x02
+   8:.\main.c      **** 
+   9:.\main.c      **** #include <device.h>
+  10:.\main.c      **** #include <stdbool.h>
+  11:.\main.c      **** #include <display.h>
+  12:.\main.c      **** 
+  13:.\main.c      **** 
+  14:.\main.c      **** uint16 gear = STOP;
+  15:.\main.c      **** 
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\cc8CfiFm.s 			page 2
+
+
+  16:.\main.c      **** 
+  17:.\main.c      **** 
+  18:.\main.c      **** 
+  19:.\main.c      **** char gear_label (uint16 gear) {
+  39              		.loc 1 19 0
+  40              		.cfi_startproc
+  41              		@ args = 0, pretend = 0, frame = 8
+  42              		@ frame_needed = 1, uses_anonymous_args = 0
+  43              		@ link register save eliminated.
+  44 0000 80B4     		push	{r7}
+  45              	.LCFI0:
+  46              		.cfi_def_cfa_offset 4
+  47 0002 83B0     		sub	sp, sp, #12
+  48              	.LCFI1:
+  49              		.cfi_def_cfa_offset 16
+  50 0004 00AF     		add	r7, sp, #0
+  51              		.cfi_offset 7, -4
+  52              	.LCFI2:
+  53              		.cfi_def_cfa_register 7
+  54 0006 0346     		mov	r3, r0
+  55 0008 FB80     		strh	r3, [r7, #6]	@ movhi
+  20:.\main.c      ****     switch (gear) {
+  56              		.loc 1 20 0
+  57 000a FB88     		ldrh	r3, [r7, #6]
+  58 000c 042B     		cmp	r3, #4
+  59 000e 19D8     		bhi	.L2
+  60 0010 01A2     		adr	r2, .L7
+  61 0012 52F823F0 		ldr	pc, [r2, r3, lsl #2]
+  62 0016 00BF     		.align	2
+  63              	.L7:
+  64 0018 39000000 		.word	.L3+1
+  65 001c 33000000 		.word	.L4+1
+  66 0020 2D000000 		.word	.L5+1
+  67 0024 45000000 		.word	.L2+1
+  68 0028 3F000000 		.word	.L6+1
+  69              	.L5:
+  21:.\main.c      ****         case STOP: return 'P';
+  70              		.loc 1 21 0
+  71 002c 4FF05003 		mov	r3, #80
+  72 0030 0AE0     		b	.L8
+  73              	.L4:
+  22:.\main.c      ****         case REV:  return 'R';
+  74              		.loc 1 22 0
+  75 0032 4FF05203 		mov	r3, #82
+  76 0036 07E0     		b	.L8
+  77              	.L3:
+  23:.\main.c      ****         case IDLE: return 'N';
+  78              		.loc 1 23 0
+  79 0038 4FF04E03 		mov	r3, #78
+  80 003c 04E0     		b	.L8
+  81              	.L6:
+  24:.\main.c      ****         case GO:   return 'D';
+  82              		.loc 1 24 0
+  83 003e 4FF04403 		mov	r3, #68
+  84 0042 01E0     		b	.L8
+  85              	.L2:
+  25:.\main.c      ****         default:   return '?';
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\cc8CfiFm.s 			page 3
+
+
+  86              		.loc 1 25 0
+  87 0044 4FF03F03 		mov	r3, #63
+  88              	.L8:
+  26:.\main.c      ****     }
+  27:.\main.c      **** }
+  89              		.loc 1 27 0
+  90 0048 1846     		mov	r0, r3
+  91 004a 07F10C07 		add	r7, r7, #12
+  92 004e BD46     		mov	sp, r7
+  93 0050 80BC     		pop	{r7}
+  94 0052 7047     		bx	lr
+  95              		.cfi_endproc
+  96              	.LFE29:
+  97              		.size	gear_label, .-gear_label
+  98              		.section	.text.shift_gear,"ax",%progbits
+  99              		.align	2
+ 100              		.global	shift_gear
+ 101              		.thumb
+ 102              		.thumb_func
+ 103              		.type	shift_gear, %function
+ 104              	shift_gear:
+ 105              	.LFB30:
+  28:.\main.c      **** 
+  29:.\main.c      **** 
+  30:.\main.c      **** 
+  31:.\main.c      **** 
+  32:.\main.c      **** void shift_gear (uint16 next) {
+ 106              		.loc 1 32 0
+ 107              		.cfi_startproc
+ 108              		@ args = 0, pretend = 0, frame = 8
+ 109              		@ frame_needed = 1, uses_anonymous_args = 0
+ 110 0000 80B5     		push	{r7, lr}
+ 111              	.LCFI3:
+ 112              		.cfi_def_cfa_offset 8
+ 113 0002 82B0     		sub	sp, sp, #8
+ 114              	.LCFI4:
+ 115              		.cfi_def_cfa_offset 16
+ 116 0004 00AF     		add	r7, sp, #0
+ 117              		.cfi_offset 14, -4
+ 118              		.cfi_offset 7, -8
+ 119              	.LCFI5:
+ 120              		.cfi_def_cfa_register 7
+ 121 0006 0346     		mov	r3, r0
+ 122 0008 FB80     		strh	r3, [r7, #6]	@ movhi
+  33:.\main.c      ****     Controller_Write(IDLE); //clutch
+ 123              		.loc 1 33 0
+ 124 000a 4FF00000 		mov	r0, #0
+ 125 000e FFF7FEFF 		bl	Controller_Write
+  34:.\main.c      ****     gear = next;
+ 126              		.loc 1 34 0
+ 127 0012 40F20003 		movw	r3, #:lower16:gear
+ 128 0016 C0F20003 		movt	r3, #:upper16:gear
+ 129 001a FA88     		ldrh	r2, [r7, #6]	@ movhi
+ 130 001c 1A80     		strh	r2, [r3, #0]	@ movhi
+  35:.\main.c      ****     Controller_Write(gear);
+ 131              		.loc 1 35 0
+ 132 001e 40F20003 		movw	r3, #:lower16:gear
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\cc8CfiFm.s 			page 4
+
+
+ 133 0022 C0F20003 		movt	r3, #:upper16:gear
+ 134 0026 1B88     		ldrh	r3, [r3, #0]
+ 135 0028 DBB2     		uxtb	r3, r3
+ 136 002a 1846     		mov	r0, r3
+ 137 002c FFF7FEFF 		bl	Controller_Write
+  36:.\main.c      **** }
+ 138              		.loc 1 36 0
+ 139 0030 07F10807 		add	r7, r7, #8
+ 140 0034 BD46     		mov	sp, r7
+ 141 0036 80BD     		pop	{r7, pc}
+ 142              		.cfi_endproc
+ 143              	.LFE30:
+ 144              		.size	shift_gear, .-shift_gear
+ 145              		.section	.rodata
+ 146              		.align	2
+ 147              	.LC0:
+ 148 0000 69646C65 		.ascii	"idle\000"
+ 148      00
+ 149 0005 000000   		.align	2
+ 150              	.LC1:
+ 151 0008 666F7277 		.ascii	"forward\000"
+ 151      61726400 
+ 152              		.align	2
+ 153              	.LC2:
+ 154 0010 72657665 		.ascii	"reverse\000"
+ 154      72736500 
+ 155              		.align	2
+ 156              	.LC3:
+ 157 0018 73746F70 		.ascii	"stop\000"
+ 157      00
+ 158 001d 000000   		.align	2
+ 159              	.LC4:
+ 160 0020 73746F70 		.ascii	"stopped\000"
+ 160      70656400 
+ 161              		.align	2
+ 162              	.LC5:
+ 163 0028 6572726F 		.ascii	"error\000"
+ 163      7200
+ 164              		.section	.text.test_motor,"ax",%progbits
+ 165              		.align	2
+ 166              		.global	test_motor
+ 167              		.thumb
+ 168              		.thumb_func
+ 169              		.type	test_motor, %function
+ 170              	test_motor:
+ 171              	.LFB31:
+  37:.\main.c      **** 
+  38:.\main.c      **** 
+  39:.\main.c      **** 
+  40:.\main.c      **** 
+  41:.\main.c      **** void test_motor (trials, duration) {
+ 172              		.loc 1 41 0
+ 173              		.cfi_startproc
+ 174              		@ args = 0, pretend = 0, frame = 16
+ 175              		@ frame_needed = 1, uses_anonymous_args = 0
+ 176 0000 80B5     		push	{r7, lr}
+ 177              	.LCFI6:
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\cc8CfiFm.s 			page 5
+
+
+ 178              		.cfi_def_cfa_offset 8
+ 179 0002 84B0     		sub	sp, sp, #16
+ 180              	.LCFI7:
+ 181              		.cfi_def_cfa_offset 24
+ 182 0004 00AF     		add	r7, sp, #0
+ 183              		.cfi_offset 14, -4
+ 184              		.cfi_offset 7, -8
+ 185              	.LCFI8:
+ 186              		.cfi_def_cfa_register 7
+ 187 0006 7860     		str	r0, [r7, #4]
+ 188 0008 3960     		str	r1, [r7, #0]
+  42:.\main.c      ****     uint16 triali, geari = 0x00;
+ 189              		.loc 1 42 0
+ 190 000a 4FF00003 		mov	r3, #0
+ 191 000e BB81     		strh	r3, [r7, #12]	@ movhi
+  43:.\main.c      **** 	for (triali = trials*4; triali > 0 ;--triali) {
+ 192              		.loc 1 43 0
+ 193 0010 7B68     		ldr	r3, [r7, #4]
+ 194 0012 9BB2     		uxth	r3, r3
+ 195 0014 4FEA8303 		lsl	r3, r3, #2
+ 196 0018 7B81     		strh	r3, [r7, #10]	@ movhi
+ 197 001a 82E0     		b	.L13
+ 198              	.L28:
+ 199              	.LBB2:
+  44:.\main.c      ****         switch (geari) {
+ 200              		.loc 1 44 0
+ 201 001c BB89     		ldrh	r3, [r7, #12]
+ 202 001e 042B     		cmp	r3, #4
+ 203 0020 38D8     		bhi	.L14
+ 204 0022 01A2     		adr	r2, .L19
+ 205 0024 52F823F0 		ldr	pc, [r2, r3, lsl #2]
+ 206              		.align	2
+ 207              	.L19:
+ 208 0028 3D000000 		.word	.L15+1
+ 209 002c 69000000 		.word	.L16+1
+ 210 0030 7F000000 		.word	.L17+1
+ 211 0034 95000000 		.word	.L14+1
+ 212 0038 53000000 		.word	.L18+1
+ 213              	.L15:
+  45:.\main.c      ****             case IDLE:
+  46:.\main.c      ****                 LCD_UpdateMessage("idle");
+ 214              		.loc 1 46 0
+ 215 003c 40F20000 		movw	r0, #:lower16:.LC0
+ 216 0040 C0F20000 		movt	r0, #:upper16:.LC0
+ 217 0044 FFF7FEFF 		bl	LCD_UpdateMessage
+  47:.\main.c      ****         		Controller_Write(IDLE);
+ 218              		.loc 1 47 0
+ 219 0048 4FF00000 		mov	r0, #0
+ 220 004c FFF7FEFF 		bl	Controller_Write
+  48:.\main.c      ****                 break;
+ 221              		.loc 1 48 0
+ 222 0050 31E0     		b	.L20
+ 223              	.L18:
+  49:.\main.c      ****             case GO:
+  50:.\main.c      ****                 LCD_UpdateMessage("forward");
+ 224              		.loc 1 50 0
+ 225 0052 40F20000 		movw	r0, #:lower16:.LC1
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\cc8CfiFm.s 			page 6
+
+
+ 226 0056 C0F20000 		movt	r0, #:upper16:.LC1
+ 227 005a FFF7FEFF 		bl	LCD_UpdateMessage
+  51:.\main.c      ****         		Controller_Write(GO);
+ 228              		.loc 1 51 0
+ 229 005e 4FF00400 		mov	r0, #4
+ 230 0062 FFF7FEFF 		bl	Controller_Write
+  52:.\main.c      ****                 break;
+ 231              		.loc 1 52 0
+ 232 0066 26E0     		b	.L20
+ 233              	.L16:
+  53:.\main.c      ****             case REV:
+  54:.\main.c      ****                 LCD_UpdateMessage("reverse");
+ 234              		.loc 1 54 0
+ 235 0068 40F20000 		movw	r0, #:lower16:.LC2
+ 236 006c C0F20000 		movt	r0, #:upper16:.LC2
+ 237 0070 FFF7FEFF 		bl	LCD_UpdateMessage
+  55:.\main.c      ****         		Controller_Write(REV);
+ 238              		.loc 1 55 0
+ 239 0074 4FF00100 		mov	r0, #1
+ 240 0078 FFF7FEFF 		bl	Controller_Write
+  56:.\main.c      ****                 break;
+ 241              		.loc 1 56 0
+ 242 007c 1BE0     		b	.L20
+ 243              	.L17:
+  57:.\main.c      ****             case STOP:
+  58:.\main.c      ****                 LCD_UpdateMessage("stop");
+ 244              		.loc 1 58 0
+ 245 007e 40F20000 		movw	r0, #:lower16:.LC3
+ 246 0082 C0F20000 		movt	r0, #:upper16:.LC3
+ 247 0086 FFF7FEFF 		bl	LCD_UpdateMessage
+  59:.\main.c      ****         		Controller_Write(STOP);
+ 248              		.loc 1 59 0
+ 249 008a 4FF00200 		mov	r0, #2
+ 250 008e FFF7FEFF 		bl	Controller_Write
+  60:.\main.c      ****                 break;
+ 251              		.loc 1 60 0
+ 252 0092 10E0     		b	.L20
+ 253              	.L14:
+  61:.\main.c      ****             default:
+  62:.\main.c      ****                 LCD_UpdateStatus("stopped");
+ 254              		.loc 1 62 0
+ 255 0094 40F20000 		movw	r0, #:lower16:.LC4
+ 256 0098 C0F20000 		movt	r0, #:upper16:.LC4
+ 257 009c FFF7FEFF 		bl	LCD_UpdateStatus
+  63:.\main.c      ****                 LCD_UpdateMessage("error");
+ 258              		.loc 1 63 0
+ 259 00a0 40F20000 		movw	r0, #:lower16:.LC5
+ 260 00a4 C0F20000 		movt	r0, #:upper16:.LC5
+ 261 00a8 FFF7FEFF 		bl	LCD_UpdateMessage
+  64:.\main.c      ****         		Controller_Write(IDLE);
+ 262              		.loc 1 64 0
+ 263 00ac 4FF00000 		mov	r0, #0
+ 264 00b0 FFF7FEFF 		bl	Controller_Write
+ 265              	.L21:
+  65:.\main.c      ****                 while (true);
+ 266              		.loc 1 65 0
+ 267 00b4 FEE7     		b	.L21
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\cc8CfiFm.s 			page 7
+
+
+ 268              	.L20:
+  66:.\main.c      ****         }
+  67:.\main.c      ****         
+  68:.\main.c      ****         uint16 i;
+  69:.\main.c      ****         for (i=0; i < duration ;++i) {
+ 269              		.loc 1 69 0
+ 270 00b6 4FF00003 		mov	r3, #0
+ 271 00ba FB81     		strh	r3, [r7, #14]	@ movhi
+ 272 00bc 16E0     		b	.L22
+ 273              	.L23:
+  70:.\main.c      ****             LCD_Position(1,15);
+ 274              		.loc 1 70 0
+ 275 00be 4FF00100 		mov	r0, #1
+ 276 00c2 4FF00F01 		mov	r1, #15
+ 277 00c6 FFF7FEFF 		bl	LCD_Position
+  71:.\main.c      ****             LCD_PrintNumber(duration-i);
+ 278              		.loc 1 71 0
+ 279 00ca 3B68     		ldr	r3, [r7, #0]
+ 280 00cc 9AB2     		uxth	r2, r3
+ 281 00ce FB89     		ldrh	r3, [r7, #14]	@ movhi
+ 282 00d0 C3EB0203 		rsb	r3, r3, r2
+ 283 00d4 9BB2     		uxth	r3, r3
+ 284 00d6 1846     		mov	r0, r3
+ 285 00d8 FFF7FEFF 		bl	LCD_PrintNumber
+  72:.\main.c      **** 		    CyDelay(1000);
+ 286              		.loc 1 72 0
+ 287 00dc 4FF47A70 		mov	r0, #1000
+ 288 00e0 FFF7FEFF 		bl	CyDelay
+ 289              		.loc 1 69 0
+ 290 00e4 FB89     		ldrh	r3, [r7, #14]	@ movhi
+ 291 00e6 03F10103 		add	r3, r3, #1
+ 292 00ea FB81     		strh	r3, [r7, #14]	@ movhi
+ 293              	.L22:
+ 294 00ec FA89     		ldrh	r2, [r7, #14]
+ 295 00ee 3B68     		ldr	r3, [r7, #0]
+ 296 00f0 9A42     		cmp	r2, r3
+ 297 00f2 E4DB     		blt	.L23
+  73:.\main.c      ****         }
+  74:.\main.c      ****         
+  75:.\main.c      ****         if (geari == 0x00) geari = 0x01;
+ 298              		.loc 1 75 0
+ 299 00f4 BB89     		ldrh	r3, [r7, #12]
+ 300 00f6 002B     		cmp	r3, #0
+ 301 00f8 03D1     		bne	.L24
+ 302 00fa 4FF00103 		mov	r3, #1
+ 303 00fe BB81     		strh	r3, [r7, #12]	@ movhi
+ 304 0100 0BE0     		b	.L25
+ 305              	.L24:
+  76:.\main.c      ****         else geari *= (geari == 0x04) ? 0 : 2;
+ 306              		.loc 1 76 0
+ 307 0102 BB89     		ldrh	r3, [r7, #12]
+ 308 0104 042B     		cmp	r3, #4
+ 309 0106 02D1     		bne	.L26
+ 310 0108 4FF00003 		mov	r3, #0
+ 311 010c 01E0     		b	.L27
+ 312              	.L26:
+ 313 010e 4FF00203 		mov	r3, #2
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\cc8CfiFm.s 			page 8
+
+
+ 314              	.L27:
+ 315 0112 BA89     		ldrh	r2, [r7, #12]	@ movhi
+ 316 0114 02FB03F3 		mul	r3, r2, r3
+ 317 0118 BB81     		strh	r3, [r7, #12]	@ movhi
+ 318              	.L25:
+ 319              	.LBE2:
+ 320              		.loc 1 43 0
+ 321 011a 7B89     		ldrh	r3, [r7, #10]	@ movhi
+ 322 011c 03F1FF33 		add	r3, r3, #-1
+ 323 0120 7B81     		strh	r3, [r7, #10]	@ movhi
+ 324              	.L13:
+ 325 0122 7B89     		ldrh	r3, [r7, #10]
+ 326 0124 002B     		cmp	r3, #0
+ 327 0126 7FF479AF 		bne	.L28
+  77:.\main.c      **** 	}
+  78:.\main.c      **** }
+ 328              		.loc 1 78 0
+ 329 012a 07F11007 		add	r7, r7, #16
+ 330 012e BD46     		mov	sp, r7
+ 331 0130 80BD     		pop	{r7, pc}
+ 332              		.cfi_endproc
+ 333              	.LFE31:
+ 334              		.size	test_motor, .-test_motor
+ 335 0132 00BF     		.section	.text.transmission,"ax",%progbits
+ 336              		.align	2
+ 337              		.global	transmission
+ 338              		.thumb
+ 339              		.thumb_func
+ 340              		.type	transmission, %function
+ 341              	transmission:
+ 342              	.LFB32:
+  79:.\main.c      **** 
+  80:.\main.c      **** 
+  81:.\main.c      **** 
+  82:.\main.c      **** 
+  83:.\main.c      **** CY_ISR (transmission) {
+ 343              		.loc 1 83 0
+ 344              		.cfi_startproc
+ 345              		@ args = 0, pretend = 0, frame = 0
+ 346              		@ frame_needed = 1, uses_anonymous_args = 0
+ 347 0000 80B5     		push	{r7, lr}
+ 348              	.LCFI9:
+ 349              		.cfi_def_cfa_offset 8
+ 350 0002 00AF     		add	r7, sp, #0
+ 351              		.cfi_offset 14, -4
+ 352              		.cfi_offset 7, -8
+ 353              	.LCFI10:
+ 354              		.cfi_def_cfa_register 7
+  84:.\main.c      ****     shift_gear((gear == GO) ? REV : GO);
+ 355              		.loc 1 84 0
+ 356 0004 40F20003 		movw	r3, #:lower16:gear
+ 357 0008 C0F20003 		movt	r3, #:upper16:gear
+ 358 000c 1B88     		ldrh	r3, [r3, #0]
+ 359 000e 042B     		cmp	r3, #4
+ 360 0010 02D1     		bne	.L31
+ 361 0012 4FF00103 		mov	r3, #1
+ 362 0016 01E0     		b	.L32
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\cc8CfiFm.s 			page 9
+
+
+ 363              	.L31:
+ 364 0018 4FF00403 		mov	r3, #4
+ 365              	.L32:
+ 366 001c 1846     		mov	r0, r3
+ 367 001e FFF7FEFF 		bl	shift_gear
+  85:.\main.c      ****     ISR_ClearPending();
+ 368              		.loc 1 85 0
+ 369 0022 FFF7FEFF 		bl	ISR_ClearPending
+  86:.\main.c      **** }
+ 370              		.loc 1 86 0
+ 371 0026 80BD     		pop	{r7, pc}
+ 372              		.cfi_endproc
+ 373              	.LFE32:
+ 374              		.size	transmission, .-transmission
+ 375              		.section	.rodata
+ 376 002e 0000     		.align	2
+ 377              	.LC6:
+ 378 0030 696E6974 		.ascii	"initializing...\000"
+ 378      69616C69 
+ 378      7A696E67 
+ 378      2E2E2E00 
+ 379              		.align	2
+ 380              	.LC7:
+ 381 0040 436C6F63 		.ascii	"Clock\000"
+ 381      6B00
+ 382 0046 0000     		.align	2
+ 383              	.LC8:
+ 384 0048 41444300 		.ascii	"ADC\000"
+ 385              		.align	2
+ 386              	.LC9:
+ 387 004c 50574D00 		.ascii	"PWM\000"
+ 388              		.align	2
+ 389              	.LC10:
+ 390 0050 4D6F746F 		.ascii	"Motor\000"
+ 390      7200
+ 391 0056 0000     		.align	2
+ 392              	.LC11:
+ 393 0058 496E7465 		.ascii	"Interrupts\000"
+ 393      72727570 
+ 393      747300
+ 394 0063 00       		.align	2
+ 395              	.LC12:
+ 396 0064 20676561 		.ascii	" gear:\000"
+ 396      723A00
+ 397 006b 00       		.align	2
+ 398              	.LC13:
+ 399 006c 73706565 		.ascii	"speed:\000"
+ 399      643A00
+ 400 0073 00       		.align	2
+ 401              	.LC14:
+ 402 0074 202500   		.ascii	" %\000"
+ 403 0077 00       		.align	2
+ 404              	.LC15:
+ 405 0078 636C6561 		.ascii	"cleaning...\000"
+ 405      6E696E67 
+ 405      2E2E2E00 
+ 406              		.section	.text.main,"ax",%progbits
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\cc8CfiFm.s 			page 10
+
+
+ 407              		.align	2
+ 408              		.global	main
+ 409              		.thumb
+ 410              		.thumb_func
+ 411              		.type	main, %function
+ 412              	main:
+ 413              	.LFB33:
+  87:.\main.c      **** 
+  88:.\main.c      **** 
+  89:.\main.c      **** 
+  90:.\main.c      **** 
+  91:.\main.c      **** void main () {
+ 414              		.loc 1 91 0
+ 415              		.cfi_startproc
+ 416              		@ args = 0, pretend = 0, frame = 8
+ 417              		@ frame_needed = 1, uses_anonymous_args = 0
+ 418 0000 90B5     		push	{r4, r7, lr}
+ 419              	.LCFI11:
+ 420              		.cfi_def_cfa_offset 12
+ 421 0002 83B0     		sub	sp, sp, #12
+ 422              	.LCFI12:
+ 423              		.cfi_def_cfa_offset 24
+ 424 0004 00AF     		add	r7, sp, #0
+ 425              		.cfi_offset 14, -4
+ 426              		.cfi_offset 7, -8
+ 427              		.cfi_offset 4, -12
+ 428              	.LCFI13:
+ 429              		.cfi_def_cfa_register 7
+  92:.\main.c      ****     LCD_Start();
+ 430              		.loc 1 92 0
+ 431 0006 FFF7FEFF 		bl	LCD_Start
+  93:.\main.c      ****     LCD_UpdateStatus("initializing...");
+ 432              		.loc 1 93 0
+ 433 000a 40F20000 		movw	r0, #:lower16:.LC6
+ 434 000e C0F20000 		movt	r0, #:upper16:.LC6
+ 435 0012 FFF7FEFF 		bl	LCD_UpdateStatus
+  94:.\main.c      ****     LCD_UpdateMessage("Clock");
+ 436              		.loc 1 94 0
+ 437 0016 40F20000 		movw	r0, #:lower16:.LC7
+ 438 001a C0F20000 		movt	r0, #:upper16:.LC7
+ 439 001e FFF7FEFF 		bl	LCD_UpdateMessage
+  95:.\main.c      ****     Clock_Start();
+ 440              		.loc 1 95 0
+ 441 0022 FFF7FEFF 		bl	Clock_Start
+  96:.\main.c      ****     LCD_UpdateMessage("ADC");
+ 442              		.loc 1 96 0
+ 443 0026 40F20000 		movw	r0, #:lower16:.LC8
+ 444 002a C0F20000 		movt	r0, #:upper16:.LC8
+ 445 002e FFF7FEFF 		bl	LCD_UpdateMessage
+  97:.\main.c      ****     ADC_Start();
+ 446              		.loc 1 97 0
+ 447 0032 FFF7FEFF 		bl	ADC_Start
+  98:.\main.c      ****     ADC_StartConvert();
+ 448              		.loc 1 98 0
+ 449 0036 FFF7FEFF 		bl	ADC_StartConvert
+  99:.\main.c      ****     LCD_UpdateMessage("PWM");
+ 450              		.loc 1 99 0
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\cc8CfiFm.s 			page 11
+
+
+ 451 003a 40F20000 		movw	r0, #:lower16:.LC9
+ 452 003e C0F20000 		movt	r0, #:upper16:.LC9
+ 453 0042 FFF7FEFF 		bl	LCD_UpdateMessage
+ 100:.\main.c      ****     PWM_Start();
+ 454              		.loc 1 100 0
+ 455 0046 FFF7FEFF 		bl	PWM_Start
+ 101:.\main.c      ****     LCD_UpdateMessage("Motor");
+ 456              		.loc 1 101 0
+ 457 004a 40F20000 		movw	r0, #:lower16:.LC10
+ 458 004e C0F20000 		movt	r0, #:upper16:.LC10
+ 459 0052 FFF7FEFF 		bl	LCD_UpdateMessage
+ 102:.\main.c      ****     test_motor(TRIALS, DURATION);
+ 460              		.loc 1 102 0
+ 461 0056 4FF00100 		mov	r0, #1
+ 462 005a 4FF00301 		mov	r1, #3
+ 463 005e FFF7FEFF 		bl	test_motor
+ 103:.\main.c      ****     LCD_UpdateMessage("Interrupts");
+ 464              		.loc 1 103 0
+ 465 0062 40F20000 		movw	r0, #:lower16:.LC11
+ 466 0066 C0F20000 		movt	r0, #:upper16:.LC11
+ 467 006a FFF7FEFF 		bl	LCD_UpdateMessage
+ 104:.\main.c      ****     CyGlobalIntEnable;
+ 468              		.loc 1 104 0
+ 469              	@ 104 ".\main.c" 1
+ 470 006e 62B6     		CPSIE   i
+ 471              	@ 0 "" 2
+ 105:.\main.c      ****     ISR_StartEx(transmission);
+ 472              		.loc 1 105 0
+ 473              		.thumb
+ 474 0070 40F20000 		movw	r0, #:lower16:transmission
+ 475 0074 C0F20000 		movt	r0, #:upper16:transmission
+ 476 0078 FFF7FEFF 		bl	ISR_StartEx
+ 106:.\main.c      ****     
+ 107:.\main.c      ****     
+ 108:.\main.c      ****     shift_gear(GO);
+ 477              		.loc 1 108 0
+ 478 007c 4FF00400 		mov	r0, #4
+ 479 0080 FFF7FEFF 		bl	shift_gear
+ 109:.\main.c      ****     LCD_UpdateStatus(" gear:");
+ 480              		.loc 1 109 0
+ 481 0084 40F20000 		movw	r0, #:lower16:.LC12
+ 482 0088 C0F20000 		movt	r0, #:upper16:.LC12
+ 483 008c FFF7FEFF 		bl	LCD_UpdateStatus
+ 110:.\main.c      ****     LCD_UpdateMessage("speed:");
+ 484              		.loc 1 110 0
+ 485 0090 40F20000 		movw	r0, #:lower16:.LC13
+ 486 0094 C0F20000 		movt	r0, #:upper16:.LC13
+ 487 0098 FFF7FEFF 		bl	LCD_UpdateMessage
+ 111:.\main.c      ****     LCD_Position(1,12);
+ 488              		.loc 1 111 0
+ 489 009c 4FF00100 		mov	r0, #1
+ 490 00a0 4FF00C01 		mov	r1, #12
+ 491 00a4 FFF7FEFF 		bl	LCD_Position
+ 112:.\main.c      ****     LCD_PrintInt16(PWM_ReadPeriod());
+ 492              		.loc 1 112 0
+ 493 00a8 FFF7FEFF 		bl	PWM_ReadPeriod
+ 494 00ac 0346     		mov	r3, r0
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\cc8CfiFm.s 			page 12
+
+
+ 495 00ae 1846     		mov	r0, r3
+ 496 00b0 FFF7FEFF 		bl	LCD_PrintInt16
+ 113:.\main.c      ****     while (ADC_IsEndConversion(ADC_WAIT_FOR_RESULT)) {
+ 497              		.loc 1 113 0
+ 498 00b4 61E0     		b	.L35
+ 499              	.L36:
+ 500              	.LBB3:
+ 114:.\main.c      ****         uint16 speed = ADC_GetResult16();
+ 501              		.loc 1 114 0
+ 502 00b6 FFF7FEFF 		bl	ADC_GetResult16
+ 503 00ba 0346     		mov	r3, r0
+ 504 00bc 9BB2     		uxth	r3, r3
+ 505 00be FB80     		strh	r3, [r7, #6]	@ movhi
+ 115:.\main.c      ****         LCD_Position(1,8);
+ 506              		.loc 1 115 0
+ 507 00c0 4FF00100 		mov	r0, #1
+ 508 00c4 4FF00801 		mov	r1, #8
+ 509 00c8 FFF7FEFF 		bl	LCD_Position
+ 116:.\main.c      ****         LCD_PrintString(" %");
+ 510              		.loc 1 116 0
+ 511 00cc 40F20000 		movw	r0, #:lower16:.LC14
+ 512 00d0 C0F20000 		movt	r0, #:upper16:.LC14
+ 513 00d4 FFF7FEFF 		bl	LCD_PrintString
+ 117:.\main.c      ****         LCD_Position(1,7);
+ 514              		.loc 1 117 0
+ 515 00d8 4FF00100 		mov	r0, #1
+ 516 00dc 4FF00701 		mov	r1, #7
+ 517 00e0 FFF7FEFF 		bl	LCD_Position
+ 118:.\main.c      ****         LCD_PrintNumber(speed*100/65535);
+ 518              		.loc 1 118 0
+ 519 00e4 FB88     		ldrh	r3, [r7, #6]
+ 520 00e6 4FF06402 		mov	r2, #100
+ 521 00ea 02FB03F3 		mul	r3, r2, r3
+ 522 00ee 48F20102 		movw	r2, #:lower16:-2147450879
+ 523 00f2 C8F20002 		movt	r2, #:upper16:-2147450879
+ 524 00f6 82FB0312 		smull	r1, r2, r2, r3
+ 525 00fa 1A44     		add	r2, r2, r3
+ 526 00fc 4FEAE232 		asr	r2, r2, #15
+ 527 0100 4FEAE373 		asr	r3, r3, #31
+ 528 0104 C3EB0203 		rsb	r3, r3, r2
+ 529 0108 9BB2     		uxth	r3, r3
+ 530 010a 1846     		mov	r0, r3
+ 531 010c FFF7FEFF 		bl	LCD_PrintNumber
+ 119:.\main.c      ****         PWM_WriteCompare(speed*PWM_ReadPeriod()/65535);
+ 532              		.loc 1 119 0
+ 533 0110 FC88     		ldrh	r4, [r7, #6]
+ 534 0112 FFF7FEFF 		bl	PWM_ReadPeriod
+ 535 0116 0346     		mov	r3, r0
+ 536 0118 03FB04F3 		mul	r3, r3, r4
+ 537 011c 48F20102 		movw	r2, #:lower16:-2147450879
+ 538 0120 C8F20002 		movt	r2, #:upper16:-2147450879
+ 539 0124 82FB0312 		smull	r1, r2, r2, r3
+ 540 0128 1A44     		add	r2, r2, r3
+ 541 012a 4FEAE232 		asr	r2, r2, #15
+ 542 012e 4FEAE373 		asr	r3, r3, #31
+ 543 0132 C3EB0203 		rsb	r3, r3, r2
+ 544 0136 9BB2     		uxth	r3, r3
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\cc8CfiFm.s 			page 13
+
+
+ 545 0138 1846     		mov	r0, r3
+ 546 013a FFF7FEFF 		bl	PWM_WriteCompare
+ 120:.\main.c      ****         LCD_Position(0,7);
+ 547              		.loc 1 120 0
+ 548 013e 4FF00000 		mov	r0, #0
+ 549 0142 4FF00701 		mov	r1, #7
+ 550 0146 FFF7FEFF 		bl	LCD_Position
+ 121:.\main.c      ****         LCD_PutChar(gear_label(gear));
+ 551              		.loc 1 121 0
+ 552 014a 40F20003 		movw	r3, #:lower16:gear
+ 553 014e C0F20003 		movt	r3, #:upper16:gear
+ 554 0152 1B88     		ldrh	r3, [r3, #0]
+ 555 0154 1846     		mov	r0, r3
+ 556 0156 FFF7FEFF 		bl	gear_label
+ 557 015a 0346     		mov	r3, r0
+ 558 015c 1846     		mov	r0, r3
+ 559 015e FFF7FEFF 		bl	LCD_PutChar
+ 122:.\main.c      ****         LCD_Position(0,12);
+ 560              		.loc 1 122 0
+ 561 0162 4FF00000 		mov	r0, #0
+ 562 0166 4FF00C01 		mov	r1, #12
+ 563 016a FFF7FEFF 		bl	LCD_Position
+ 123:.\main.c      ****         LCD_PrintInt16(PWM_ReadCounter());
+ 564              		.loc 1 123 0
+ 565 016e FFF7FEFF 		bl	PWM_ReadCounter
+ 566 0172 0346     		mov	r3, r0
+ 567 0174 1846     		mov	r0, r3
+ 568 0176 FFF7FEFF 		bl	LCD_PrintInt16
+ 569              	.L35:
+ 570              	.LBE3:
+ 571              		.loc 1 113 0
+ 572 017a 4FF00000 		mov	r0, #0
+ 573 017e FFF7FEFF 		bl	ADC_IsEndConversion
+ 574 0182 0346     		mov	r3, r0
+ 575 0184 002B     		cmp	r3, #0
+ 576 0186 96D1     		bne	.L36
+ 124:.\main.c      ****     }
+ 125:.\main.c      ****     
+ 126:.\main.c      ****     
+ 127:.\main.c      ****     LCD_UpdateStatus("cleaning...");
+ 577              		.loc 1 127 0
+ 578 0188 40F20000 		movw	r0, #:lower16:.LC15
+ 579 018c C0F20000 		movt	r0, #:upper16:.LC15
+ 580 0190 FFF7FEFF 		bl	LCD_UpdateStatus
+ 128:.\main.c      ****     LCD_UpdateMessage("Interrupts");
+ 581              		.loc 1 128 0
+ 582 0194 40F20000 		movw	r0, #:lower16:.LC11
+ 583 0198 C0F20000 		movt	r0, #:upper16:.LC11
+ 584 019c FFF7FEFF 		bl	LCD_UpdateMessage
+ 129:.\main.c      ****     ISR_Stop();
+ 585              		.loc 1 129 0
+ 586 01a0 FFF7FEFF 		bl	ISR_Stop
+ 130:.\main.c      ****     LCD_UpdateMessage("PWM");
+ 587              		.loc 1 130 0
+ 588 01a4 40F20000 		movw	r0, #:lower16:.LC9
+ 589 01a8 C0F20000 		movt	r0, #:upper16:.LC9
+ 590 01ac FFF7FEFF 		bl	LCD_UpdateMessage
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\cc8CfiFm.s 			page 14
+
+
+ 131:.\main.c      ****     PWM_Stop();
+ 591              		.loc 1 131 0
+ 592 01b0 FFF7FEFF 		bl	PWM_Stop
+ 132:.\main.c      ****     LCD_UpdateMessage("ADC");
+ 593              		.loc 1 132 0
+ 594 01b4 40F20000 		movw	r0, #:lower16:.LC8
+ 595 01b8 C0F20000 		movt	r0, #:upper16:.LC8
+ 596 01bc FFF7FEFF 		bl	LCD_UpdateMessage
+ 133:.\main.c      ****     ADC_Stop();
+ 597              		.loc 1 133 0
+ 598 01c0 FFF7FEFF 		bl	ADC_Stop
+ 134:.\main.c      ****     LCD_UpdateMessage("Clock");
+ 599              		.loc 1 134 0
+ 600 01c4 40F20000 		movw	r0, #:lower16:.LC7
+ 601 01c8 C0F20000 		movt	r0, #:upper16:.LC7
+ 602 01cc FFF7FEFF 		bl	LCD_UpdateMessage
+ 135:.\main.c      ****     Clock_Stop();
+ 603              		.loc 1 135 0
+ 604 01d0 FFF7FEFF 		bl	Clock_Stop
+ 136:.\main.c      **** }
+ 605              		.loc 1 136 0
+ 606 01d4 07F10C07 		add	r7, r7, #12
+ 607 01d8 BD46     		mov	sp, r7
+ 608 01da 90BD     		pop	{r4, r7, pc}
+ 609              		.cfi_endproc
+ 610              	.LFE33:
+ 611              		.size	main, .-main
+ 612              		.text
+ 613              	.Letext0:
+ 614              		.section	.debug_loc,"",%progbits
+ 615              	.Ldebug_loc0:
+ 616              	.LLST0:
+ 617 0000 00000000 		.4byte	.LFB29
+ 618 0004 02000000 		.4byte	.LCFI0
+ 619 0008 0100     		.2byte	0x1
+ 620 000a 5D       		.byte	0x5d
+ 621 000b 02000000 		.4byte	.LCFI0
+ 622 000f 04000000 		.4byte	.LCFI1
+ 623 0013 0200     		.2byte	0x2
+ 624 0015 7D       		.byte	0x7d
+ 625 0016 04       		.sleb128 4
+ 626 0017 04000000 		.4byte	.LCFI1
+ 627 001b 06000000 		.4byte	.LCFI2
+ 628 001f 0200     		.2byte	0x2
+ 629 0021 7D       		.byte	0x7d
+ 630 0022 10       		.sleb128 16
+ 631 0023 06000000 		.4byte	.LCFI2
+ 632 0027 54000000 		.4byte	.LFE29
+ 633 002b 0200     		.2byte	0x2
+ 634 002d 77       		.byte	0x77
+ 635 002e 10       		.sleb128 16
+ 636 002f 00000000 		.4byte	0x0
+ 637 0033 00000000 		.4byte	0x0
+ 638              	.LLST1:
+ 639 0037 00000000 		.4byte	.LFB30
+ 640 003b 02000000 		.4byte	.LCFI3
+ 641 003f 0100     		.2byte	0x1
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\cc8CfiFm.s 			page 15
+
+
+ 642 0041 5D       		.byte	0x5d
+ 643 0042 02000000 		.4byte	.LCFI3
+ 644 0046 04000000 		.4byte	.LCFI4
+ 645 004a 0200     		.2byte	0x2
+ 646 004c 7D       		.byte	0x7d
+ 647 004d 08       		.sleb128 8
+ 648 004e 04000000 		.4byte	.LCFI4
+ 649 0052 06000000 		.4byte	.LCFI5
+ 650 0056 0200     		.2byte	0x2
+ 651 0058 7D       		.byte	0x7d
+ 652 0059 10       		.sleb128 16
+ 653 005a 06000000 		.4byte	.LCFI5
+ 654 005e 38000000 		.4byte	.LFE30
+ 655 0062 0200     		.2byte	0x2
+ 656 0064 77       		.byte	0x77
+ 657 0065 10       		.sleb128 16
+ 658 0066 00000000 		.4byte	0x0
+ 659 006a 00000000 		.4byte	0x0
+ 660              	.LLST2:
+ 661 006e 00000000 		.4byte	.LFB31
+ 662 0072 02000000 		.4byte	.LCFI6
+ 663 0076 0100     		.2byte	0x1
+ 664 0078 5D       		.byte	0x5d
+ 665 0079 02000000 		.4byte	.LCFI6
+ 666 007d 04000000 		.4byte	.LCFI7
+ 667 0081 0200     		.2byte	0x2
+ 668 0083 7D       		.byte	0x7d
+ 669 0084 08       		.sleb128 8
+ 670 0085 04000000 		.4byte	.LCFI7
+ 671 0089 06000000 		.4byte	.LCFI8
+ 672 008d 0200     		.2byte	0x2
+ 673 008f 7D       		.byte	0x7d
+ 674 0090 18       		.sleb128 24
+ 675 0091 06000000 		.4byte	.LCFI8
+ 676 0095 32010000 		.4byte	.LFE31
+ 677 0099 0200     		.2byte	0x2
+ 678 009b 77       		.byte	0x77
+ 679 009c 18       		.sleb128 24
+ 680 009d 00000000 		.4byte	0x0
+ 681 00a1 00000000 		.4byte	0x0
+ 682              	.LLST3:
+ 683 00a5 00000000 		.4byte	.LFB32
+ 684 00a9 02000000 		.4byte	.LCFI9
+ 685 00ad 0100     		.2byte	0x1
+ 686 00af 5D       		.byte	0x5d
+ 687 00b0 02000000 		.4byte	.LCFI9
+ 688 00b4 04000000 		.4byte	.LCFI10
+ 689 00b8 0200     		.2byte	0x2
+ 690 00ba 7D       		.byte	0x7d
+ 691 00bb 08       		.sleb128 8
+ 692 00bc 04000000 		.4byte	.LCFI10
+ 693 00c0 28000000 		.4byte	.LFE32
+ 694 00c4 0200     		.2byte	0x2
+ 695 00c6 77       		.byte	0x77
+ 696 00c7 08       		.sleb128 8
+ 697 00c8 00000000 		.4byte	0x0
+ 698 00cc 00000000 		.4byte	0x0
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\cc8CfiFm.s 			page 16
+
+
+ 699              	.LLST4:
+ 700 00d0 00000000 		.4byte	.LFB33
+ 701 00d4 02000000 		.4byte	.LCFI11
+ 702 00d8 0100     		.2byte	0x1
+ 703 00da 5D       		.byte	0x5d
+ 704 00db 02000000 		.4byte	.LCFI11
+ 705 00df 04000000 		.4byte	.LCFI12
+ 706 00e3 0200     		.2byte	0x2
+ 707 00e5 7D       		.byte	0x7d
+ 708 00e6 0C       		.sleb128 12
+ 709 00e7 04000000 		.4byte	.LCFI12
+ 710 00eb 06000000 		.4byte	.LCFI13
+ 711 00ef 0200     		.2byte	0x2
+ 712 00f1 7D       		.byte	0x7d
+ 713 00f2 18       		.sleb128 24
+ 714 00f3 06000000 		.4byte	.LCFI13
+ 715 00f7 DC010000 		.4byte	.LFE33
+ 716 00fb 0200     		.2byte	0x2
+ 717 00fd 77       		.byte	0x77
+ 718 00fe 18       		.sleb128 24
+ 719 00ff 00000000 		.4byte	0x0
+ 720 0103 00000000 		.4byte	0x0
+ 721              		.file 2 "./Generated_Source/PSoC5/core_cm3.h"
+ 722              		.file 3 "./Generated_Source/PSoC5/cytypes.h"
+ 723              		.section	.debug_info
+ 724 0000 B5010000 		.4byte	0x1b5
+ 725 0004 0200     		.2byte	0x2
+ 726 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 727 000a 04       		.byte	0x4
+ 728 000b 01       		.uleb128 0x1
+ 729 000c F8000000 		.4byte	.LASF22
+ 730 0010 01       		.byte	0x1
+ 731 0011 AE000000 		.4byte	.LASF23
+ 732 0015 0E000000 		.4byte	.LASF24
+ 733 0019 00000000 		.4byte	0x0
+ 734 001d 00000000 		.4byte	0x0
+ 735 0021 00000000 		.4byte	.Ldebug_ranges0+0x0
+ 736 0025 00000000 		.4byte	.Ldebug_line0
+ 737 0029 02       		.uleb128 0x2
+ 738 002a 01       		.byte	0x1
+ 739 002b 06       		.byte	0x6
+ 740 002c 27010000 		.4byte	.LASF0
+ 741 0030 02       		.uleb128 0x2
+ 742 0031 01       		.byte	0x1
+ 743 0032 08       		.byte	0x8
+ 744 0033 4E000000 		.4byte	.LASF1
+ 745 0037 02       		.uleb128 0x2
+ 746 0038 02       		.byte	0x2
+ 747 0039 05       		.byte	0x5
+ 748 003a 09010000 		.4byte	.LASF2
+ 749 003e 02       		.uleb128 0x2
+ 750 003f 02       		.byte	0x2
+ 751 0040 07       		.byte	0x7
+ 752 0041 75000000 		.4byte	.LASF3
+ 753 0045 02       		.uleb128 0x2
+ 754 0046 04       		.byte	0x4
+ 755 0047 05       		.byte	0x5
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\cc8CfiFm.s 			page 17
+
+
+ 756 0048 1E010000 		.4byte	.LASF4
+ 757 004c 02       		.uleb128 0x2
+ 758 004d 04       		.byte	0x4
+ 759 004e 07       		.byte	0x7
+ 760 004f 5C000000 		.4byte	.LASF5
+ 761 0053 02       		.uleb128 0x2
+ 762 0054 08       		.byte	0x8
+ 763 0055 05       		.byte	0x5
+ 764 0056 00000000 		.4byte	.LASF6
+ 765 005a 02       		.uleb128 0x2
+ 766 005b 08       		.byte	0x8
+ 767 005c 07       		.byte	0x7
+ 768 005d D0000000 		.4byte	.LASF7
+ 769 0061 03       		.uleb128 0x3
+ 770 0062 04       		.byte	0x4
+ 771 0063 05       		.byte	0x5
+ 772 0064 696E7400 		.ascii	"int\000"
+ 773 0068 02       		.uleb128 0x2
+ 774 0069 04       		.byte	0x4
+ 775 006a 07       		.byte	0x7
+ 776 006b C3000000 		.4byte	.LASF8
+ 777 006f 04       		.uleb128 0x4
+ 778 0070 B7000000 		.4byte	.LASF25
+ 779 0074 03       		.byte	0x3
+ 780 0075 4D       		.byte	0x4d
+ 781 0076 3E000000 		.4byte	0x3e
+ 782 007a 02       		.uleb128 0x2
+ 783 007b 04       		.byte	0x4
+ 784 007c 04       		.byte	0x4
+ 785 007d 48000000 		.4byte	.LASF9
+ 786 0081 02       		.uleb128 0x2
+ 787 0082 08       		.byte	0x8
+ 788 0083 04       		.byte	0x4
+ 789 0084 A7000000 		.4byte	.LASF10
+ 790 0088 02       		.uleb128 0x2
+ 791 0089 01       		.byte	0x1
+ 792 008a 08       		.byte	0x8
+ 793 008b 04010000 		.4byte	.LASF11
+ 794 008f 05       		.uleb128 0x5
+ 795 0090 04       		.byte	0x4
+ 796 0091 07       		.byte	0x7
+ 797 0092 06       		.uleb128 0x6
+ 798 0093 01       		.byte	0x1
+ 799 0094 95000000 		.4byte	.LASF26
+ 800 0098 01       		.byte	0x1
+ 801 0099 13       		.byte	0x13
+ 802 009a 01       		.byte	0x1
+ 803 009b 88000000 		.4byte	0x88
+ 804 009f 00000000 		.4byte	.LFB29
+ 805 00a3 54000000 		.4byte	.LFE29
+ 806 00a7 00000000 		.4byte	.LLST0
+ 807 00ab BE000000 		.4byte	0xbe
+ 808 00af 07       		.uleb128 0x7
+ 809 00b0 43000000 		.4byte	.LASF12
+ 810 00b4 01       		.byte	0x1
+ 811 00b5 13       		.byte	0x13
+ 812 00b6 6F000000 		.4byte	0x6f
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\cc8CfiFm.s 			page 18
+
+
+ 813 00ba 02       		.byte	0x2
+ 814 00bb 91       		.byte	0x91
+ 815 00bc 76       		.sleb128 -10
+ 816 00bd 00       		.byte	0x0
+ 817 00be 08       		.uleb128 0x8
+ 818 00bf 01       		.byte	0x1
+ 819 00c0 E7000000 		.4byte	.LASF27
+ 820 00c4 01       		.byte	0x1
+ 821 00c5 20       		.byte	0x20
+ 822 00c6 01       		.byte	0x1
+ 823 00c7 00000000 		.4byte	.LFB30
+ 824 00cb 38000000 		.4byte	.LFE30
+ 825 00cf 37000000 		.4byte	.LLST1
+ 826 00d3 E6000000 		.4byte	0xe6
+ 827 00d7 07       		.uleb128 0x7
+ 828 00d8 2F000000 		.4byte	.LASF13
+ 829 00dc 01       		.byte	0x1
+ 830 00dd 20       		.byte	0x20
+ 831 00de 6F000000 		.4byte	0x6f
+ 832 00e2 02       		.byte	0x2
+ 833 00e3 91       		.byte	0x91
+ 834 00e4 76       		.sleb128 -10
+ 835 00e5 00       		.byte	0x0
+ 836 00e6 09       		.uleb128 0x9
+ 837 00e7 01       		.byte	0x1
+ 838 00e8 13010000 		.4byte	.LASF18
+ 839 00ec 01       		.byte	0x1
+ 840 00ed 29       		.byte	0x29
+ 841 00ee 00000000 		.4byte	.LFB31
+ 842 00f2 32010000 		.4byte	.LFE31
+ 843 00f6 6E000000 		.4byte	.LLST2
+ 844 00fa 4D010000 		.4byte	0x14d
+ 845 00fe 07       		.uleb128 0x7
+ 846 00ff A0000000 		.4byte	.LASF14
+ 847 0103 01       		.byte	0x1
+ 848 0104 29       		.byte	0x29
+ 849 0105 61000000 		.4byte	0x61
+ 850 0109 02       		.byte	0x2
+ 851 010a 91       		.byte	0x91
+ 852 010b 6C       		.sleb128 -20
+ 853 010c 07       		.uleb128 0x7
+ 854 010d 3A000000 		.4byte	.LASF15
+ 855 0111 01       		.byte	0x1
+ 856 0112 29       		.byte	0x29
+ 857 0113 61000000 		.4byte	0x61
+ 858 0117 02       		.byte	0x2
+ 859 0118 91       		.byte	0x91
+ 860 0119 68       		.sleb128 -24
+ 861 011a 0A       		.uleb128 0xa
+ 862 011b 6E000000 		.4byte	.LASF16
+ 863 011f 01       		.byte	0x1
+ 864 0120 2A       		.byte	0x2a
+ 865 0121 6F000000 		.4byte	0x6f
+ 866 0125 02       		.byte	0x2
+ 867 0126 91       		.byte	0x91
+ 868 0127 72       		.sleb128 -14
+ 869 0128 0A       		.uleb128 0xa
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\cc8CfiFm.s 			page 19
+
+
+ 870 0129 34000000 		.4byte	.LASF17
+ 871 012d 01       		.byte	0x1
+ 872 012e 2A       		.byte	0x2a
+ 873 012f 6F000000 		.4byte	0x6f
+ 874 0133 02       		.byte	0x2
+ 875 0134 91       		.byte	0x91
+ 876 0135 74       		.sleb128 -12
+ 877 0136 0B       		.uleb128 0xb
+ 878 0137 1C000000 		.4byte	.LBB2
+ 879 013b 1A010000 		.4byte	.LBE2
+ 880 013f 0C       		.uleb128 0xc
+ 881 0140 6900     		.ascii	"i\000"
+ 882 0142 01       		.byte	0x1
+ 883 0143 44       		.byte	0x44
+ 884 0144 6F000000 		.4byte	0x6f
+ 885 0148 02       		.byte	0x2
+ 886 0149 91       		.byte	0x91
+ 887 014a 76       		.sleb128 -10
+ 888 014b 00       		.byte	0x0
+ 889 014c 00       		.byte	0x0
+ 890 014d 0D       		.uleb128 0xd
+ 891 014e 01       		.byte	0x1
+ 892 014f 33010000 		.4byte	.LASF28
+ 893 0153 01       		.byte	0x1
+ 894 0154 53       		.byte	0x53
+ 895 0155 01       		.byte	0x1
+ 896 0156 00000000 		.4byte	.LFB32
+ 897 015a 28000000 		.4byte	.LFE32
+ 898 015e A5000000 		.4byte	.LLST3
+ 899 0162 09       		.uleb128 0x9
+ 900 0163 01       		.byte	0x1
+ 901 0164 BE000000 		.4byte	.LASF19
+ 902 0168 01       		.byte	0x1
+ 903 0169 5B       		.byte	0x5b
+ 904 016a 00000000 		.4byte	.LFB33
+ 905 016e DC010000 		.4byte	.LFE33
+ 906 0172 D0000000 		.4byte	.LLST4
+ 907 0176 93010000 		.4byte	0x193
+ 908 017a 0B       		.uleb128 0xb
+ 909 017b B6000000 		.4byte	.LBB3
+ 910 017f 7A010000 		.4byte	.LBE3
+ 911 0183 0A       		.uleb128 0xa
+ 912 0184 F2000000 		.4byte	.LASF20
+ 913 0188 01       		.byte	0x1
+ 914 0189 72       		.byte	0x72
+ 915 018a 6F000000 		.4byte	0x6f
+ 916 018e 02       		.byte	0x2
+ 917 018f 91       		.byte	0x91
+ 918 0190 6E       		.sleb128 -18
+ 919 0191 00       		.byte	0x0
+ 920 0192 00       		.byte	0x0
+ 921 0193 0E       		.uleb128 0xe
+ 922 0194 88000000 		.4byte	.LASF21
+ 923 0198 02       		.byte	0x2
+ 924 0199 CE06     		.2byte	0x6ce
+ 925 019b A1010000 		.4byte	0x1a1
+ 926 019f 01       		.byte	0x1
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\cc8CfiFm.s 			page 20
+
+
+ 927 01a0 01       		.byte	0x1
+ 928 01a1 0F       		.uleb128 0xf
+ 929 01a2 61000000 		.4byte	0x61
+ 930 01a6 10       		.uleb128 0x10
+ 931 01a7 43000000 		.4byte	.LASF12
+ 932 01ab 01       		.byte	0x1
+ 933 01ac 0E       		.byte	0xe
+ 934 01ad 6F000000 		.4byte	0x6f
+ 935 01b1 01       		.byte	0x1
+ 936 01b2 05       		.byte	0x5
+ 937 01b3 03       		.byte	0x3
+ 938 01b4 00000000 		.4byte	gear
+ 939 01b8 00       		.byte	0x0
+ 940              		.section	.debug_abbrev
+ 941 0000 01       		.uleb128 0x1
+ 942 0001 11       		.uleb128 0x11
+ 943 0002 01       		.byte	0x1
+ 944 0003 25       		.uleb128 0x25
+ 945 0004 0E       		.uleb128 0xe
+ 946 0005 13       		.uleb128 0x13
+ 947 0006 0B       		.uleb128 0xb
+ 948 0007 03       		.uleb128 0x3
+ 949 0008 0E       		.uleb128 0xe
+ 950 0009 1B       		.uleb128 0x1b
+ 951 000a 0E       		.uleb128 0xe
+ 952 000b 11       		.uleb128 0x11
+ 953 000c 01       		.uleb128 0x1
+ 954 000d 52       		.uleb128 0x52
+ 955 000e 01       		.uleb128 0x1
+ 956 000f 55       		.uleb128 0x55
+ 957 0010 06       		.uleb128 0x6
+ 958 0011 10       		.uleb128 0x10
+ 959 0012 06       		.uleb128 0x6
+ 960 0013 00       		.byte	0x0
+ 961 0014 00       		.byte	0x0
+ 962 0015 02       		.uleb128 0x2
+ 963 0016 24       		.uleb128 0x24
+ 964 0017 00       		.byte	0x0
+ 965 0018 0B       		.uleb128 0xb
+ 966 0019 0B       		.uleb128 0xb
+ 967 001a 3E       		.uleb128 0x3e
+ 968 001b 0B       		.uleb128 0xb
+ 969 001c 03       		.uleb128 0x3
+ 970 001d 0E       		.uleb128 0xe
+ 971 001e 00       		.byte	0x0
+ 972 001f 00       		.byte	0x0
+ 973 0020 03       		.uleb128 0x3
+ 974 0021 24       		.uleb128 0x24
+ 975 0022 00       		.byte	0x0
+ 976 0023 0B       		.uleb128 0xb
+ 977 0024 0B       		.uleb128 0xb
+ 978 0025 3E       		.uleb128 0x3e
+ 979 0026 0B       		.uleb128 0xb
+ 980 0027 03       		.uleb128 0x3
+ 981 0028 08       		.uleb128 0x8
+ 982 0029 00       		.byte	0x0
+ 983 002a 00       		.byte	0x0
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\cc8CfiFm.s 			page 21
+
+
+ 984 002b 04       		.uleb128 0x4
+ 985 002c 16       		.uleb128 0x16
+ 986 002d 00       		.byte	0x0
+ 987 002e 03       		.uleb128 0x3
+ 988 002f 0E       		.uleb128 0xe
+ 989 0030 3A       		.uleb128 0x3a
+ 990 0031 0B       		.uleb128 0xb
+ 991 0032 3B       		.uleb128 0x3b
+ 992 0033 0B       		.uleb128 0xb
+ 993 0034 49       		.uleb128 0x49
+ 994 0035 13       		.uleb128 0x13
+ 995 0036 00       		.byte	0x0
+ 996 0037 00       		.byte	0x0
+ 997 0038 05       		.uleb128 0x5
+ 998 0039 24       		.uleb128 0x24
+ 999 003a 00       		.byte	0x0
+ 1000 003b 0B       		.uleb128 0xb
+ 1001 003c 0B       		.uleb128 0xb
+ 1002 003d 3E       		.uleb128 0x3e
+ 1003 003e 0B       		.uleb128 0xb
+ 1004 003f 00       		.byte	0x0
+ 1005 0040 00       		.byte	0x0
+ 1006 0041 06       		.uleb128 0x6
+ 1007 0042 2E       		.uleb128 0x2e
+ 1008 0043 01       		.byte	0x1
+ 1009 0044 3F       		.uleb128 0x3f
+ 1010 0045 0C       		.uleb128 0xc
+ 1011 0046 03       		.uleb128 0x3
+ 1012 0047 0E       		.uleb128 0xe
+ 1013 0048 3A       		.uleb128 0x3a
+ 1014 0049 0B       		.uleb128 0xb
+ 1015 004a 3B       		.uleb128 0x3b
+ 1016 004b 0B       		.uleb128 0xb
+ 1017 004c 27       		.uleb128 0x27
+ 1018 004d 0C       		.uleb128 0xc
+ 1019 004e 49       		.uleb128 0x49
+ 1020 004f 13       		.uleb128 0x13
+ 1021 0050 11       		.uleb128 0x11
+ 1022 0051 01       		.uleb128 0x1
+ 1023 0052 12       		.uleb128 0x12
+ 1024 0053 01       		.uleb128 0x1
+ 1025 0054 40       		.uleb128 0x40
+ 1026 0055 06       		.uleb128 0x6
+ 1027 0056 01       		.uleb128 0x1
+ 1028 0057 13       		.uleb128 0x13
+ 1029 0058 00       		.byte	0x0
+ 1030 0059 00       		.byte	0x0
+ 1031 005a 07       		.uleb128 0x7
+ 1032 005b 05       		.uleb128 0x5
+ 1033 005c 00       		.byte	0x0
+ 1034 005d 03       		.uleb128 0x3
+ 1035 005e 0E       		.uleb128 0xe
+ 1036 005f 3A       		.uleb128 0x3a
+ 1037 0060 0B       		.uleb128 0xb
+ 1038 0061 3B       		.uleb128 0x3b
+ 1039 0062 0B       		.uleb128 0xb
+ 1040 0063 49       		.uleb128 0x49
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\cc8CfiFm.s 			page 22
+
+
+ 1041 0064 13       		.uleb128 0x13
+ 1042 0065 02       		.uleb128 0x2
+ 1043 0066 0A       		.uleb128 0xa
+ 1044 0067 00       		.byte	0x0
+ 1045 0068 00       		.byte	0x0
+ 1046 0069 08       		.uleb128 0x8
+ 1047 006a 2E       		.uleb128 0x2e
+ 1048 006b 01       		.byte	0x1
+ 1049 006c 3F       		.uleb128 0x3f
+ 1050 006d 0C       		.uleb128 0xc
+ 1051 006e 03       		.uleb128 0x3
+ 1052 006f 0E       		.uleb128 0xe
+ 1053 0070 3A       		.uleb128 0x3a
+ 1054 0071 0B       		.uleb128 0xb
+ 1055 0072 3B       		.uleb128 0x3b
+ 1056 0073 0B       		.uleb128 0xb
+ 1057 0074 27       		.uleb128 0x27
+ 1058 0075 0C       		.uleb128 0xc
+ 1059 0076 11       		.uleb128 0x11
+ 1060 0077 01       		.uleb128 0x1
+ 1061 0078 12       		.uleb128 0x12
+ 1062 0079 01       		.uleb128 0x1
+ 1063 007a 40       		.uleb128 0x40
+ 1064 007b 06       		.uleb128 0x6
+ 1065 007c 01       		.uleb128 0x1
+ 1066 007d 13       		.uleb128 0x13
+ 1067 007e 00       		.byte	0x0
+ 1068 007f 00       		.byte	0x0
+ 1069 0080 09       		.uleb128 0x9
+ 1070 0081 2E       		.uleb128 0x2e
+ 1071 0082 01       		.byte	0x1
+ 1072 0083 3F       		.uleb128 0x3f
+ 1073 0084 0C       		.uleb128 0xc
+ 1074 0085 03       		.uleb128 0x3
+ 1075 0086 0E       		.uleb128 0xe
+ 1076 0087 3A       		.uleb128 0x3a
+ 1077 0088 0B       		.uleb128 0xb
+ 1078 0089 3B       		.uleb128 0x3b
+ 1079 008a 0B       		.uleb128 0xb
+ 1080 008b 11       		.uleb128 0x11
+ 1081 008c 01       		.uleb128 0x1
+ 1082 008d 12       		.uleb128 0x12
+ 1083 008e 01       		.uleb128 0x1
+ 1084 008f 40       		.uleb128 0x40
+ 1085 0090 06       		.uleb128 0x6
+ 1086 0091 01       		.uleb128 0x1
+ 1087 0092 13       		.uleb128 0x13
+ 1088 0093 00       		.byte	0x0
+ 1089 0094 00       		.byte	0x0
+ 1090 0095 0A       		.uleb128 0xa
+ 1091 0096 34       		.uleb128 0x34
+ 1092 0097 00       		.byte	0x0
+ 1093 0098 03       		.uleb128 0x3
+ 1094 0099 0E       		.uleb128 0xe
+ 1095 009a 3A       		.uleb128 0x3a
+ 1096 009b 0B       		.uleb128 0xb
+ 1097 009c 3B       		.uleb128 0x3b
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\cc8CfiFm.s 			page 23
+
+
+ 1098 009d 0B       		.uleb128 0xb
+ 1099 009e 49       		.uleb128 0x49
+ 1100 009f 13       		.uleb128 0x13
+ 1101 00a0 02       		.uleb128 0x2
+ 1102 00a1 0A       		.uleb128 0xa
+ 1103 00a2 00       		.byte	0x0
+ 1104 00a3 00       		.byte	0x0
+ 1105 00a4 0B       		.uleb128 0xb
+ 1106 00a5 0B       		.uleb128 0xb
+ 1107 00a6 01       		.byte	0x1
+ 1108 00a7 11       		.uleb128 0x11
+ 1109 00a8 01       		.uleb128 0x1
+ 1110 00a9 12       		.uleb128 0x12
+ 1111 00aa 01       		.uleb128 0x1
+ 1112 00ab 00       		.byte	0x0
+ 1113 00ac 00       		.byte	0x0
+ 1114 00ad 0C       		.uleb128 0xc
+ 1115 00ae 34       		.uleb128 0x34
+ 1116 00af 00       		.byte	0x0
+ 1117 00b0 03       		.uleb128 0x3
+ 1118 00b1 08       		.uleb128 0x8
+ 1119 00b2 3A       		.uleb128 0x3a
+ 1120 00b3 0B       		.uleb128 0xb
+ 1121 00b4 3B       		.uleb128 0x3b
+ 1122 00b5 0B       		.uleb128 0xb
+ 1123 00b6 49       		.uleb128 0x49
+ 1124 00b7 13       		.uleb128 0x13
+ 1125 00b8 02       		.uleb128 0x2
+ 1126 00b9 0A       		.uleb128 0xa
+ 1127 00ba 00       		.byte	0x0
+ 1128 00bb 00       		.byte	0x0
+ 1129 00bc 0D       		.uleb128 0xd
+ 1130 00bd 2E       		.uleb128 0x2e
+ 1131 00be 00       		.byte	0x0
+ 1132 00bf 3F       		.uleb128 0x3f
+ 1133 00c0 0C       		.uleb128 0xc
+ 1134 00c1 03       		.uleb128 0x3
+ 1135 00c2 0E       		.uleb128 0xe
+ 1136 00c3 3A       		.uleb128 0x3a
+ 1137 00c4 0B       		.uleb128 0xb
+ 1138 00c5 3B       		.uleb128 0x3b
+ 1139 00c6 0B       		.uleb128 0xb
+ 1140 00c7 27       		.uleb128 0x27
+ 1141 00c8 0C       		.uleb128 0xc
+ 1142 00c9 11       		.uleb128 0x11
+ 1143 00ca 01       		.uleb128 0x1
+ 1144 00cb 12       		.uleb128 0x12
+ 1145 00cc 01       		.uleb128 0x1
+ 1146 00cd 40       		.uleb128 0x40
+ 1147 00ce 06       		.uleb128 0x6
+ 1148 00cf 00       		.byte	0x0
+ 1149 00d0 00       		.byte	0x0
+ 1150 00d1 0E       		.uleb128 0xe
+ 1151 00d2 34       		.uleb128 0x34
+ 1152 00d3 00       		.byte	0x0
+ 1153 00d4 03       		.uleb128 0x3
+ 1154 00d5 0E       		.uleb128 0xe
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\cc8CfiFm.s 			page 24
+
+
+ 1155 00d6 3A       		.uleb128 0x3a
+ 1156 00d7 0B       		.uleb128 0xb
+ 1157 00d8 3B       		.uleb128 0x3b
+ 1158 00d9 05       		.uleb128 0x5
+ 1159 00da 49       		.uleb128 0x49
+ 1160 00db 13       		.uleb128 0x13
+ 1161 00dc 3F       		.uleb128 0x3f
+ 1162 00dd 0C       		.uleb128 0xc
+ 1163 00de 3C       		.uleb128 0x3c
+ 1164 00df 0C       		.uleb128 0xc
+ 1165 00e0 00       		.byte	0x0
+ 1166 00e1 00       		.byte	0x0
+ 1167 00e2 0F       		.uleb128 0xf
+ 1168 00e3 35       		.uleb128 0x35
+ 1169 00e4 00       		.byte	0x0
+ 1170 00e5 49       		.uleb128 0x49
+ 1171 00e6 13       		.uleb128 0x13
+ 1172 00e7 00       		.byte	0x0
+ 1173 00e8 00       		.byte	0x0
+ 1174 00e9 10       		.uleb128 0x10
+ 1175 00ea 34       		.uleb128 0x34
+ 1176 00eb 00       		.byte	0x0
+ 1177 00ec 03       		.uleb128 0x3
+ 1178 00ed 0E       		.uleb128 0xe
+ 1179 00ee 3A       		.uleb128 0x3a
+ 1180 00ef 0B       		.uleb128 0xb
+ 1181 00f0 3B       		.uleb128 0x3b
+ 1182 00f1 0B       		.uleb128 0xb
+ 1183 00f2 49       		.uleb128 0x49
+ 1184 00f3 13       		.uleb128 0x13
+ 1185 00f4 3F       		.uleb128 0x3f
+ 1186 00f5 0C       		.uleb128 0xc
+ 1187 00f6 02       		.uleb128 0x2
+ 1188 00f7 0A       		.uleb128 0xa
+ 1189 00f8 00       		.byte	0x0
+ 1190 00f9 00       		.byte	0x0
+ 1191 00fa 00       		.byte	0x0
+ 1192              		.section	.debug_pubnames,"",%progbits
+ 1193 0000 5E000000 		.4byte	0x5e
+ 1194 0004 0200     		.2byte	0x2
+ 1195 0006 00000000 		.4byte	.Ldebug_info0
+ 1196 000a B9010000 		.4byte	0x1b9
+ 1197 000e 92000000 		.4byte	0x92
+ 1198 0012 67656172 		.ascii	"gear_label\000"
+ 1198      5F6C6162 
+ 1198      656C00
+ 1199 001d BE000000 		.4byte	0xbe
+ 1200 0021 73686966 		.ascii	"shift_gear\000"
+ 1200      745F6765 
+ 1200      617200
+ 1201 002c E6000000 		.4byte	0xe6
+ 1202 0030 74657374 		.ascii	"test_motor\000"
+ 1202      5F6D6F74 
+ 1202      6F7200
+ 1203 003b 4D010000 		.4byte	0x14d
+ 1204 003f 7472616E 		.ascii	"transmission\000"
+ 1204      736D6973 
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\cc8CfiFm.s 			page 25
+
+
+ 1204      73696F6E 
+ 1204      00
+ 1205 004c 62010000 		.4byte	0x162
+ 1206 0050 6D61696E 		.ascii	"main\000"
+ 1206      00
+ 1207 0055 A6010000 		.4byte	0x1a6
+ 1208 0059 67656172 		.ascii	"gear\000"
+ 1208      00
+ 1209 005e 00000000 		.4byte	0x0
+ 1210              		.section	.debug_aranges,"",%progbits
+ 1211 0000 3C000000 		.4byte	0x3c
+ 1212 0004 0200     		.2byte	0x2
+ 1213 0006 00000000 		.4byte	.Ldebug_info0
+ 1214 000a 04       		.byte	0x4
+ 1215 000b 00       		.byte	0x0
+ 1216 000c 0000     		.2byte	0x0
+ 1217 000e 0000     		.2byte	0x0
+ 1218 0010 00000000 		.4byte	.LFB29
+ 1219 0014 54000000 		.4byte	.LFE29-.LFB29
+ 1220 0018 00000000 		.4byte	.LFB30
+ 1221 001c 38000000 		.4byte	.LFE30-.LFB30
+ 1222 0020 00000000 		.4byte	.LFB31
+ 1223 0024 32010000 		.4byte	.LFE31-.LFB31
+ 1224 0028 00000000 		.4byte	.LFB32
+ 1225 002c 28000000 		.4byte	.LFE32-.LFB32
+ 1226 0030 00000000 		.4byte	.LFB33
+ 1227 0034 DC010000 		.4byte	.LFE33-.LFB33
+ 1228 0038 00000000 		.4byte	0x0
+ 1229 003c 00000000 		.4byte	0x0
+ 1230              		.section	.debug_ranges,"",%progbits
+ 1231              	.Ldebug_ranges0:
+ 1232 0000 00000000 		.4byte	.Ltext0
+ 1233 0004 00000000 		.4byte	.Letext0
+ 1234 0008 00000000 		.4byte	.LFB29
+ 1235 000c 54000000 		.4byte	.LFE29
+ 1236 0010 00000000 		.4byte	.LFB30
+ 1237 0014 38000000 		.4byte	.LFE30
+ 1238 0018 00000000 		.4byte	.LFB31
+ 1239 001c 32010000 		.4byte	.LFE31
+ 1240 0020 00000000 		.4byte	.LFB32
+ 1241 0024 28000000 		.4byte	.LFE32
+ 1242 0028 00000000 		.4byte	.LFB33
+ 1243 002c DC010000 		.4byte	.LFE33
+ 1244 0030 00000000 		.4byte	0x0
+ 1245 0034 00000000 		.4byte	0x0
+ 1246              		.section	.debug_str,"MS",%progbits,1
+ 1247              	.LASF6:
+ 1248 0000 6C6F6E67 		.ascii	"long long int\000"
+ 1248      206C6F6E 
+ 1248      6720696E 
+ 1248      7400
+ 1249              	.LASF24:
+ 1250 000e 463A5C50 		.ascii	"F:\\PSoC Creator\\lab4\\part1.cydsn\000"
+ 1250      536F4320 
+ 1250      43726561 
+ 1250      746F725C 
+ 1250      6C616234 
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\cc8CfiFm.s 			page 26
+
+
+ 1251              	.LASF13:
+ 1252 002f 6E657874 		.ascii	"next\000"
+ 1252      00
+ 1253              	.LASF17:
+ 1254 0034 67656172 		.ascii	"geari\000"
+ 1254      6900
+ 1255              	.LASF15:
+ 1256 003a 64757261 		.ascii	"duration\000"
+ 1256      74696F6E 
+ 1256      00
+ 1257              	.LASF12:
+ 1258 0043 67656172 		.ascii	"gear\000"
+ 1258      00
+ 1259              	.LASF9:
+ 1260 0048 666C6F61 		.ascii	"float\000"
+ 1260      7400
+ 1261              	.LASF1:
+ 1262 004e 756E7369 		.ascii	"unsigned char\000"
+ 1262      676E6564 
+ 1262      20636861 
+ 1262      7200
+ 1263              	.LASF5:
+ 1264 005c 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1264      20756E73 
+ 1264      69676E65 
+ 1264      6420696E 
+ 1264      7400
+ 1265              	.LASF16:
+ 1266 006e 74726961 		.ascii	"triali\000"
+ 1266      6C6900
+ 1267              	.LASF3:
+ 1268 0075 73686F72 		.ascii	"short unsigned int\000"
+ 1268      7420756E 
+ 1268      7369676E 
+ 1268      65642069 
+ 1268      6E7400
+ 1269              	.LASF21:
+ 1270 0088 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 1270      52784275 
+ 1270      66666572 
+ 1270      00
+ 1271              	.LASF26:
+ 1272 0095 67656172 		.ascii	"gear_label\000"
+ 1272      5F6C6162 
+ 1272      656C00
+ 1273              	.LASF14:
+ 1274 00a0 74726961 		.ascii	"trials\000"
+ 1274      6C7300
+ 1275              	.LASF10:
+ 1276 00a7 646F7562 		.ascii	"double\000"
+ 1276      6C6500
+ 1277              	.LASF23:
+ 1278 00ae 2E5C6D61 		.ascii	".\\main.c\000"
+ 1278      696E2E63 
+ 1278      00
+ 1279              	.LASF25:
+ 1280 00b7 75696E74 		.ascii	"uint16\000"
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\cc8CfiFm.s 			page 27
+
+
+ 1280      313600
+ 1281              	.LASF19:
+ 1282 00be 6D61696E 		.ascii	"main\000"
+ 1282      00
+ 1283              	.LASF8:
+ 1284 00c3 756E7369 		.ascii	"unsigned int\000"
+ 1284      676E6564 
+ 1284      20696E74 
+ 1284      00
+ 1285              	.LASF7:
+ 1286 00d0 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1286      206C6F6E 
+ 1286      6720756E 
+ 1286      7369676E 
+ 1286      65642069 
+ 1287              	.LASF27:
+ 1288 00e7 73686966 		.ascii	"shift_gear\000"
+ 1288      745F6765 
+ 1288      617200
+ 1289              	.LASF20:
+ 1290 00f2 73706565 		.ascii	"speed\000"
+ 1290      6400
+ 1291              	.LASF22:
+ 1292 00f8 474E5520 		.ascii	"GNU C 4.4.1\000"
+ 1292      4320342E 
+ 1292      342E3100 
+ 1293              	.LASF11:
+ 1294 0104 63686172 		.ascii	"char\000"
+ 1294      00
+ 1295              	.LASF2:
+ 1296 0109 73686F72 		.ascii	"short int\000"
+ 1296      7420696E 
+ 1296      7400
+ 1297              	.LASF18:
+ 1298 0113 74657374 		.ascii	"test_motor\000"
+ 1298      5F6D6F74 
+ 1298      6F7200
+ 1299              	.LASF4:
+ 1300 011e 6C6F6E67 		.ascii	"long int\000"
+ 1300      20696E74 
+ 1300      00
+ 1301              	.LASF0:
+ 1302 0127 7369676E 		.ascii	"signed char\000"
+ 1302      65642063 
+ 1302      68617200 
+ 1303              	.LASF28:
+ 1304 0133 7472616E 		.ascii	"transmission\000"
+ 1304      736D6973 
+ 1304      73696F6E 
+ 1304      00
+ 1305              		.ident	"GCC: (Sourcery G++ Lite 2010q1-188) 4.4.1"

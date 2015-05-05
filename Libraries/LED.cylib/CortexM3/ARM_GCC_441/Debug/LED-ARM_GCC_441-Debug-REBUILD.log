@@ -1,0 +1,14 @@
+--------------- Rebuild Started: 06/15/2013 21:39:11 Project: matrix.c, Configuration: ARM GCC 4.4.1 Debug ---------------
+arm-none-eabi-gcc.exe -I. -Wno-main -mcpu=cortex-m3 -mthumb -Wall -g -D DEBUG -Wa,-alh=.\CortexM3\ARM_GCC_441\Debug\matrix.lst -ffunction-sections -c .\matrix.c -o .\CortexM3\ARM_GCC_441\Debug\matrix.o
+In file included from ./alphabet-mosaic.h:4,
+                 from ./matrix.h:19,
+                 from .\matrix.c:2:
+./alphabets.h:7: error: expected ')' before 'x'
+In file included from .\matrix.c:2:
+./matrix.h:22: error: expected ')' before 'row'
+./matrix.h:25: error: expected ')' before 'display'
+./matrix.h:26: error: expected ')' before 'display'
+.\matrix.c:3: fatal error: LCD.h: No such file or directory
+compilation terminated.
+The command 'arm-none-eabi-gcc.exe' failed with exit code '1'.
+--------------- Rebuild Failed: 06/15/2013 21:39:12 ---------------

@@ -1,0 +1,1123 @@
+Archive member included because of file (symbol)
+
+.\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART.o)
+                              .\CortexM3\ARM_GCC_441\Debug\main.o (UART_Start)
+.\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART_INT.o)
+                              .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART.o) (UART_RXISR)
+.\CortexM3\ARM_GCC_441\Debug\part2-new.a(LCD.o)
+                              .\CortexM3\ARM_GCC_441\Debug\main.o (LCD_WriteControl)
+.\CortexM3\ARM_GCC_441\Debug\part2-new.a(txISR.o)
+                              .\CortexM3\ARM_GCC_441\Debug\main.o (txISR_StartEx)
+.\CortexM3\ARM_GCC_441\Debug\part2-new.a(rxISR.o)
+                              .\CortexM3\ARM_GCC_441\Debug\main.o (rxISR_StartEx)
+.\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART_IntClock.o)
+                              .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART.o) (UART_IntClock_Start)
+.\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyBootAsmGnu.o)
+                              .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART.o) (CyEnterCriticalSection)
+.\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+                              .\CortexM3\ARM_GCC_441\Debug\Cm3Start.o (CyResetStatus)
+.\CortexM3\ARM_GCC_441\Debug\part2-new.a(cyPm.o)
+                              .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o) (CyPmReadStatus)
+.\CortexM3\ARM_GCC_441\Debug\part2-new.a(cyfitter_cfg.o)
+                              .\CortexM3\ARM_GCC_441\Debug\Cm3Start.o (cyfitter_cfg)
+.\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyFlash.o)
+                              .\CortexM3\ARM_GCC_441\Debug\part2-new.a(cyPm.o) (CyFlash_SetWaitCycles)
+.\CortexM3\ARM_GCC_441\Debug\part2-new.a(CySpc.o)
+                              .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyFlash.o) (CySpcStart)
+c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/../../../../arm-none-eabi/lib/thumb2\libc.a(lib_a-memcpy.o)
+                              .\CortexM3\ARM_GCC_441\Debug\part2-new.a(cyfitter_cfg.o) (memcpy)
+c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/../../../../arm-none-eabi/lib/thumb2\libc.a(lib_a-memset.o)
+                              .\CortexM3\ARM_GCC_441\Debug\part2-new.a(cyfitter_cfg.o) (memset)
+c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/../../../../arm-none-eabi/lib/thumb2\libcs3.a(start_c.o)
+                              (__cs3_start_c)
+c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/../../../../arm-none-eabi/lib/thumb2\libcs3micro.a(micro-vector.o)
+                              (__cs3_interrupt_vector_micro)
+c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/../../../../arm-none-eabi/lib/thumb2\libcs3micro.a(micro_isr_interrupt.o)
+                              (__cs3_isr_nmi)
+c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/../../../../arm-none-eabi/lib/thumb2\libc.a(lib_a-init.o)
+                              c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/../../../../arm-none-eabi/lib/thumb2\libcs3.a(start_c.o) (__libc_init_array)
+
+Allocating common symbols
+Common symbol       size              file
+
+UART_rxBuffer       0x40              .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART.o)
+incoming            0x1000            .\CortexM3\ARM_GCC_441\Debug\main.o
+CyResetStatus       0x1               .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+dieTemperature      0x2               .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyFlash.o)
+outgoing            0x1000            .\CortexM3\ARM_GCC_441\Debug\main.o
+UART_txBuffer       0x40              .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART.o)
+
+Discarded input sections
+
+ .text          0x00000000        0x0 c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/thumb2/crti.o
+ .data          0x00000000        0x0 c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/thumb2/crti.o
+ .bss           0x00000000        0x0 c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/thumb2/crti.o
+ .data          0x00000000        0x4 c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/thumb2/crtbegin.o
+ .text          0x00000000        0x0 .\CortexM3\ARM_GCC_441\Debug\main.o
+ .data          0x00000000        0x0 .\CortexM3\ARM_GCC_441\Debug\main.o
+ .text.LCD_Spin
+                0x00000000       0xc0 .\CortexM3\ARM_GCC_441\Debug\main.o
+ .text          0x00000000        0x0 .\CortexM3\ARM_GCC_441\Debug\Cm3Start.o
+ .data          0x00000000        0x0 .\CortexM3\ARM_GCC_441\Debug\Cm3Start.o
+ .bss           0x00000000        0x0 .\CortexM3\ARM_GCC_441\Debug\Cm3Start.o
+ .text.IntDefaultHandler
+                0x00000000        0x8 .\CortexM3\ARM_GCC_441\Debug\Cm3Start.o
+ .text          0x00000000        0x0 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART.o)
+ .data          0x00000000        0x0 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART.o)
+ .text.UART_Stop
+                0x00000000       0x78 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART.o)
+ .text.UART_ReadControlRegister
+                0x00000000       0x10 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART.o)
+ .text.UART_WriteControlRegister
+                0x00000000       0x14 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART.o)
+ .text.UART_SetRxInterruptMode
+                0x00000000       0x20 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART.o)
+ .text.UART_ReadRxStatus
+                0x00000000       0x50 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART.o)
+ .text.UART_GetChar
+                0x00000000       0xd4 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART.o)
+ .text.UART_GetByte
+                0x00000000       0x24 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART.o)
+ .text.UART_GetRxBufferSize
+                0x00000000       0xb8 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART.o)
+ .text.UART_SetRxAddressMode
+                0x00000000       0x14 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART.o)
+ .text.UART_SetRxAddress1
+                0x00000000       0x20 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART.o)
+ .text.UART_SetRxAddress2
+                0x00000000       0x20 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART.o)
+ .text.UART_SetTxInterruptMode
+                0x00000000       0x20 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART.o)
+ .text.UART_ReadTxStatus
+                0x00000000       0x18 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART.o)
+ .text.UART_PutChar
+                0x00000000       0xb8 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART.o)
+ .text.UART_PutString
+                0x00000000       0x48 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART.o)
+ .text.UART_PutArray
+                0x00000000       0x48 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART.o)
+ .text.UART_PutCRLF
+                0x00000000       0x38 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART.o)
+ .text.UART_GetTxBufferSize
+                0x00000000       0x98 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART.o)
+ .text.UART_SendBreak
+                0x00000000       0xec .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART.o)
+ .text.UART_SetTxAddressMode
+                0x00000000       0x14 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART.o)
+ .text          0x00000000        0x0 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART_INT.o)
+ .data          0x00000000        0x0 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART_INT.o)
+ .bss           0x00000000        0x0 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART_INT.o)
+ .text          0x00000000        0x0 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(LCD.o)
+ .data          0x00000000        0x0 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(LCD.o)
+ .text.LCD_Stop
+                0x00000000       0x1c .\CortexM3\ARM_GCC_441\Debug\part2-new.a(LCD.o)
+ .text.LCD_PutChar
+                0x00000000       0x1c .\CortexM3\ARM_GCC_441\Debug\part2-new.a(LCD.o)
+ .text.LCD_PrintInt8
+                0x00000000       0x44 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(LCD.o)
+ .text.LCD_PrintInt16
+                0x00000000       0x2c .\CortexM3\ARM_GCC_441\Debug\part2-new.a(LCD.o)
+ .text.LCD_PrintNumber
+                0x00000000      0x110 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(LCD.o)
+ .rodata        0x00000000       0x10 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(LCD.o)
+ .text          0x00000000        0x0 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(txISR.o)
+ .data          0x00000000        0x0 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(txISR.o)
+ .bss           0x00000000        0x0 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(txISR.o)
+ .text.txISR_Start
+                0x00000000       0x24 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(txISR.o)
+ .text.txISR_Stop
+                0x00000000       0x18 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(txISR.o)
+ .text.txISR_Interrupt
+                0x00000000        0xc .\CortexM3\ARM_GCC_441\Debug\part2-new.a(txISR.o)
+ .text.txISR_GetVector
+                0x00000000       0x28 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(txISR.o)
+ .text.txISR_GetPriority
+                0x00000000       0x28 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(txISR.o)
+ .text.txISR_GetState
+                0x00000000       0x28 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(txISR.o)
+ .text.txISR_SetPending
+                0x00000000       0x18 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(txISR.o)
+ .text.txISR_ClearPending
+                0x00000000       0x18 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(txISR.o)
+ .text          0x00000000        0x0 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(rxISR.o)
+ .data          0x00000000        0x0 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(rxISR.o)
+ .bss           0x00000000        0x0 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(rxISR.o)
+ .text.rxISR_Start
+                0x00000000       0x24 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(rxISR.o)
+ .text.rxISR_Stop
+                0x00000000       0x18 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(rxISR.o)
+ .text.rxISR_Interrupt
+                0x00000000        0xc .\CortexM3\ARM_GCC_441\Debug\part2-new.a(rxISR.o)
+ .text.rxISR_GetVector
+                0x00000000       0x28 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(rxISR.o)
+ .text.rxISR_GetPriority
+                0x00000000       0x28 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(rxISR.o)
+ .text.rxISR_GetState
+                0x00000000       0x28 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(rxISR.o)
+ .text.rxISR_SetPending
+                0x00000000       0x18 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(rxISR.o)
+ .text.rxISR_ClearPending
+                0x00000000       0x18 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(rxISR.o)
+ .text          0x00000000        0x0 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART_IntClock.o)
+ .data          0x00000000        0x0 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART_IntClock.o)
+ .bss           0x00000000        0x0 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART_IntClock.o)
+ .text.UART_IntClock_Stop
+                0x00000000       0x40 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART_IntClock.o)
+ .text.UART_IntClock_StopBlock
+                0x00000000       0xf4 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART_IntClock.o)
+ .text.UART_IntClock_StandbyPower
+                0x00000000       0x54 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART_IntClock.o)
+ .text.UART_IntClock_SetDividerRegister
+                0x00000000      0x1e8 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART_IntClock.o)
+ .text.UART_IntClock_GetDividerRegister
+                0x00000000       0x18 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART_IntClock.o)
+ .text.UART_IntClock_SetModeRegister
+                0x00000000       0x3c .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART_IntClock.o)
+ .text.UART_IntClock_ClearModeRegister
+                0x00000000       0x40 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART_IntClock.o)
+ .text.UART_IntClock_GetModeRegister
+                0x00000000       0x1c .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART_IntClock.o)
+ .text.UART_IntClock_SetSourceRegister
+                0x00000000      0x100 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART_IntClock.o)
+ .text.UART_IntClock_GetSourceRegister
+                0x00000000       0x1c .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART_IntClock.o)
+ .data          0x00000000        0x0 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyBootAsmGnu.o)
+ .bss           0x00000000        0x0 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyBootAsmGnu.o)
+ .text          0x00000000        0x0 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .bss           0x00000000        0x0 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .text.CyPLL_OUT_Start
+                0x00000000       0xdc .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .text.CyPLL_OUT_Stop
+                0x00000000       0x24 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .text.CyPLL_OUT_SetPQ
+                0x00000000       0xac .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .text.CyPLL_OUT_SetSource
+                0x00000000       0x64 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .text.CyIMO_Start
+                0x00000000       0xd0 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .text.CyIMO_Stop
+                0x00000000       0x24 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .text.CyUSB_PowerOnCheck
+                0x00000000       0x74 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .text.CyIMO_SetTrimValue
+                0x00000000      0x144 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .text.CyIMO_SetFreq
+                0x00000000      0x1e4 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .text.CyIMO_SetSource
+                0x00000000       0xb8 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .text.CyIMO_EnableDoubler
+                0x00000000       0x28 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .text.CyIMO_DisableDoubler
+                0x00000000       0x24 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .text.CyMasterClk_SetSource
+                0x00000000       0x3c .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .text.CyMasterClk_SetDivider
+                0x00000000       0x20 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .text.CyBusClk_Internal_SetDivider
+                0x00000000       0x9c .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .text.CyBusClk_SetDivider
+                0x00000000       0xcc .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .text.CyUsbClk_SetSource
+                0x00000000       0x3c .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .text.CyILO_Start1K
+                0x00000000       0x28 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .text.CyILO_Stop1K
+                0x00000000       0x24 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .text.CyILO_Start100K
+                0x00000000       0x28 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .text.CyILO_Stop100K
+                0x00000000       0x24 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .text.CyILO_Enable33K
+                0x00000000       0x28 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .text.CyILO_Disable33K
+                0x00000000       0x24 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .text.CyILO_SetSource
+                0x00000000       0x44 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .text.CyILO_SetPowerMode
+                0x00000000       0x58 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .text.CyXTAL_32KHZ_Start
+                0x00000000       0xa4 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .text.CyXTAL_32KHZ_Stop
+                0x00000000       0x60 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .text.CyXTAL_32KHZ_ReadStatus
+                0x00000000       0x1c .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .text.CyXTAL_32KHZ_SetPowerMode
+                0x00000000       0xf8 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .text.CyXTAL_Start
+                0x00000000      0x100 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .text.CyXTAL_Stop
+                0x00000000       0x24 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .text.CyXTAL_EnableErrStatus
+                0x00000000       0x24 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .text.CyXTAL_DisableErrStatus
+                0x00000000       0x28 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .text.CyXTAL_ReadStatus
+                0x00000000       0x28 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .text.CyXTAL_EnableFaultRecovery
+                0x00000000       0x28 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .text.CyXTAL_DisableFaultRecovery
+                0x00000000       0x24 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .text.CyXTAL_SetStartup
+                0x00000000       0x3c .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .text.CyXTAL_SetFbVoltage
+                0x00000000       0x3c .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .text.CyXTAL_SetWdVoltage
+                0x00000000       0x44 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .text.CySoftwareReset
+                0x00000000       0x18 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .text.CyDelayFreq
+                0x00000000       0xac .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .text.CyWdtStart
+                0x00000000       0xc4 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .text.CyWdtClear
+                0x00000000       0x18 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .text.CyVdLvDigitEnable
+                0x00000000       0xec .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .text.CyVdLvAnalogEnable
+                0x00000000       0xf4 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .text.CyVdLvDigitDisable
+                0x00000000       0x54 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .text.CyVdLvAnalogDisable
+                0x00000000       0x54 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .text.CyVdHvAnalogEnable
+                0x00000000       0x78 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .text.CyVdHvAnalogDisable
+                0x00000000       0x24 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .text.CyVdStickyStatus
+                0x00000000       0x48 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .text.CyVdRealTimeStatus
+                0x00000000       0x30 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .text.CyDisableInts
+                0x00000000       0x3c .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .text.CyEnableInts
+                0x00000000       0x2c .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .text.CyFlushCache
+                0x00000000       0x7c .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .text.CyIntSetSysVector
+                0x00000000       0x58 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .text.CyIntGetSysVector
+                0x00000000       0x40 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .text.CyIntGetVector
+                0x00000000       0x44 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .text.CyIntGetPriority
+                0x00000000       0x3c .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .text.CyIntGetState
+                0x00000000       0x40 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .text          0x00000000        0x0 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(cyPm.o)
+ .data          0x00000000        0x0 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(cyPm.o)
+ .bss           0x00000000       0x44 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(cyPm.o)
+ .rodata        0x00000000       0x10 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(cyPm.o)
+ .text.CyPmSaveClocks
+                0x00000000      0x350 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(cyPm.o)
+ .text.CyPmRestoreClocks
+                0x00000000      0x3f4 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(cyPm.o)
+ .text.CyPmAltAct
+                0x00000000      0x110 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(cyPm.o)
+ .text.CyPmSleep
+                0x00000000      0x218 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(cyPm.o)
+ .text.CyPmHibernate
+                0x00000000      0x1ec .\CortexM3\ARM_GCC_441\Debug\part2-new.a(cyPm.o)
+ .text.CyPmReadStatus
+                0x00000000       0x7c .\CortexM3\ARM_GCC_441\Debug\part2-new.a(cyPm.o)
+ .text.CyPmHibSaveSet
+                0x00000000       0xe4 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(cyPm.o)
+ .text.CyPmHibRestore
+                0x00000000       0x6c .\CortexM3\ARM_GCC_441\Debug\part2-new.a(cyPm.o)
+ .text.CyPmCtwSetInterval
+                0x00000000       0xd8 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(cyPm.o)
+ .text.CyPmOppsSet
+                0x00000000       0x54 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(cyPm.o)
+ .text.CyPmFtwSetInterval
+                0x00000000       0xdc .\CortexM3\ARM_GCC_441\Debug\part2-new.a(cyPm.o)
+ .text.CyPmSlpSaveSet
+                0x00000000        0xc .\CortexM3\ARM_GCC_441\Debug\part2-new.a(cyPm.o)
+ .text.CyPmSlpRestore
+                0x00000000        0xc .\CortexM3\ARM_GCC_441\Debug\part2-new.a(cyPm.o)
+ .text.CyPmHibSlpSaveSet
+                0x00000000      0x454 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(cyPm.o)
+ .text.CyPmHibSlpRestore
+                0x00000000      0x270 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(cyPm.o)
+ .text.CyPmHviLviSaveDisable
+                0x00000000      0x134 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(cyPm.o)
+ .text.CyPmHviLviRestore
+                0x00000000       0x7c .\CortexM3\ARM_GCC_441\Debug\part2-new.a(cyPm.o)
+ .text          0x00000000        0x0 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(cyfitter_cfg.o)
+ .data          0x00000000        0x0 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(cyfitter_cfg.o)
+ .bss           0x00000000        0x0 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(cyfitter_cfg.o)
+ .text.CYCONFIGCPYCODE
+                0x00000000       0x20 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(cyfitter_cfg.o)
+ .text.SetAnalogRoutingPumps
+                0x00000000       0x30 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(cyfitter_cfg.o)
+ .text          0x00000000        0x0 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyFlash.o)
+ .data          0x00000000        0x0 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyFlash.o)
+ .bss           0x00000000        0x4 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyFlash.o)
+ .text.CyFlash_Start
+                0x00000000       0x48 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyFlash.o)
+ .text.CyFlash_Stop
+                0x00000000       0x40 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyFlash.o)
+ .text.CySetTempInt
+                0x00000000       0x90 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyFlash.o)
+ .text.CySetTemp
+                0x00000000       0x28 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyFlash.o)
+ .text.CySetFlashEEBuffer
+                0x00000000       0x50 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyFlash.o)
+ .text.CyWriteRowData
+                0x00000000       0xac .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyFlash.o)
+ .text.CyWriteRowFull
+                0x00000000      0x124 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyFlash.o)
+ .text.CyFlash_SetWaitCycles
+                0x00000000       0xc4 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyFlash.o)
+ .text.CyEEPROM_Start
+                0x00000000       0x44 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyFlash.o)
+ .text.CyEEPROM_Stop
+                0x00000000       0x40 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyFlash.o)
+ .text.CyEEPROM_ReadReserve
+                0x00000000       0x3c .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyFlash.o)
+ .text.CyEEPROM_ReadRelease
+                0x00000000       0x20 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyFlash.o)
+ COMMON         0x00000000        0x2 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyFlash.o)
+ .text          0x00000000        0x0 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CySpc.o)
+ .data          0x00000000        0x0 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CySpc.o)
+ .bss           0x00000000        0x2 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CySpc.o)
+ .text.CySpcStart
+                0x00000000       0x58 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CySpc.o)
+ .text.CySpcStop
+                0x00000000       0x54 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CySpc.o)
+ .text.CySpcReadData
+                0x00000000       0x64 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CySpc.o)
+ .text.CySpcLoadMultiByte
+                0x00000000      0x118 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CySpc.o)
+ .text.CySpcLoadRow
+                0x00000000       0xbc .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CySpc.o)
+ .text.CySpcWriteRow
+                0x00000000       0xcc .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CySpc.o)
+ .text.CySpcEraseSector
+                0x00000000       0x9c .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CySpc.o)
+ .text.CySpcGetTemp
+                0x00000000       0x8c .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CySpc.o)
+ .text.CySpcLock
+                0x00000000       0x8c .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CySpc.o)
+ .text.CySpcUnlock
+                0x00000000       0x68 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CySpc.o)
+ .data          0x00000000        0x0 c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/../../../../arm-none-eabi/lib/thumb2\libc.a(lib_a-memcpy.o)
+ .bss           0x00000000        0x0 c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/../../../../arm-none-eabi/lib/thumb2\libc.a(lib_a-memcpy.o)
+ .data          0x00000000        0x0 c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/../../../../arm-none-eabi/lib/thumb2\libc.a(lib_a-memset.o)
+ .bss           0x00000000        0x0 c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/../../../../arm-none-eabi/lib/thumb2\libc.a(lib_a-memset.o)
+ .text          0x00000000        0x0 c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/thumb2/crtend.o
+ .data          0x00000000        0x0 c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/thumb2/crtend.o
+ .bss           0x00000000        0x0 c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/thumb2/crtend.o
+ .text          0x00000000        0x0 c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/thumb2/crtn.o
+ .data          0x00000000        0x0 c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/thumb2/crtn.o
+ .bss           0x00000000        0x0 c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/thumb2/crtn.o
+ .data          0x00000000        0x0 c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/../../../../arm-none-eabi/lib/thumb2\libcs3.a(start_c.o)
+ .bss           0x00000000        0x0 c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/../../../../arm-none-eabi/lib/thumb2\libcs3.a(start_c.o)
+ .text          0x00000000        0x0 c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/../../../../arm-none-eabi/lib/thumb2\libcs3micro.a(micro-vector.o)
+ .data          0x00000000        0x0 c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/../../../../arm-none-eabi/lib/thumb2\libcs3micro.a(micro-vector.o)
+ .bss           0x00000000        0x0 c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/../../../../arm-none-eabi/lib/thumb2\libcs3micro.a(micro-vector.o)
+ .data          0x00000000        0x0 c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/../../../../arm-none-eabi/lib/thumb2\libcs3micro.a(micro_isr_interrupt.o)
+ .bss           0x00000000        0x0 c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/../../../../arm-none-eabi/lib/thumb2\libcs3micro.a(micro_isr_interrupt.o)
+ .data          0x00000000        0x0 c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/../../../../arm-none-eabi/lib/thumb2\libc.a(lib_a-init.o)
+ .bss           0x00000000        0x0 c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/../../../../arm-none-eabi/lib/thumb2\libc.a(lib_a-init.o)
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+rom              0x00000000         0x00040000         xr
+ram              0x1fff8000         0x0000b000         xrw
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+LOAD c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/thumb2/crti.o
+LOAD c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/thumb2/crtbegin.o
+START GROUP
+LOAD .\CortexM3\ARM_GCC_441\Debug\main.o
+LOAD .\CortexM3\ARM_GCC_441\Debug\Cm3Start.o
+LOAD .\CortexM3\ARM_GCC_441\Debug\part2-new.a
+LOAD C:\Program Files\Cypress\PSoC Creator\2.2\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CortexM3\ARM_GCC_441\Debug\CyComponentLibrary.a
+END GROUP
+START GROUP
+LOAD c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/thumb2\libgcc.a
+LOAD c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/../../../../arm-none-eabi/lib/thumb2\libc.a
+END GROUP
+LOAD c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/thumb2/crtend.o
+LOAD c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/thumb2/crtn.o
+START GROUP
+LOAD c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/thumb2\libgcc.a
+LOAD c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/../../../../arm-none-eabi/lib/thumb2\libc.a
+LOAD c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/../../../../arm-none-eabi/lib/thumb2\libcs3.a
+LOAD c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/../../../../arm-none-eabi/lib/thumb2\libcs3unhosted.a
+LOAD c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/../../../../arm-none-eabi/lib/thumb2\libcs3micro.a
+END GROUP
+                0x1fffa1b0                PROVIDE (__cs3_heap_start, _end)
+                0x00000001                PROVIDE (__cs3_region_num, ((__cs3_regions_end - __cs3_regions) / 0x14))
+                0x20008000                PROVIDE (__cs3_stack, 0x20008000)
+                0x20004000                PROVIDE (__cs3_heap_end, (__cs3_stack - 0x4000))
+
+.text           0x00000000     0x1930
+ CREATE_OBJECT_SYMBOLS
+                0x00000000                __cs3_interrupt_vector = __cs3_interrupt_vector_micro
+ *(.cs3.interrupt_vector)
+ .cs3.interrupt_vector
+                0x00000000       0xc0 c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/../../../../arm-none-eabi/lib/thumb2\libcs3micro.a(micro-vector.o)
+                0x00000000                __cs3_interrupt_vector_micro
+                0x00000001                ASSERT ((. != __cs3_interrupt_vector_micro), No interrupt vector)
+                0x0000034c                PROVIDE (__cs3_reset, Reset)
+ *(.cs3.reset)
+                0x00000001                ASSERT ((. != __cs3_reset), No reset code)
+ *(.dma_init)
+                0x00000001                ASSERT ((((0x0 + .) <= 0x10000) || 0x1), DMA Init must be within the first 64k of flash)
+ *(.text.cs3.init)
+ .text.cs3.init
+                0x000000c0       0x5c c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/../../../../arm-none-eabi/lib/thumb2\libcs3.a(start_c.o)
+                0x000000c0                __cs3_start_c
+ *(.text .text.* .gnu.linkonce.t.*)
+ .text          0x0000011c       0x30 c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/thumb2/crtbegin.o
+ .text.LCD_ClearLine
+                0x0000014c       0x2c .\CortexM3\ARM_GCC_441\Debug\main.o
+                0x0000014c                LCD_ClearLine
+ .text.LCD_UpdateStatus
+                0x00000178       0x2c .\CortexM3\ARM_GCC_441\Debug\main.o
+                0x00000178                LCD_UpdateStatus
+ .text.LCD_UpdateMessage
+                0x000001a4       0x2c .\CortexM3\ARM_GCC_441\Debug\main.o
+                0x000001a4                LCD_UpdateMessage
+ .text.ISR_tx   0x000001d0       0x68 .\CortexM3\ARM_GCC_441\Debug\main.o
+                0x000001d0                ISR_tx
+ .text.ISR_rx   0x00000238       0x54 .\CortexM3\ARM_GCC_441\Debug\main.o
+                0x00000238                ISR_rx
+ .text.main     0x0000028c       0xc0 .\CortexM3\ARM_GCC_441\Debug\main.o
+                0x0000028c                main
+ .text.Reset    0x0000034c       0x24 .\CortexM3\ARM_GCC_441\Debug\Cm3Start.o
+                0x0000034c                Reset
+ .text.initialize_psoc
+                0x00000370       0x9c .\CortexM3\ARM_GCC_441\Debug\Cm3Start.o
+                0x00000370                initialize_psoc
+ .text.UART_Start
+                0x0000040c       0x2c .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART.o)
+                0x0000040c                UART_Start
+ .text.UART_Init
+                0x00000438       0x84 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART.o)
+                0x00000438                UART_Init
+ .text.UART_Enable
+                0x000004bc       0x94 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART.o)
+                0x000004bc                UART_Enable
+ .text.UART_EnableRxInt
+                0x00000550       0x18 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART.o)
+                0x00000550                UART_EnableRxInt
+ .text.UART_DisableRxInt
+                0x00000568       0x18 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART.o)
+                0x00000568                UART_DisableRxInt
+ .text.UART_ReadRxData
+                0x00000580       0xa8 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART.o)
+                0x00000580                UART_ReadRxData
+ .text.UART_ClearRxBuffer
+                0x00000628       0x94 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART.o)
+                0x00000628                UART_ClearRxBuffer
+ .text.UART_EnableTxInt
+                0x000006bc       0x18 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART.o)
+                0x000006bc                UART_EnableTxInt
+ .text.UART_DisableTxInt
+                0x000006d4       0x18 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART.o)
+                0x000006d4                UART_DisableTxInt
+ .text.UART_WriteTxData
+                0x000006ec       0xb4 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART.o)
+                0x000006ec                UART_WriteTxData
+ .text.UART_ClearTxBuffer
+                0x000007a0       0x78 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART.o)
+                0x000007a0                UART_ClearTxBuffer
+ .text.UART_RXISR
+                0x00000818       0xec .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART_INT.o)
+                0x00000818                UART_RXISR
+ .text.UART_TXISR
+                0x00000904       0x98 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART_INT.o)
+                0x00000904                UART_TXISR
+ .text.LCD_Init
+                0x0000099c       0x90 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(LCD.o)
+                0x0000099c                LCD_Init
+ .text.LCD_Enable
+                0x00000a2c       0x1c .\CortexM3\ARM_GCC_441\Debug\part2-new.a(LCD.o)
+                0x00000a2c                LCD_Enable
+ .text.LCD_Start
+                0x00000a48       0x2c .\CortexM3\ARM_GCC_441\Debug\part2-new.a(LCD.o)
+                0x00000a48                LCD_Start
+ .text.LCD_Position
+                0x00000a74       0x74 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(LCD.o)
+                0x00000a74                LCD_Position
+ .text.LCD_PrintString
+                0x00000ae8       0x40 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(LCD.o)
+                0x00000ae8                LCD_PrintString
+ .text.LCD_WriteData
+                0x00000b28       0x38 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(LCD.o)
+                0x00000b28                LCD_WriteData
+ .text.LCD_WriteControl
+                0x00000b60       0x38 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(LCD.o)
+                0x00000b60                LCD_WriteControl
+ .text.LCD_IsReady
+                0x00000b98      0x1f4 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(LCD.o)
+                0x00000b98                LCD_IsReady
+ .text.LCD_WrDatNib
+                0x00000d8c       0xac .\CortexM3\ARM_GCC_441\Debug\part2-new.a(LCD.o)
+ .text.LCD_WrCntrlNib
+                0x00000e38       0x8c .\CortexM3\ARM_GCC_441\Debug\part2-new.a(LCD.o)
+ .text.txISR_StartEx
+                0x00000ec4       0x28 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(txISR.o)
+                0x00000ec4                txISR_StartEx
+ .text.txISR_SetVector
+                0x00000eec       0x28 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(txISR.o)
+                0x00000eec                txISR_SetVector
+ .text.txISR_SetPriority
+                0x00000f14       0x28 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(txISR.o)
+                0x00000f14                txISR_SetPriority
+ .text.txISR_Enable
+                0x00000f3c       0x18 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(txISR.o)
+                0x00000f3c                txISR_Enable
+ .text.txISR_Disable
+                0x00000f54       0x18 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(txISR.o)
+                0x00000f54                txISR_Disable
+ .text.rxISR_StartEx
+                0x00000f6c       0x28 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(rxISR.o)
+                0x00000f6c                rxISR_StartEx
+ .text.rxISR_SetVector
+                0x00000f94       0x28 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(rxISR.o)
+                0x00000f94                rxISR_SetVector
+ .text.rxISR_SetPriority
+                0x00000fbc       0x28 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(rxISR.o)
+                0x00000fbc                rxISR_SetPriority
+ .text.rxISR_Enable
+                0x00000fe4       0x18 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(rxISR.o)
+                0x00000fe4                rxISR_Enable
+ .text.rxISR_Disable
+                0x00000ffc       0x18 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(rxISR.o)
+                0x00000ffc                rxISR_Disable
+ .text.UART_IntClock_Start
+                0x00001014       0x44 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART_IntClock.o)
+                0x00001014                UART_IntClock_Start
+ .text          0x00001058       0x20 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyBootAsmGnu.o)
+                0x00001058                CyDelayCycles
+                0x00001068                CyEnterCriticalSection
+                0x00001070                CyExitCriticalSection
+ .text.CyHalt   0x00001078       0x18 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+                0x00001078                CyHalt
+ .text.CyDelay  0x00001090       0x48 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+                0x00001090                CyDelay
+ .text.CyDelayUs
+                0x000010d8       0x28 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+                0x000010d8                CyDelayUs
+ .text.CyIntSetVector
+                0x00001100       0x60 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+                0x00001100                CyIntSetVector
+ .text.CyIntSetPriority
+                0x00001160       0x4c .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+                0x00001160                CyIntSetPriority
+ .text.CYMEMZERO
+                0x000011ac       0x20 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(cyfitter_cfg.o)
+ .text.CYCONFIGCPY
+                0x000011cc       0x20 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(cyfitter_cfg.o)
+ .text.cfg_write_bytes32
+                0x000011ec       0x84 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(cyfitter_cfg.o)
+ .text.ClockSetup
+                0x00001270      0x144 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(cyfitter_cfg.o)
+ .text.AnalogSetDefault
+                0x000013b4       0x4c .\CortexM3\ARM_GCC_441\Debug\part2-new.a(cyfitter_cfg.o)
+ .text.cyfitter_cfg
+                0x00001400      0x248 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(cyfitter_cfg.o)
+                0x00001400                cyfitter_cfg
+ .text          0x00001648      0x190 c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/../../../../arm-none-eabi/lib/thumb2\libc.a(lib_a-memcpy.o)
+                0x00001648                memcpy
+ .text          0x000017d8       0xd4 c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/../../../../arm-none-eabi/lib/thumb2\libc.a(lib_a-memset.o)
+                0x000017d8                memset
+ .text          0x000018ac       0x30 c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/../../../../arm-none-eabi/lib/thumb2\libcs3.a(start_c.o)
+                0x000018ac                __cs3_premain
+ .text          0x000018dc        0x2 c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/../../../../arm-none-eabi/lib/thumb2\libcs3micro.a(micro_isr_interrupt.o)
+                0x000018dc                __cs3_isr_external_24
+                0x000018dc                __cs3_isr_external_9
+                0x000018dc                __cs3_isr_external_14
+                0x000018dc                __cs3_isr_reserved_9
+                0x000018dc                __cs3_isr_external_4
+                0x000018dc                __cs3_isr_external_21
+                0x000018dc                __cs3_isr_external_0
+                0x000018dc                __cs3_isr_external_27
+                0x000018dc                __cs3_isr_external_11
+                0x000018dc                __cs3_isr_usage_fault
+                0x000018dc                __cs3_isr_svcall
+                0x000018dc                __cs3_isr_external_3
+                0x000018dc                __cs3_isr_mpu_fault
+                0x000018dc                __cs3_isr_external_16
+                0x000018dc                __cs3_isr_pendsv
+                0x000018dc                __cs3_isr_external_31
+                0x000018dc                __cs3_isr_nmi
+                0x000018dc                __cs3_isr_external_5
+                0x000018dc                __cs3_isr_external_6
+                0x000018dc                __cs3_isr_external_12
+                0x000018dc                __cs3_isr_hard_fault
+                0x000018dc                __cs3_isr_bus_fault
+                0x000018dc                __cs3_isr_external_1
+                0x000018dc                __cs3_isr_external_13
+                0x000018dc                __cs3_isr_external_30
+                0x000018dc                __cs3_isr_external_23
+                0x000018dc                __cs3_isr_external_20
+                0x000018dc                __cs3_isr_debug
+                0x000018dc                __cs3_isr_reserved_13
+                0x000018dc                __cs3_isr_external_8
+                0x000018dc                __cs3_isr_external_26
+                0x000018dc                __cs3_isr_reserved_8
+                0x000018dc                __cs3_isr_reserved_7
+                0x000018dc                __cs3_isr_external_7
+                0x000018dc                __cs3_isr_external_28
+                0x000018dc                __cs3_isr_systick
+                0x000018dc                __cs3_isr_external_22
+                0x000018dc                __cs3_isr_external_10
+                0x000018dc                __cs3_isr_external_15
+                0x000018dc                __cs3_isr_interrupt
+                0x000018dc                __cs3_isr_external_18
+                0x000018dc                __cs3_isr_external_29
+                0x000018dc                __cs3_isr_external_25
+                0x000018dc                __cs3_isr_reserved_10
+                0x000018dc                __cs3_isr_external_2
+                0x000018dc                __cs3_isr_external_17
+                0x000018dc                __cs3_isr_external_19
+ *fill*         0x000018de        0x2 00
+ .text          0x000018e0       0x50 c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/../../../../arm-none-eabi/lib/thumb2\libc.a(lib_a-init.o)
+                0x000018e0                __libc_init_array
+ *(.plt)
+ *(.gnu.warning)
+ *(.glue_7t)
+ .glue_7t       0x00000000        0x0 linker stubs
+ *(.glue_7)
+ .glue_7        0x00000000        0x0 linker stubs
+ *(.vfp11_veneer)
+ .vfp11_veneer  0x00000000        0x0 linker stubs
+ *(.bootloader)
+ *(.ARM.extab* .gnu.linkonce.armextab.*)
+ *(.gcc_except_table)
+
+.v4_bx          0x00001930        0x0
+ .v4_bx         0x00000000        0x0 linker stubs
+
+.eh_frame_hdr
+ *(.eh_frame_hdr)
+
+.eh_frame
+ *(.eh_frame)
+                0x00001930                PROVIDE (__exidx_start, .)
+
+.ARM.exidx
+ *(.ARM.exidx* .gnu.linkonce.armexidx.*)
+                0x00001930                __exidx_end = .
+
+.rodata         0x00001930       0xc8
+ *(.rodata .rodata.* .gnu.linkonce.r.*)
+ .rodata        0x00001930       0x44 .\CortexM3\ARM_GCC_441\Debug\main.o
+ .rodata        0x00001974       0x48 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(cyfitter_cfg.o)
+                0x000019bc                . = ALIGN (0x4)
+ *(.init)
+ .init          0x000019bc        0x4 c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/thumb2/crti.o
+                0x000019bc                _init
+ .init          0x000019c0        0x8 c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/thumb2/crtn.o
+                0x000019c8                . = ALIGN (0x4)
+                0x000019c8                __preinit_array_start = .
+ *(.preinit_array)
+                0x000019c8                __preinit_array_end = .
+                0x000019c8                . = ALIGN (0x4)
+                0x000019c8                __init_array_start = .
+ *(SORT(.init_array.*))
+ *(.init_array)
+ .init_array    0x000019c8        0x4 c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/thumb2/crtbegin.o
+ .init_array    0x000019cc        0x4 .\CortexM3\ARM_GCC_441\Debug\Cm3Start.o
+                0x000019d0                __init_array_end = .
+                0x000019d0                . = ALIGN (0x4)
+ *(.fini)
+ .fini          0x000019d0        0x4 c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/thumb2/crti.o
+                0x000019d0                _fini
+ .fini          0x000019d4        0x8 c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/thumb2/crtn.o
+                0x000019dc                . = ALIGN (0x4)
+                0x000019dc                __fini_array_start = .
+ *(.fini_array)
+ .fini_array    0x000019dc        0x4 c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/thumb2/crtbegin.o
+ *(SORT(.fini_array.*))
+                0x000019e0                __fini_array_end = .
+                0x000019e0                . = ALIGN (0x4)
+ *crtbegin.o(.ctors)
+ *(EXCLUDE_FILE(*crtend.o) .ctors)
+ *(SORT(.ctors.*))
+ *crtend.o(.ctors)
+                0x000019e0                . = ALIGN (0x4)
+ *crtbegin.o(.dtors)
+ *(EXCLUDE_FILE(*crtend.o) .dtors)
+ *(SORT(.dtors.*))
+ *crtend.o(.dtors)
+                0x000019e0                . = ALIGN (0x4)
+                0x000019e0                __cs3_regions = .
+                0x000019e0        0x4 LONG 0x0
+                0x000019e4        0x4 LONG 0x19f8 __cs3_region_init_ram
+                0x000019e8        0x4 LONG 0x1fff8000 __cs3_region_start_ram
+                0x000019ec        0x4 LONG 0x118 __cs3_region_init_size_ram
+                0x000019f0        0x4 LONG 0x2098 __cs3_region_zero_size_ram
+                0x000019f4                __cs3_regions_end = .
+                0x000019f8                . = ALIGN (0x8)
+ *fill*         0x000019f4        0x4 00
+                0x000019f8                _etext = .
+
+.data           0x1fff8000      0x118 load address 0x000019f8
+                0x1fff8000                __cs3_region_start_ram = .
+ *(.cs3.region-head.ram)
+                0x1fff8001                ASSERT ((. == __cs3_region_start_ram), .cs3.region-head.ram not permitted)
+ *(.ramvectors)
+ .ramvectors    0x1fff8000      0x100 .\CortexM3\ARM_GCC_441\Debug\Cm3Start.o
+                0x1fff8000                CyRamVectors
+ *(.jcr)
+ .jcr           0x1fff8100        0x0 c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/thumb2/crtbegin.o
+ .jcr           0x1fff8100        0x4 c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/thumb2/crtend.o
+ *(.got.plt)
+ *(.got)
+ *(.shdata)
+ *(.data .data.* .gnu.linkonce.d.*)
+ .data          0x1fff8104       0x10 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+                0x1fff8104                cydelay_freq_hz
+                0x1fff8108                cydelay_freq_khz
+                0x1fff810c                cydelay_freq_mhz
+                0x1fff8110                cydelay_32k_ms
+                0x1fff8118                . = ALIGN (0x8)
+ *fill*         0x1fff8114        0x4 00
+ *(.ram)
+                0x1fff8118                _edata = .
+
+.bss            0x1fff8118     0x2098 load address 0x00001b10
+ *(.shbss)
+ *(.bss .bss.* .gnu.linkonce.b.*)
+ .bss           0x1fff8118        0x1 c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/thumb2/crtbegin.o
+ *fill*         0x1fff8119        0x1 00
+ .bss           0x1fff811a        0x4 .\CortexM3\ARM_GCC_441\Debug\main.o
+                0x1fff811a                cursor
+                0x1fff811c                packet
+ .bss           0x1fff811e        0x8 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART.o)
+                0x1fff811e                UART_initVar
+                0x1fff811f                UART_txBufferRead
+                0x1fff8120                UART_txBufferWrite
+                0x1fff8121                UART_rxBufferRead
+                0x1fff8122                UART_rxBufferWrite
+                0x1fff8123                UART_rxBufferLoopDetect
+                0x1fff8124                UART_rxBufferOverflow
+ .bss           0x1fff8126        0x2 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(LCD.o)
+                0x1fff8126                LCD_enableState
+                0x1fff8127                LCD_initVar
+ *(COMMON)
+ COMMON         0x1fff8128     0x2000 .\CortexM3\ARM_GCC_441\Debug\main.o
+                0x1fff8128                incoming
+                0x1fff9128                outgoing
+ COMMON         0x1fffa128       0x80 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART.o)
+                0x1fffa128                UART_rxBuffer
+                0x1fffa168                UART_txBuffer
+ COMMON         0x1fffa1a8        0x1 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+                0x1fffa1a8                CyResetStatus
+                0x1fffa1b0                . = ALIGN (0x8)
+ *fill*         0x1fffa1a9        0x7 00
+ *(.ram.b)
+                0x1fffa1b0                _end = .
+                0x1fffa1b0                __end = .
+                0x20003000                __cs3_region_end_ram = (__cs3_region_start_ram + 0xb000)
+                0x0000b000                __cs3_region_size_ram = 0xb000
+                0x000019f8                __cs3_region_init_ram = LOADADDR (.data)
+                0x00000118                __cs3_region_init_size_ram = (_edata - ADDR (.data))
+                0x00002098                __cs3_region_zero_size_ram = (_end - _edata)
+
+.stab
+ *(.stab)
+
+.stabstr
+ *(.stabstr)
+
+.debug
+ *(.debug)
+
+.line
+ *(.line)
+
+.debug_srcinfo
+ *(.debug_srcinfo)
+
+.debug_sfnames
+ *(.debug_sfnames)
+
+.comment        0x00000000      0x22f
+ .comment       0x00000000       0x2b .\CortexM3\ARM_GCC_441\Debug\main.o
+ .comment       0x0000002b       0x2b .\CortexM3\ARM_GCC_441\Debug\Cm3Start.o
+ .comment       0x00000056       0x2b .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART.o)
+ .comment       0x00000081       0x2b .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART_INT.o)
+ .comment       0x000000ac       0x2b .\CortexM3\ARM_GCC_441\Debug\part2-new.a(LCD.o)
+ .comment       0x000000d7       0x2b .\CortexM3\ARM_GCC_441\Debug\part2-new.a(txISR.o)
+ .comment       0x00000102       0x2b .\CortexM3\ARM_GCC_441\Debug\part2-new.a(rxISR.o)
+ .comment       0x0000012d       0x2b .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART_IntClock.o)
+ .comment       0x00000158       0x2b .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .comment       0x00000183       0x2b .\CortexM3\ARM_GCC_441\Debug\part2-new.a(cyPm.o)
+ .comment       0x000001ae       0x2b .\CortexM3\ARM_GCC_441\Debug\part2-new.a(cyfitter_cfg.o)
+ .comment       0x000001d9       0x2b .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyFlash.o)
+ .comment       0x00000204       0x2b .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CySpc.o)
+
+.debug_aranges  0x00000000      0x7c8
+ *(.debug_aranges)
+ .debug_aranges
+                0x00000000       0x50 .\CortexM3\ARM_GCC_441\Debug\main.o
+ .debug_aranges
+                0x00000050       0x30 .\CortexM3\ARM_GCC_441\Debug\Cm3Start.o
+ .debug_aranges
+                0x00000080      0x110 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART.o)
+ .debug_aranges
+                0x00000190       0x28 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART_INT.o)
+ .debug_aranges
+                0x000001b8       0x90 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(LCD.o)
+ .debug_aranges
+                0x00000248       0x80 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(txISR.o)
+ .debug_aranges
+                0x000002c8       0x80 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(rxISR.o)
+ .debug_aranges
+                0x00000348       0x70 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART_IntClock.o)
+ .debug_aranges
+                0x000003b8       0x20 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyBootAsmGnu.o)
+ .debug_aranges
+                0x000003d8      0x218 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .debug_aranges
+                0x000005f0       0xa0 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(cyPm.o)
+ .debug_aranges
+                0x00000690       0x58 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(cyfitter_cfg.o)
+ .debug_aranges
+                0x000006e8       0x78 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyFlash.o)
+ .debug_aranges
+                0x00000760       0x68 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CySpc.o)
+
+.debug_pubnames
+                0x00000000     0x1188
+ *(.debug_pubnames)
+ .debug_pubnames
+                0x00000000       0xab .\CortexM3\ARM_GCC_441\Debug\main.o
+ .debug_pubnames
+                0x000000ab       0x57 .\CortexM3\ARM_GCC_441\Debug\Cm3Start.o
+ .debug_pubnames
+                0x00000102      0x36e .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART.o)
+ .debug_pubnames
+                0x00000470       0x30 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART_INT.o)
+ .debug_pubnames
+                0x000004a0      0x112 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(LCD.o)
+ .debug_pubnames
+                0x000005b2      0x10d .\CortexM3\ARM_GCC_441\Debug\part2-new.a(txISR.o)
+ .debug_pubnames
+                0x000006bf      0x10d .\CortexM3\ARM_GCC_441\Debug\part2-new.a(rxISR.o)
+ .debug_pubnames
+                0x000007cc      0x176 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART_IntClock.o)
+ .debug_pubnames
+                0x00000942      0x57a .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .debug_pubnames
+                0x00000ebc       0xbb .\CortexM3\ARM_GCC_441\Debug\part2-new.a(cyPm.o)
+ .debug_pubnames
+                0x00000f77       0x3d .\CortexM3\ARM_GCC_441\Debug\part2-new.a(cyfitter_cfg.o)
+ .debug_pubnames
+                0x00000fb4      0x104 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyFlash.o)
+ .debug_pubnames
+                0x000010b8       0xd0 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CySpc.o)
+
+.debug_info     0x00000000     0x340b
+ *(.debug_info .gnu.linkonce.wi.*)
+ .debug_info    0x00000000      0x283 .\CortexM3\ARM_GCC_441\Debug\main.o
+ .debug_info    0x00000283      0x13e .\CortexM3\ARM_GCC_441\Debug\Cm3Start.o
+ .debug_info    0x000003c1      0x6bd .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART.o)
+ .debug_info    0x00000a7e      0x16d .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART_INT.o)
+ .debug_info    0x00000beb      0x3af .\CortexM3\ARM_GCC_441\Debug\part2-new.a(LCD.o)
+ .debug_info    0x00000f9a      0x23b .\CortexM3\ARM_GCC_441\Debug\part2-new.a(txISR.o)
+ .debug_info    0x000011d5      0x23b .\CortexM3\ARM_GCC_441\Debug\part2-new.a(rxISR.o)
+ .debug_info    0x00001410      0x269 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART_IntClock.o)
+ .debug_info    0x00001679       0x76 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyBootAsmGnu.o)
+ .debug_info    0x000016ef      0xc71 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .debug_info    0x00002360      0x5ac .\CortexM3\ARM_GCC_441\Debug\part2-new.a(cyPm.o)
+ .debug_info    0x0000290c      0x42c .\CortexM3\ARM_GCC_441\Debug\part2-new.a(cyfitter_cfg.o)
+ .debug_info    0x00002d38      0x334 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyFlash.o)
+ .debug_info    0x0000306c      0x39f .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CySpc.o)
+
+.debug_abbrev   0x00000000      0xe22
+ *(.debug_abbrev)
+ .debug_abbrev  0x00000000      0x111 .\CortexM3\ARM_GCC_441\Debug\main.o
+ .debug_abbrev  0x00000111       0xd6 .\CortexM3\ARM_GCC_441\Debug\Cm3Start.o
+ .debug_abbrev  0x000001e7      0x13a .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART.o)
+ .debug_abbrev  0x00000321       0xa7 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART_INT.o)
+ .debug_abbrev  0x000003c8      0x118 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(LCD.o)
+ .debug_abbrev  0x000004e0       0xe1 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(txISR.o)
+ .debug_abbrev  0x000005c1       0xe1 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(rxISR.o)
+ .debug_abbrev  0x000006a2       0xd8 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART_IntClock.o)
+ .debug_abbrev  0x0000077a       0x14 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyBootAsmGnu.o)
+ .debug_abbrev  0x0000078e      0x182 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .debug_abbrev  0x00000910      0x14d .\CortexM3\ARM_GCC_441\Debug\part2-new.a(cyPm.o)
+ .debug_abbrev  0x00000a5d      0x16d .\CortexM3\ARM_GCC_441\Debug\part2-new.a(cyfitter_cfg.o)
+ .debug_abbrev  0x00000bca      0x14a .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyFlash.o)
+ .debug_abbrev  0x00000d14      0x10e .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CySpc.o)
+
+.debug_line     0x00000000     0x1ad0
+ *(.debug_line)
+ .debug_line    0x00000000       0xff .\CortexM3\ARM_GCC_441\Debug\main.o
+ .debug_line    0x000000ff       0xb4 .\CortexM3\ARM_GCC_441\Debug\Cm3Start.o
+ .debug_line    0x000001b3      0x35a .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART.o)
+ .debug_line    0x0000050d       0xc4 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART_INT.o)
+ .debug_line    0x000005d1      0x1d8 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(LCD.o)
+ .debug_line    0x000007a9      0x159 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(txISR.o)
+ .debug_line    0x00000902      0x159 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(rxISR.o)
+ .debug_line    0x00000a5b      0x182 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART_IntClock.o)
+ .debug_line    0x00000bdd       0x67 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyBootAsmGnu.o)
+ .debug_line    0x00000c44      0x659 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .debug_line    0x0000129d      0x346 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(cyPm.o)
+ .debug_line    0x000015e3      0x1cc .\CortexM3\ARM_GCC_441\Debug\part2-new.a(cyfitter_cfg.o)
+ .debug_line    0x000017af      0x194 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyFlash.o)
+ .debug_line    0x00001943      0x18d .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CySpc.o)
+
+.debug_frame    0x00000000     0x1974
+ *(.debug_frame)
+ .debug_frame   0x00000000       0xf4 .\CortexM3\ARM_GCC_441\Debug\main.o
+ .debug_frame   0x000000f4       0x5c .\CortexM3\ARM_GCC_441\Debug\Cm3Start.o
+ .debug_frame   0x00000150      0x3b0 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART.o)
+ .debug_frame   0x00000500       0x48 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART_INT.o)
+ .debug_frame   0x00000548      0x1e0 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(LCD.o)
+ .debug_frame   0x00000728      0x180 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(txISR.o)
+ .debug_frame   0x000008a8      0x180 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(rxISR.o)
+ .debug_frame   0x00000a28      0x14c .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART_IntClock.o)
+ .debug_frame   0x00000b74      0x778 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .debug_frame   0x000012ec      0x208 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(cyPm.o)
+ .debug_frame   0x000014f4      0x104 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(cyfitter_cfg.o)
+ .debug_frame   0x000015f8      0x178 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyFlash.o)
+ .debug_frame   0x00001770      0x13c .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CySpc.o)
+ .debug_frame   0x000018ac       0x34 c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/../../../../arm-none-eabi/lib/thumb2\libc.a(lib_a-memcpy.o)
+ .debug_frame   0x000018e0       0x28 c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/../../../../arm-none-eabi/lib/thumb2\libc.a(lib_a-memset.o)
+ .debug_frame   0x00001908       0x40 c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/../../../../arm-none-eabi/lib/thumb2\libcs3.a(start_c.o)
+ .debug_frame   0x00001948       0x2c c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/../../../../arm-none-eabi/lib/thumb2\libc.a(lib_a-init.o)
+
+.debug_str      0x00000000     0x17f6
+ *(.debug_str)
+ .debug_str     0x00000000      0x15b .\CortexM3\ARM_GCC_441\Debug\main.o
+                                0x194 (size before relaxing)
+ .debug_str     0x0000015b       0x8c .\CortexM3\ARM_GCC_441\Debug\Cm3Start.o
+                                0x15f (size before relaxing)
+ .debug_str     0x000001e7      0x3a2 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART.o)
+                                0x48c (size before relaxing)
+ .debug_str     0x00000589       0x55 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART_INT.o)
+                                0x1b6 (size before relaxing)
+ .debug_str     0x000005de      0x160 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(LCD.o)
+                                0x241 (size before relaxing)
+ .debug_str     0x0000073e      0x100 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(txISR.o)
+                                0x1e2 (size before relaxing)
+ .debug_str     0x0000083e       0xe8 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(rxISR.o)
+                                0x1e2 (size before relaxing)
+ .debug_str     0x00000926      0x1ba .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART_IntClock.o)
+                                0x28e (size before relaxing)
+ .debug_str     0x00000ae0      0x61d .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+                                0x755 (size before relaxing)
+ .debug_str     0x000010fd      0x372 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(cyPm.o)
+                                0x46a (size before relaxing)
+ .debug_str     0x0000146f      0x159 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(cyfitter_cfg.o)
+                                0x25d (size before relaxing)
+ .debug_str     0x000015c8      0x130 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyFlash.o)
+                                0x236 (size before relaxing)
+ .debug_str     0x000016f8       0xfe .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CySpc.o)
+                                0x205 (size before relaxing)
+
+.debug_loc      0x00000000     0x286f
+ *(.debug_loc)
+ .debug_loc     0x00000000      0x175 .\CortexM3\ARM_GCC_441\Debug\main.o
+ .debug_loc     0x00000175       0x62 .\CortexM3\ARM_GCC_441\Debug\Cm3Start.o
+ .debug_loc     0x000001d7      0x63d .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART.o)
+ .debug_loc     0x00000814       0x62 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART_INT.o)
+ .debug_loc     0x00000876      0x309 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(LCD.o)
+ .debug_loc     0x00000b7f      0x26b .\CortexM3\ARM_GCC_441\Debug\part2-new.a(txISR.o)
+ .debug_loc     0x00000dea      0x26b .\CortexM3\ARM_GCC_441\Debug\part2-new.a(rxISR.o)
+ .debug_loc     0x00001055      0x221 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART_IntClock.o)
+ .debug_loc     0x00001276      0xca0 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .debug_loc     0x00001f16      0x32f .\CortexM3\ARM_GCC_441\Debug\part2-new.a(cyPm.o)
+ .debug_loc     0x00002245      0x1b8 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(cyfitter_cfg.o)
+ .debug_loc     0x000023fd      0x24c .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyFlash.o)
+ .debug_loc     0x00002649      0x226 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CySpc.o)
+
+.debug_macinfo
+ *(.debug_macinfo)
+
+.debug_ranges   0x00000000      0x740
+ *(.debug_ranges)
+ .debug_ranges  0x00000000       0x48 .\CortexM3\ARM_GCC_441\Debug\main.o
+ .debug_ranges  0x00000048       0x28 .\CortexM3\ARM_GCC_441\Debug\Cm3Start.o
+ .debug_ranges  0x00000070      0x108 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART.o)
+ .debug_ranges  0x00000178       0x20 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART_INT.o)
+ .debug_ranges  0x00000198       0x88 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(LCD.o)
+ .debug_ranges  0x00000220       0x78 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(txISR.o)
+ .debug_ranges  0x00000298       0x78 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(rxISR.o)
+ .debug_ranges  0x00000310       0x68 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART_IntClock.o)
+ .debug_ranges  0x00000378      0x210 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .debug_ranges  0x00000588       0x98 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(cyPm.o)
+ .debug_ranges  0x00000620       0x50 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(cyfitter_cfg.o)
+ .debug_ranges  0x00000670       0x70 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyFlash.o)
+ .debug_ranges  0x000006e0       0x60 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CySpc.o)
+
+.debug_weaknames
+ *(.debug_weaknames)
+
+.debug_funcnames
+ *(.debug_funcnames)
+
+.debug_typenames
+ *(.debug_typenames)
+
+.debug_varnames
+ *(.debug_varnames)
+
+.note.gnu.arm.ident
+ *(.note.gnu.arm.ident)
+
+.ARM.attributes
+                0x00000000       0x25
+ *(.ARM.attributes)
+ .ARM.attributes
+                0x00000000       0x19 c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/thumb2/crti.o
+ .ARM.attributes
+                0x00000019       0x29 c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/thumb2/crtbegin.o
+ .ARM.attributes
+                0x00000042       0x31 .\CortexM3\ARM_GCC_441\Debug\main.o
+ .ARM.attributes
+                0x00000073       0x31 .\CortexM3\ARM_GCC_441\Debug\Cm3Start.o
+ .ARM.attributes
+                0x000000a4       0x31 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART.o)
+ .ARM.attributes
+                0x000000d5       0x31 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART_INT.o)
+ .ARM.attributes
+                0x00000106       0x31 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(LCD.o)
+ .ARM.attributes
+                0x00000137       0x31 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(txISR.o)
+ .ARM.attributes
+                0x00000168       0x31 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(rxISR.o)
+ .ARM.attributes
+                0x00000199       0x31 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(UART_IntClock.o)
+ .ARM.attributes
+                0x000001ca       0x21 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyBootAsmGnu.o)
+ .ARM.attributes
+                0x000001eb       0x31 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyLib.o)
+ .ARM.attributes
+                0x0000021c       0x31 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(cyPm.o)
+ .ARM.attributes
+                0x0000024d       0x31 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(cyfitter_cfg.o)
+ .ARM.attributes
+                0x0000027e       0x31 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CyFlash.o)
+ .ARM.attributes
+                0x000002af       0x31 .\CortexM3\ARM_GCC_441\Debug\part2-new.a(CySpc.o)
+ .ARM.attributes
+                0x000002e0       0x29 c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/../../../../arm-none-eabi/lib/thumb2\libc.a(lib_a-memcpy.o)
+ .ARM.attributes
+                0x00000309       0x29 c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/../../../../arm-none-eabi/lib/thumb2\libc.a(lib_a-memset.o)
+ .ARM.attributes
+                0x00000332       0x29 c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/thumb2/crtend.o
+ .ARM.attributes
+                0x0000035b       0x19 c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/thumb2/crtn.o
+ .ARM.attributes
+                0x00000374       0x29 c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/../../../../arm-none-eabi/lib/thumb2\libcs3.a(start_c.o)
+ .ARM.attributes
+                0x0000039d       0x19 c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/../../../../arm-none-eabi/lib/thumb2\libcs3micro.a(micro-vector.o)
+ .ARM.attributes
+                0x000003b6       0x19 c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/../../../../arm-none-eabi/lib/thumb2\libcs3micro.a(micro_isr_interrupt.o)
+ .ARM.attributes
+                0x000003cf       0x29 c:/program files/cypress/psoc creator/2.2/psoc creator/import/gnu_cs/arm/4.4.1/bin/../lib/gcc/arm-none-eabi/4.4.1/../../../../arm-none-eabi/lib/thumb2\libc.a(lib_a-init.o)
+
+/DISCARD/
+ *(.note.GNU-stack)
+OUTPUT(.\CortexM3\ARM_GCC_441\Debug\part2-new.elf elf32-littlearm)

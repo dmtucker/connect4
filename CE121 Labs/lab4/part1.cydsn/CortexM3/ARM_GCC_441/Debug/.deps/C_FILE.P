@@ -1,0 +1,88 @@
+F:/PSoC\ Creator/lab4/part1.cydsn/CortexM3/ARM_GCC_441/Debug/display.o : F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/ADC.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/ADC_AMux.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/ADC_Ext_CP_Clk.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/ADC_theACLK.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/Accelerator.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/Accelerator_aliases.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/Brake.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/Brake_aliases.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/Brakelight.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/Brakelight_aliases.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/Clock.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/Controller.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/CyDmac.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/CyFlash.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/CyLib.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/CySpc.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/ISR.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/LCD.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/LCD_LCDPort.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/LCD_LCDPort_aliases.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/Motor.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/Motor_aliases.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/PWM.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/Shifter.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/Shifter_aliases.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/Taillight.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/Taillight_aliases.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/core_cm3.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/core_cm3_psoc5.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/cyPm.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/cydevice.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/cydevice_trm.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/cyfitter.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/cyfitter_cfg.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/cylib.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/cypins.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/cytypes.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/project.h F:/PSoC\ Creator/lab4/part1.cydsn/device.h F:/PSoC\ Creator/lab4/part1.cydsn/display.c 
+
+F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/ADC.h : 
+
+F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/ADC_AMux.h : 
+
+F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/ADC_Ext_CP_Clk.h : 
+
+F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/ADC_theACLK.h : 
+
+F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/Accelerator.h : 
+
+F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/Accelerator_aliases.h : 
+
+F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/Brake.h : 
+
+F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/Brake_aliases.h : 
+
+F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/Brakelight.h : 
+
+F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/Brakelight_aliases.h : 
+
+F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/Clock.h : 
+
+F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/Controller.h : 
+
+F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/CyDmac.h : 
+
+F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/CyFlash.h : 
+
+F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/CyLib.h : 
+
+F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/CySpc.h : 
+
+F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/ISR.h : 
+
+F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/LCD.h : 
+
+F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/LCD_LCDPort.h : 
+
+F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/LCD_LCDPort_aliases.h : 
+
+F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/Motor.h : 
+
+F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/Motor_aliases.h : 
+
+F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/PWM.h : 
+
+F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/Shifter.h : 
+
+F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/Shifter_aliases.h : 
+
+F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/Taillight.h : 
+
+F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/Taillight_aliases.h : 
+
+F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/core_cm3.h : 
+
+F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/core_cm3_psoc5.h : 
+
+F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/cyPm.h : 
+
+F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/cydevice.h : 
+
+F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/cydevice_trm.h : 
+
+F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/cyfitter.h : 
+
+F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/cyfitter_cfg.h : 
+
+F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/cylib.h : 
+
+F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/cypins.h : 
+
+F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/cytypes.h : 
+
+F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/project.h : 
+
+F:/PSoC\ Creator/lab4/part1.cydsn/device.h : 
+
+F:/PSoC\ Creator/lab4/part1.cydsn/display.c : 
+
+F:/PSoC\ Creator/lab4/part1.cydsn/CortexM3/ARM_GCC_441/Debug/main.o : F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/ADC.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/ADC_AMux.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/ADC_Ext_CP_Clk.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/ADC_theACLK.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/Accelerator.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/Accelerator_aliases.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/Brake.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/Brake_aliases.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/Brakelight.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/Brakelight_aliases.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/Clock.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/Controller.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/CyDmac.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/CyFlash.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/CyLib.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/CySpc.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/ISR.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/LCD.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/LCD_LCDPort.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/LCD_LCDPort_aliases.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/Motor.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/Motor_aliases.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/PWM.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/Shifter.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/Shifter_aliases.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/Taillight.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/Taillight_aliases.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/core_cm3.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/core_cm3_psoc5.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/cyPm.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/cydevice.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/cydevice_trm.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/cyfitter.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/cyfitter_cfg.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/cylib.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/cypins.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/cytypes.h F:/PSoC\ Creator/lab4/part1.cydsn/Generated_Source/PSoC5/project.h F:/PSoC\ Creator/lab4/part1.cydsn/device.h F:/PSoC\ Creator/lab4/part1.cydsn/display.h F:/PSoC\ Creator/lab4/part1.cydsn/main.c 
+
+F:/PSoC\ Creator/lab4/part1.cydsn/display.h : 
+
+F:/PSoC\ Creator/lab4/part1.cydsn/main.c : 
+

@@ -1,0 +1,822 @@
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\cc7g0h5N.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 18, 4
+  12              		.thumb
+  13              		.file	"LCD.c"
+  14              		.section	.debug_abbrev,"",%progbits
+  15              	.Ldebug_abbrev0:
+  16              		.section	.debug_info,"",%progbits
+  17              	.Ldebug_info0:
+  18              		.section	.debug_line,"",%progbits
+  19              	.Ldebug_line0:
+  20 0000 7C000000 		.text
+  20      02001E00 
+  20      00000201 
+  20      FB0E0D00 
+  20      01010101 
+  21              	.Ltext0:
+  22              		.cfi_sections	.debug_frame
+  23              		.section	.rodata
+  24              		.align	2
+  25              	.LC0:
+  26 0000 20202020 		.ascii	"                \000"
+  26      20202020 
+  26      20202020 
+  26      20202020 
+  26      00
+  27 0011 000000   		.section	.text.LCD_ClearLine,"ax",%progbits
+  28              		.align	2
+  29              		.global	LCD_ClearLine
+  30              		.thumb
+  31              		.thumb_func
+  32              		.type	LCD_ClearLine, %function
+  33              	LCD_ClearLine:
+  34              	.LFB0:
+  35              		.file 1 ".\\LCD.c"
+   1:.\LCD.c       **** //#include <device.h>
+   2:.\LCD.c       **** 
+   3:.\LCD.c       **** 
+   4:.\LCD.c       **** 
+   5:.\LCD.c       **** 
+   6:.\LCD.c       **** void LCD_ClearLine ( int line ) {
+  36              		.loc 1 6 0
+  37              		.cfi_startproc
+  38              		@ args = 0, pretend = 0, frame = 8
+  39              		@ frame_needed = 1, uses_anonymous_args = 0
+  40 0000 80B5     		push	{r7, lr}
+  41              	.LCFI0:
+  42              		.cfi_def_cfa_offset 8
+  43 0002 82B0     		sub	sp, sp, #8
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\cc7g0h5N.s 			page 2
+
+
+  44              	.LCFI1:
+  45              		.cfi_def_cfa_offset 16
+  46 0004 00AF     		add	r7, sp, #0
+  47              		.cfi_offset 14, -4
+  48              		.cfi_offset 7, -8
+  49              	.LCFI2:
+  50              		.cfi_def_cfa_register 7
+  51 0006 7860     		str	r0, [r7, #4]
+   7:.\LCD.c       ****     LCD_Position(line,0);
+  52              		.loc 1 7 0
+  53 0008 7868     		ldr	r0, [r7, #4]
+  54 000a 4FF00001 		mov	r1, #0
+  55 000e FFF7FEFF 		bl	LCD_Position
+   8:.\LCD.c       ****     LCD_PrintString("                ");
+  56              		.loc 1 8 0
+  57 0012 40F20000 		movw	r0, #:lower16:.LC0
+  58 0016 C0F20000 		movt	r0, #:upper16:.LC0
+  59 001a FFF7FEFF 		bl	LCD_PrintString
+   9:.\LCD.c       ****     LCD_Position(line,0);
+  60              		.loc 1 9 0
+  61 001e 7868     		ldr	r0, [r7, #4]
+  62 0020 4FF00001 		mov	r1, #0
+  63 0024 FFF7FEFF 		bl	LCD_Position
+  10:.\LCD.c       **** }
+  64              		.loc 1 10 0
+  65 0028 07F10807 		add	r7, r7, #8
+  66 002c BD46     		mov	sp, r7
+  67 002e 80BD     		pop	{r7, pc}
+  68              		.cfi_endproc
+  69              	.LFE0:
+  70              		.size	LCD_ClearLine, .-LCD_ClearLine
+  71              		.section	.text.LCD_UpdateStatus,"ax",%progbits
+  72              		.align	2
+  73              		.global	LCD_UpdateStatus
+  74              		.thumb
+  75              		.thumb_func
+  76              		.type	LCD_UpdateStatus, %function
+  77              	LCD_UpdateStatus:
+  78              	.LFB1:
+  11:.\LCD.c       **** 
+  12:.\LCD.c       **** 
+  13:.\LCD.c       **** 
+  14:.\LCD.c       **** 
+  15:.\LCD.c       **** void LCD_UpdateStatus ( const char string[] ) {
+  79              		.loc 1 15 0
+  80              		.cfi_startproc
+  81              		@ args = 0, pretend = 0, frame = 8
+  82              		@ frame_needed = 1, uses_anonymous_args = 0
+  83 0000 80B5     		push	{r7, lr}
+  84              	.LCFI3:
+  85              		.cfi_def_cfa_offset 8
+  86 0002 82B0     		sub	sp, sp, #8
+  87              	.LCFI4:
+  88              		.cfi_def_cfa_offset 16
+  89 0004 00AF     		add	r7, sp, #0
+  90              		.cfi_offset 14, -4
+  91              		.cfi_offset 7, -8
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\cc7g0h5N.s 			page 3
+
+
+  92              	.LCFI5:
+  93              		.cfi_def_cfa_register 7
+  94 0006 7860     		str	r0, [r7, #4]
+  16:.\LCD.c       ****     LCD_ClearDisplay();
+  95              		.loc 1 16 0
+  96 0008 FFF7FEFF 		bl	LCD_ClearDisplay
+  17:.\LCD.c       ****     LCD_Position(0,0);
+  97              		.loc 1 17 0
+  98 000c 4FF00000 		mov	r0, #0
+  99 0010 4FF00001 		mov	r1, #0
+ 100 0014 FFF7FEFF 		bl	LCD_Position
+  18:.\LCD.c       ****     LCD_PrintString(string);
+ 101              		.loc 1 18 0
+ 102 0018 7868     		ldr	r0, [r7, #4]
+ 103 001a FFF7FEFF 		bl	LCD_PrintString
+  19:.\LCD.c       **** }
+ 104              		.loc 1 19 0
+ 105 001e 07F10807 		add	r7, r7, #8
+ 106 0022 BD46     		mov	sp, r7
+ 107 0024 80BD     		pop	{r7, pc}
+ 108              		.cfi_endproc
+ 109              	.LFE1:
+ 110              		.size	LCD_UpdateStatus, .-LCD_UpdateStatus
+ 111 0026 00BF     		.section	.text.LCD_UpdateMessage,"ax",%progbits
+ 112              		.align	2
+ 113              		.global	LCD_UpdateMessage
+ 114              		.thumb
+ 115              		.thumb_func
+ 116              		.type	LCD_UpdateMessage, %function
+ 117              	LCD_UpdateMessage:
+ 118              	.LFB2:
+  20:.\LCD.c       **** 
+  21:.\LCD.c       **** 
+  22:.\LCD.c       **** 
+  23:.\LCD.c       **** 
+  24:.\LCD.c       **** void LCD_UpdateMessage ( const char string[] ) {
+ 119              		.loc 1 24 0
+ 120              		.cfi_startproc
+ 121              		@ args = 0, pretend = 0, frame = 8
+ 122              		@ frame_needed = 1, uses_anonymous_args = 0
+ 123 0000 80B5     		push	{r7, lr}
+ 124              	.LCFI6:
+ 125              		.cfi_def_cfa_offset 8
+ 126 0002 82B0     		sub	sp, sp, #8
+ 127              	.LCFI7:
+ 128              		.cfi_def_cfa_offset 16
+ 129 0004 00AF     		add	r7, sp, #0
+ 130              		.cfi_offset 14, -4
+ 131              		.cfi_offset 7, -8
+ 132              	.LCFI8:
+ 133              		.cfi_def_cfa_register 7
+ 134 0006 7860     		str	r0, [r7, #4]
+  25:.\LCD.c       ****     LCD_ClearLine(1);
+ 135              		.loc 1 25 0
+ 136 0008 4FF00100 		mov	r0, #1
+ 137 000c FFF7FEFF 		bl	LCD_ClearLine
+  26:.\LCD.c       ****     LCD_PrintString(string);
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\cc7g0h5N.s 			page 4
+
+
+ 138              		.loc 1 26 0
+ 139 0010 7868     		ldr	r0, [r7, #4]
+ 140 0012 FFF7FEFF 		bl	LCD_PrintString
+  27:.\LCD.c       **** }
+ 141              		.loc 1 27 0
+ 142 0016 07F10807 		add	r7, r7, #8
+ 143 001a BD46     		mov	sp, r7
+ 144 001c 80BD     		pop	{r7, pc}
+ 145              		.cfi_endproc
+ 146              	.LFE2:
+ 147              		.size	LCD_UpdateMessage, .-LCD_UpdateMessage
+ 148 001e 00BF     		.section	.text.LCD_Spin,"ax",%progbits
+ 149              		.align	2
+ 150              		.global	LCD_Spin
+ 151              		.thumb
+ 152              		.thumb_func
+ 153              		.type	LCD_Spin, %function
+ 154              	LCD_Spin:
+ 155              	.LFB3:
+  28:.\LCD.c       **** 
+  29:.\LCD.c       **** 
+  30:.\LCD.c       **** 
+  31:.\LCD.c       **** 
+  32:.\LCD.c       **** void LCD_Spin ( int row, int col, int speed, int count ) {
+ 156              		.loc 1 32 0
+ 157              		.cfi_startproc
+ 158              		@ args = 0, pretend = 0, frame = 16
+ 159              		@ frame_needed = 1, uses_anonymous_args = 0
+ 160 0000 80B5     		push	{r7, lr}
+ 161              	.LCFI9:
+ 162              		.cfi_def_cfa_offset 8
+ 163 0002 84B0     		sub	sp, sp, #16
+ 164              	.LCFI10:
+ 165              		.cfi_def_cfa_offset 24
+ 166 0004 00AF     		add	r7, sp, #0
+ 167              		.cfi_offset 14, -4
+ 168              		.cfi_offset 7, -8
+ 169              	.LCFI11:
+ 170              		.cfi_def_cfa_register 7
+ 171 0006 F860     		str	r0, [r7, #12]
+ 172 0008 B960     		str	r1, [r7, #8]
+ 173 000a 7A60     		str	r2, [r7, #4]
+ 174 000c 3B60     		str	r3, [r7, #0]
+  33:.\LCD.c       ****     while (count-- > 0) {
+ 175              		.loc 1 33 0
+ 176 000e 4BE0     		b	.L8
+ 177              	.L9:
+  34:.\LCD.c       ****         LCD_Position(row,col);
+ 178              		.loc 1 34 0
+ 179 0010 F868     		ldr	r0, [r7, #12]
+ 180 0012 B968     		ldr	r1, [r7, #8]
+ 181 0014 FFF7FEFF 		bl	LCD_Position
+  35:.\LCD.c       ****         LCD_PutChar('|');
+ 182              		.loc 1 35 0
+ 183 0018 4FF07C00 		mov	r0, #124
+ 184 001c FFF7FEFF 		bl	LCD_PutChar
+  36:.\LCD.c       ****         CyDelay(speed/4);
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\cc7g0h5N.s 			page 5
+
+
+ 185              		.loc 1 36 0
+ 186 0020 7B68     		ldr	r3, [r7, #4]
+ 187 0022 03F10302 		add	r2, r3, #3
+ 188 0026 002B     		cmp	r3, #0
+ 189 0028 B8BF     		it	lt
+ 190 002a 1346     		movlt	r3, r2
+ 191 002c 4FEAA303 		asr	r3, r3, #2
+ 192 0030 1846     		mov	r0, r3
+ 193 0032 FFF7FEFF 		bl	CyDelay
+  37:.\LCD.c       ****         LCD_Position(row,col);
+ 194              		.loc 1 37 0
+ 195 0036 F868     		ldr	r0, [r7, #12]
+ 196 0038 B968     		ldr	r1, [r7, #8]
+ 197 003a FFF7FEFF 		bl	LCD_Position
+  38:.\LCD.c       ****         LCD_PutChar('/');
+ 198              		.loc 1 38 0
+ 199 003e 4FF02F00 		mov	r0, #47
+ 200 0042 FFF7FEFF 		bl	LCD_PutChar
+  39:.\LCD.c       ****         CyDelay(speed/4);
+ 201              		.loc 1 39 0
+ 202 0046 7B68     		ldr	r3, [r7, #4]
+ 203 0048 03F10302 		add	r2, r3, #3
+ 204 004c 002B     		cmp	r3, #0
+ 205 004e B8BF     		it	lt
+ 206 0050 1346     		movlt	r3, r2
+ 207 0052 4FEAA303 		asr	r3, r3, #2
+ 208 0056 1846     		mov	r0, r3
+ 209 0058 FFF7FEFF 		bl	CyDelay
+  40:.\LCD.c       ****         LCD_Position(row,col);
+ 210              		.loc 1 40 0
+ 211 005c F868     		ldr	r0, [r7, #12]
+ 212 005e B968     		ldr	r1, [r7, #8]
+ 213 0060 FFF7FEFF 		bl	LCD_Position
+  41:.\LCD.c       ****         LCD_PutChar('-');
+ 214              		.loc 1 41 0
+ 215 0064 4FF02D00 		mov	r0, #45
+ 216 0068 FFF7FEFF 		bl	LCD_PutChar
+  42:.\LCD.c       ****         CyDelay(speed/4);
+ 217              		.loc 1 42 0
+ 218 006c 7B68     		ldr	r3, [r7, #4]
+ 219 006e 03F10302 		add	r2, r3, #3
+ 220 0072 002B     		cmp	r3, #0
+ 221 0074 B8BF     		it	lt
+ 222 0076 1346     		movlt	r3, r2
+ 223 0078 4FEAA303 		asr	r3, r3, #2
+ 224 007c 1846     		mov	r0, r3
+ 225 007e FFF7FEFF 		bl	CyDelay
+  43:.\LCD.c       ****         LCD_Position(row,col);
+ 226              		.loc 1 43 0
+ 227 0082 F868     		ldr	r0, [r7, #12]
+ 228 0084 B968     		ldr	r1, [r7, #8]
+ 229 0086 FFF7FEFF 		bl	LCD_Position
+  44:.\LCD.c       ****         LCD_PutChar('\\');
+ 230              		.loc 1 44 0
+ 231 008a 4FF05C00 		mov	r0, #92
+ 232 008e FFF7FEFF 		bl	LCD_PutChar
+  45:.\LCD.c       ****         CyDelay(speed/4);
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\cc7g0h5N.s 			page 6
+
+
+ 233              		.loc 1 45 0
+ 234 0092 7B68     		ldr	r3, [r7, #4]
+ 235 0094 03F10302 		add	r2, r3, #3
+ 236 0098 002B     		cmp	r3, #0
+ 237 009a B8BF     		it	lt
+ 238 009c 1346     		movlt	r3, r2
+ 239 009e 4FEAA303 		asr	r3, r3, #2
+ 240 00a2 1846     		mov	r0, r3
+ 241 00a4 FFF7FEFF 		bl	CyDelay
+ 242              	.L8:
+ 243              		.loc 1 33 0
+ 244 00a8 3B68     		ldr	r3, [r7, #0]
+ 245 00aa 002B     		cmp	r3, #0
+ 246 00ac D4BF     		ite	le
+ 247 00ae 0023     		movle	r3, #0
+ 248 00b0 0123     		movgt	r3, #1
+ 249 00b2 DBB2     		uxtb	r3, r3
+ 250 00b4 3A68     		ldr	r2, [r7, #0]
+ 251 00b6 02F1FF32 		add	r2, r2, #-1
+ 252 00ba 3A60     		str	r2, [r7, #0]
+ 253 00bc 002B     		cmp	r3, #0
+ 254 00be A7D1     		bne	.L9
+  46:.\LCD.c       ****     }
+  47:.\LCD.c       **** }
+ 255              		.loc 1 47 0
+ 256 00c0 07F11007 		add	r7, r7, #16
+ 257 00c4 BD46     		mov	sp, r7
+ 258 00c6 80BD     		pop	{r7, pc}
+ 259              		.cfi_endproc
+ 260              	.LFE3:
+ 261              		.size	LCD_Spin, .-LCD_Spin
+ 262              		.text
+ 263              	.Letext0:
+ 264              		.section	.debug_loc,"",%progbits
+ 265              	.Ldebug_loc0:
+ 266              	.LLST0:
+ 267 0000 00000000 		.4byte	.LFB0
+ 268 0004 02000000 		.4byte	.LCFI0
+ 269 0008 0100     		.2byte	0x1
+ 270 000a 5D       		.byte	0x5d
+ 271 000b 02000000 		.4byte	.LCFI0
+ 272 000f 04000000 		.4byte	.LCFI1
+ 273 0013 0200     		.2byte	0x2
+ 274 0015 7D       		.byte	0x7d
+ 275 0016 08       		.sleb128 8
+ 276 0017 04000000 		.4byte	.LCFI1
+ 277 001b 06000000 		.4byte	.LCFI2
+ 278 001f 0200     		.2byte	0x2
+ 279 0021 7D       		.byte	0x7d
+ 280 0022 10       		.sleb128 16
+ 281 0023 06000000 		.4byte	.LCFI2
+ 282 0027 30000000 		.4byte	.LFE0
+ 283 002b 0200     		.2byte	0x2
+ 284 002d 77       		.byte	0x77
+ 285 002e 10       		.sleb128 16
+ 286 002f 00000000 		.4byte	0x0
+ 287 0033 00000000 		.4byte	0x0
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\cc7g0h5N.s 			page 7
+
+
+ 288              	.LLST1:
+ 289 0037 00000000 		.4byte	.LFB1
+ 290 003b 02000000 		.4byte	.LCFI3
+ 291 003f 0100     		.2byte	0x1
+ 292 0041 5D       		.byte	0x5d
+ 293 0042 02000000 		.4byte	.LCFI3
+ 294 0046 04000000 		.4byte	.LCFI4
+ 295 004a 0200     		.2byte	0x2
+ 296 004c 7D       		.byte	0x7d
+ 297 004d 08       		.sleb128 8
+ 298 004e 04000000 		.4byte	.LCFI4
+ 299 0052 06000000 		.4byte	.LCFI5
+ 300 0056 0200     		.2byte	0x2
+ 301 0058 7D       		.byte	0x7d
+ 302 0059 10       		.sleb128 16
+ 303 005a 06000000 		.4byte	.LCFI5
+ 304 005e 26000000 		.4byte	.LFE1
+ 305 0062 0200     		.2byte	0x2
+ 306 0064 77       		.byte	0x77
+ 307 0065 10       		.sleb128 16
+ 308 0066 00000000 		.4byte	0x0
+ 309 006a 00000000 		.4byte	0x0
+ 310              	.LLST2:
+ 311 006e 00000000 		.4byte	.LFB2
+ 312 0072 02000000 		.4byte	.LCFI6
+ 313 0076 0100     		.2byte	0x1
+ 314 0078 5D       		.byte	0x5d
+ 315 0079 02000000 		.4byte	.LCFI6
+ 316 007d 04000000 		.4byte	.LCFI7
+ 317 0081 0200     		.2byte	0x2
+ 318 0083 7D       		.byte	0x7d
+ 319 0084 08       		.sleb128 8
+ 320 0085 04000000 		.4byte	.LCFI7
+ 321 0089 06000000 		.4byte	.LCFI8
+ 322 008d 0200     		.2byte	0x2
+ 323 008f 7D       		.byte	0x7d
+ 324 0090 10       		.sleb128 16
+ 325 0091 06000000 		.4byte	.LCFI8
+ 326 0095 1E000000 		.4byte	.LFE2
+ 327 0099 0200     		.2byte	0x2
+ 328 009b 77       		.byte	0x77
+ 329 009c 10       		.sleb128 16
+ 330 009d 00000000 		.4byte	0x0
+ 331 00a1 00000000 		.4byte	0x0
+ 332              	.LLST3:
+ 333 00a5 00000000 		.4byte	.LFB3
+ 334 00a9 02000000 		.4byte	.LCFI9
+ 335 00ad 0100     		.2byte	0x1
+ 336 00af 5D       		.byte	0x5d
+ 337 00b0 02000000 		.4byte	.LCFI9
+ 338 00b4 04000000 		.4byte	.LCFI10
+ 339 00b8 0200     		.2byte	0x2
+ 340 00ba 7D       		.byte	0x7d
+ 341 00bb 08       		.sleb128 8
+ 342 00bc 04000000 		.4byte	.LCFI10
+ 343 00c0 06000000 		.4byte	.LCFI11
+ 344 00c4 0200     		.2byte	0x2
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\cc7g0h5N.s 			page 8
+
+
+ 345 00c6 7D       		.byte	0x7d
+ 346 00c7 18       		.sleb128 24
+ 347 00c8 06000000 		.4byte	.LCFI11
+ 348 00cc C8000000 		.4byte	.LFE3
+ 349 00d0 0200     		.2byte	0x2
+ 350 00d2 77       		.byte	0x77
+ 351 00d3 18       		.sleb128 24
+ 352 00d4 00000000 		.4byte	0x0
+ 353 00d8 00000000 		.4byte	0x0
+ 354              		.section	.debug_info
+ 355 0000 05010000 		.4byte	0x105
+ 356 0004 0200     		.2byte	0x2
+ 357 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 358 000a 04       		.byte	0x4
+ 359 000b 01       		.uleb128 0x1
+ 360 000c 7D000000 		.4byte	.LASF8
+ 361 0010 01       		.byte	0x1
+ 362 0011 21000000 		.4byte	.LASF9
+ 363 0015 54000000 		.4byte	.LASF10
+ 364 0019 00000000 		.4byte	0x0
+ 365 001d 00000000 		.4byte	0x0
+ 366 0021 00000000 		.4byte	.Ldebug_ranges0+0x0
+ 367 0025 00000000 		.4byte	.Ldebug_line0
+ 368 0029 02       		.uleb128 0x2
+ 369 002a 01       		.byte	0x1
+ 370 002b 46000000 		.4byte	.LASF0
+ 371 002f 01       		.byte	0x1
+ 372 0030 06       		.byte	0x6
+ 373 0031 01       		.byte	0x1
+ 374 0032 00000000 		.4byte	.LFB0
+ 375 0036 30000000 		.4byte	.LFE0
+ 376 003a 00000000 		.4byte	.LLST0
+ 377 003e 51000000 		.4byte	0x51
+ 378 0042 03       		.uleb128 0x3
+ 379 0043 78000000 		.4byte	.LASF2
+ 380 0047 01       		.byte	0x1
+ 381 0048 06       		.byte	0x6
+ 382 0049 51000000 		.4byte	0x51
+ 383 004d 02       		.byte	0x2
+ 384 004e 91       		.byte	0x91
+ 385 004f 74       		.sleb128 -12
+ 386 0050 00       		.byte	0x0
+ 387 0051 04       		.uleb128 0x4
+ 388 0052 04       		.byte	0x4
+ 389 0053 05       		.byte	0x5
+ 390 0054 696E7400 		.ascii	"int\000"
+ 391 0058 02       		.uleb128 0x2
+ 392 0059 01       		.byte	0x1
+ 393 005a 35000000 		.4byte	.LASF1
+ 394 005e 01       		.byte	0x1
+ 395 005f 0F       		.byte	0xf
+ 396 0060 01       		.byte	0x1
+ 397 0061 00000000 		.4byte	.LFB1
+ 398 0065 26000000 		.4byte	.LFE1
+ 399 0069 37000000 		.4byte	.LLST1
+ 400 006d 80000000 		.4byte	0x80
+ 401 0071 03       		.uleb128 0x3
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\cc7g0h5N.s 			page 9
+
+
+ 402 0072 2E000000 		.4byte	.LASF3
+ 403 0076 01       		.byte	0x1
+ 404 0077 0F       		.byte	0xf
+ 405 0078 80000000 		.4byte	0x80
+ 406 007c 02       		.byte	0x2
+ 407 007d 91       		.byte	0x91
+ 408 007e 74       		.sleb128 -12
+ 409 007f 00       		.byte	0x0
+ 410 0080 05       		.uleb128 0x5
+ 411 0081 04       		.byte	0x4
+ 412 0082 86000000 		.4byte	0x86
+ 413 0086 06       		.uleb128 0x6
+ 414 0087 8B000000 		.4byte	0x8b
+ 415 008b 07       		.uleb128 0x7
+ 416 008c 01       		.byte	0x1
+ 417 008d 08       		.byte	0x8
+ 418 008e 29000000 		.4byte	.LASF4
+ 419 0092 02       		.uleb128 0x2
+ 420 0093 01       		.byte	0x1
+ 421 0094 00000000 		.4byte	.LASF5
+ 422 0098 01       		.byte	0x1
+ 423 0099 18       		.byte	0x18
+ 424 009a 01       		.byte	0x1
+ 425 009b 00000000 		.4byte	.LFB2
+ 426 009f 1E000000 		.4byte	.LFE2
+ 427 00a3 6E000000 		.4byte	.LLST2
+ 428 00a7 BA000000 		.4byte	0xba
+ 429 00ab 03       		.uleb128 0x3
+ 430 00ac 2E000000 		.4byte	.LASF3
+ 431 00b0 01       		.byte	0x1
+ 432 00b1 18       		.byte	0x18
+ 433 00b2 80000000 		.4byte	0x80
+ 434 00b6 02       		.byte	0x2
+ 435 00b7 91       		.byte	0x91
+ 436 00b8 74       		.sleb128 -12
+ 437 00b9 00       		.byte	0x0
+ 438 00ba 08       		.uleb128 0x8
+ 439 00bb 01       		.byte	0x1
+ 440 00bc 12000000 		.4byte	.LASF11
+ 441 00c0 01       		.byte	0x1
+ 442 00c1 20       		.byte	0x20
+ 443 00c2 01       		.byte	0x1
+ 444 00c3 00000000 		.4byte	.LFB3
+ 445 00c7 C8000000 		.4byte	.LFE3
+ 446 00cb A5000000 		.4byte	.LLST3
+ 447 00cf 09       		.uleb128 0x9
+ 448 00d0 726F7700 		.ascii	"row\000"
+ 449 00d4 01       		.byte	0x1
+ 450 00d5 20       		.byte	0x20
+ 451 00d6 51000000 		.4byte	0x51
+ 452 00da 02       		.byte	0x2
+ 453 00db 91       		.byte	0x91
+ 454 00dc 74       		.sleb128 -12
+ 455 00dd 09       		.uleb128 0x9
+ 456 00de 636F6C00 		.ascii	"col\000"
+ 457 00e2 01       		.byte	0x1
+ 458 00e3 20       		.byte	0x20
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\cc7g0h5N.s 			page 10
+
+
+ 459 00e4 51000000 		.4byte	0x51
+ 460 00e8 02       		.byte	0x2
+ 461 00e9 91       		.byte	0x91
+ 462 00ea 70       		.sleb128 -16
+ 463 00eb 03       		.uleb128 0x3
+ 464 00ec 1B000000 		.4byte	.LASF6
+ 465 00f0 01       		.byte	0x1
+ 466 00f1 20       		.byte	0x20
+ 467 00f2 51000000 		.4byte	0x51
+ 468 00f6 02       		.byte	0x2
+ 469 00f7 91       		.byte	0x91
+ 470 00f8 6C       		.sleb128 -20
+ 471 00f9 03       		.uleb128 0x3
+ 472 00fa 89000000 		.4byte	.LASF7
+ 473 00fe 01       		.byte	0x1
+ 474 00ff 20       		.byte	0x20
+ 475 0100 51000000 		.4byte	0x51
+ 476 0104 02       		.byte	0x2
+ 477 0105 91       		.byte	0x91
+ 478 0106 68       		.sleb128 -24
+ 479 0107 00       		.byte	0x0
+ 480 0108 00       		.byte	0x0
+ 481              		.section	.debug_abbrev
+ 482 0000 01       		.uleb128 0x1
+ 483 0001 11       		.uleb128 0x11
+ 484 0002 01       		.byte	0x1
+ 485 0003 25       		.uleb128 0x25
+ 486 0004 0E       		.uleb128 0xe
+ 487 0005 13       		.uleb128 0x13
+ 488 0006 0B       		.uleb128 0xb
+ 489 0007 03       		.uleb128 0x3
+ 490 0008 0E       		.uleb128 0xe
+ 491 0009 1B       		.uleb128 0x1b
+ 492 000a 0E       		.uleb128 0xe
+ 493 000b 11       		.uleb128 0x11
+ 494 000c 01       		.uleb128 0x1
+ 495 000d 52       		.uleb128 0x52
+ 496 000e 01       		.uleb128 0x1
+ 497 000f 55       		.uleb128 0x55
+ 498 0010 06       		.uleb128 0x6
+ 499 0011 10       		.uleb128 0x10
+ 500 0012 06       		.uleb128 0x6
+ 501 0013 00       		.byte	0x0
+ 502 0014 00       		.byte	0x0
+ 503 0015 02       		.uleb128 0x2
+ 504 0016 2E       		.uleb128 0x2e
+ 505 0017 01       		.byte	0x1
+ 506 0018 3F       		.uleb128 0x3f
+ 507 0019 0C       		.uleb128 0xc
+ 508 001a 03       		.uleb128 0x3
+ 509 001b 0E       		.uleb128 0xe
+ 510 001c 3A       		.uleb128 0x3a
+ 511 001d 0B       		.uleb128 0xb
+ 512 001e 3B       		.uleb128 0x3b
+ 513 001f 0B       		.uleb128 0xb
+ 514 0020 27       		.uleb128 0x27
+ 515 0021 0C       		.uleb128 0xc
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\cc7g0h5N.s 			page 11
+
+
+ 516 0022 11       		.uleb128 0x11
+ 517 0023 01       		.uleb128 0x1
+ 518 0024 12       		.uleb128 0x12
+ 519 0025 01       		.uleb128 0x1
+ 520 0026 40       		.uleb128 0x40
+ 521 0027 06       		.uleb128 0x6
+ 522 0028 01       		.uleb128 0x1
+ 523 0029 13       		.uleb128 0x13
+ 524 002a 00       		.byte	0x0
+ 525 002b 00       		.byte	0x0
+ 526 002c 03       		.uleb128 0x3
+ 527 002d 05       		.uleb128 0x5
+ 528 002e 00       		.byte	0x0
+ 529 002f 03       		.uleb128 0x3
+ 530 0030 0E       		.uleb128 0xe
+ 531 0031 3A       		.uleb128 0x3a
+ 532 0032 0B       		.uleb128 0xb
+ 533 0033 3B       		.uleb128 0x3b
+ 534 0034 0B       		.uleb128 0xb
+ 535 0035 49       		.uleb128 0x49
+ 536 0036 13       		.uleb128 0x13
+ 537 0037 02       		.uleb128 0x2
+ 538 0038 0A       		.uleb128 0xa
+ 539 0039 00       		.byte	0x0
+ 540 003a 00       		.byte	0x0
+ 541 003b 04       		.uleb128 0x4
+ 542 003c 24       		.uleb128 0x24
+ 543 003d 00       		.byte	0x0
+ 544 003e 0B       		.uleb128 0xb
+ 545 003f 0B       		.uleb128 0xb
+ 546 0040 3E       		.uleb128 0x3e
+ 547 0041 0B       		.uleb128 0xb
+ 548 0042 03       		.uleb128 0x3
+ 549 0043 08       		.uleb128 0x8
+ 550 0044 00       		.byte	0x0
+ 551 0045 00       		.byte	0x0
+ 552 0046 05       		.uleb128 0x5
+ 553 0047 0F       		.uleb128 0xf
+ 554 0048 00       		.byte	0x0
+ 555 0049 0B       		.uleb128 0xb
+ 556 004a 0B       		.uleb128 0xb
+ 557 004b 49       		.uleb128 0x49
+ 558 004c 13       		.uleb128 0x13
+ 559 004d 00       		.byte	0x0
+ 560 004e 00       		.byte	0x0
+ 561 004f 06       		.uleb128 0x6
+ 562 0050 26       		.uleb128 0x26
+ 563 0051 00       		.byte	0x0
+ 564 0052 49       		.uleb128 0x49
+ 565 0053 13       		.uleb128 0x13
+ 566 0054 00       		.byte	0x0
+ 567 0055 00       		.byte	0x0
+ 568 0056 07       		.uleb128 0x7
+ 569 0057 24       		.uleb128 0x24
+ 570 0058 00       		.byte	0x0
+ 571 0059 0B       		.uleb128 0xb
+ 572 005a 0B       		.uleb128 0xb
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\cc7g0h5N.s 			page 12
+
+
+ 573 005b 3E       		.uleb128 0x3e
+ 574 005c 0B       		.uleb128 0xb
+ 575 005d 03       		.uleb128 0x3
+ 576 005e 0E       		.uleb128 0xe
+ 577 005f 00       		.byte	0x0
+ 578 0060 00       		.byte	0x0
+ 579 0061 08       		.uleb128 0x8
+ 580 0062 2E       		.uleb128 0x2e
+ 581 0063 01       		.byte	0x1
+ 582 0064 3F       		.uleb128 0x3f
+ 583 0065 0C       		.uleb128 0xc
+ 584 0066 03       		.uleb128 0x3
+ 585 0067 0E       		.uleb128 0xe
+ 586 0068 3A       		.uleb128 0x3a
+ 587 0069 0B       		.uleb128 0xb
+ 588 006a 3B       		.uleb128 0x3b
+ 589 006b 0B       		.uleb128 0xb
+ 590 006c 27       		.uleb128 0x27
+ 591 006d 0C       		.uleb128 0xc
+ 592 006e 11       		.uleb128 0x11
+ 593 006f 01       		.uleb128 0x1
+ 594 0070 12       		.uleb128 0x12
+ 595 0071 01       		.uleb128 0x1
+ 596 0072 40       		.uleb128 0x40
+ 597 0073 06       		.uleb128 0x6
+ 598 0074 00       		.byte	0x0
+ 599 0075 00       		.byte	0x0
+ 600 0076 09       		.uleb128 0x9
+ 601 0077 05       		.uleb128 0x5
+ 602 0078 00       		.byte	0x0
+ 603 0079 03       		.uleb128 0x3
+ 604 007a 08       		.uleb128 0x8
+ 605 007b 3A       		.uleb128 0x3a
+ 606 007c 0B       		.uleb128 0xb
+ 607 007d 3B       		.uleb128 0x3b
+ 608 007e 0B       		.uleb128 0xb
+ 609 007f 49       		.uleb128 0x49
+ 610 0080 13       		.uleb128 0x13
+ 611 0081 02       		.uleb128 0x2
+ 612 0082 0A       		.uleb128 0xa
+ 613 0083 00       		.byte	0x0
+ 614 0084 00       		.byte	0x0
+ 615 0085 00       		.byte	0x0
+ 616              		.section	.debug_pubnames,"",%progbits
+ 617 0000 58000000 		.4byte	0x58
+ 618 0004 0200     		.2byte	0x2
+ 619 0006 00000000 		.4byte	.Ldebug_info0
+ 620 000a 09010000 		.4byte	0x109
+ 621 000e 29000000 		.4byte	0x29
+ 622 0012 4C43445F 		.ascii	"LCD_ClearLine\000"
+ 622      436C6561 
+ 622      724C696E 
+ 622      6500
+ 623 0020 58000000 		.4byte	0x58
+ 624 0024 4C43445F 		.ascii	"LCD_UpdateStatus\000"
+ 624      55706461 
+ 624      74655374 
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\cc7g0h5N.s 			page 13
+
+
+ 624      61747573 
+ 624      00
+ 625 0035 92000000 		.4byte	0x92
+ 626 0039 4C43445F 		.ascii	"LCD_UpdateMessage\000"
+ 626      55706461 
+ 626      74654D65 
+ 626      73736167 
+ 626      6500
+ 627 004b BA000000 		.4byte	0xba
+ 628 004f 4C43445F 		.ascii	"LCD_Spin\000"
+ 628      5370696E 
+ 628      00
+ 629 0058 00000000 		.4byte	0x0
+ 630              		.section	.debug_aranges,"",%progbits
+ 631 0000 34000000 		.4byte	0x34
+ 632 0004 0200     		.2byte	0x2
+ 633 0006 00000000 		.4byte	.Ldebug_info0
+ 634 000a 04       		.byte	0x4
+ 635 000b 00       		.byte	0x0
+ 636 000c 0000     		.2byte	0x0
+ 637 000e 0000     		.2byte	0x0
+ 638 0010 00000000 		.4byte	.LFB0
+ 639 0014 30000000 		.4byte	.LFE0-.LFB0
+ 640 0018 00000000 		.4byte	.LFB1
+ 641 001c 26000000 		.4byte	.LFE1-.LFB1
+ 642 0020 00000000 		.4byte	.LFB2
+ 643 0024 1E000000 		.4byte	.LFE2-.LFB2
+ 644 0028 00000000 		.4byte	.LFB3
+ 645 002c C8000000 		.4byte	.LFE3-.LFB3
+ 646 0030 00000000 		.4byte	0x0
+ 647 0034 00000000 		.4byte	0x0
+ 648              		.section	.debug_ranges,"",%progbits
+ 649              	.Ldebug_ranges0:
+ 650 0000 00000000 		.4byte	.Ltext0
+ 651 0004 00000000 		.4byte	.Letext0
+ 652 0008 00000000 		.4byte	.LFB0
+ 653 000c 30000000 		.4byte	.LFE0
+ 654 0010 00000000 		.4byte	.LFB1
+ 655 0014 26000000 		.4byte	.LFE1
+ 656 0018 00000000 		.4byte	.LFB2
+ 657 001c 1E000000 		.4byte	.LFE2
+ 658 0020 00000000 		.4byte	.LFB3
+ 659 0024 C8000000 		.4byte	.LFE3
+ 660 0028 00000000 		.4byte	0x0
+ 661 002c 00000000 		.4byte	0x0
+ 662              		.section	.debug_str,"MS",%progbits,1
+ 663              	.LASF5:
+ 664 0000 4C43445F 		.ascii	"LCD_UpdateMessage\000"
+ 664      55706461 
+ 664      74654D65 
+ 664      73736167 
+ 664      6500
+ 665              	.LASF11:
+ 666 0012 4C43445F 		.ascii	"LCD_Spin\000"
+ 666      5370696E 
+ 666      00
+ 667              	.LASF6:
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\cc7g0h5N.s 			page 14
+
+
+ 668 001b 73706565 		.ascii	"speed\000"
+ 668      6400
+ 669              	.LASF9:
+ 670 0021 2E5C4C43 		.ascii	".\\LCD.c\000"
+ 670      442E6300 
+ 671              	.LASF4:
+ 672 0029 63686172 		.ascii	"char\000"
+ 672      00
+ 673              	.LASF3:
+ 674 002e 73747269 		.ascii	"string\000"
+ 674      6E6700
+ 675              	.LASF1:
+ 676 0035 4C43445F 		.ascii	"LCD_UpdateStatus\000"
+ 676      55706461 
+ 676      74655374 
+ 676      61747573 
+ 676      00
+ 677              	.LASF0:
+ 678 0046 4C43445F 		.ascii	"LCD_ClearLine\000"
+ 678      436C6561 
+ 678      724C696E 
+ 678      6500
+ 679              	.LASF10:
+ 680 0054 453A5C50 		.ascii	"E:\\PSoC Creator\\Libraries\\LCD.cylib\000"
+ 680      536F4320 
+ 680      43726561 
+ 680      746F725C 
+ 680      4C696272 
+ 681              	.LASF2:
+ 682 0078 6C696E65 		.ascii	"line\000"
+ 682      00
+ 683              	.LASF8:
+ 684 007d 474E5520 		.ascii	"GNU C 4.4.1\000"
+ 684      4320342E 
+ 684      342E3100 
+ 685              	.LASF7:
+ 686 0089 636F756E 		.ascii	"count\000"
+ 686      7400
+ 687              		.ident	"GCC: (Sourcery G++ Lite 2010q1-188) 4.4.1"

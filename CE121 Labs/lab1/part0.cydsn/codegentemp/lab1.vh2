@@ -1,0 +1,133 @@
+--
+--	Conversion of lab1.v to vh2:
+--
+--	Cypress Semiconductor - WARP Version 6.3 IR 41
+--	Mon Apr 29 03:13:54 2013
+--
+
+USE cypress.cypress.all;
+USE cypress.rtlpkg.all;
+ENTITY top_RTL IS
+ATTRIBUTE part_name of top_RTL:TYPE IS "cpsoc3";
+END top_RTL;
+--------------------------------------------------------
+ARCHITECTURE R_T_L OF top_RTL IS
+SIGNAL tmpOE__LED_net_1 : bit;
+SIGNAL tmpOE__LED_net_0 : bit;
+SIGNAL zero : bit;
+SIGNAL Net_102 : bit;
+SIGNAL tmpFB_1__LED_net_1 : bit;
+SIGNAL tmpFB_1__LED_net_0 : bit;
+SIGNAL tmpIO_1__LED_net_1 : bit;
+SIGNAL tmpIO_1__LED_net_0 : bit;
+TERMINAL tmpSIOVREF__LED_net_0 : bit;
+SIGNAL one : bit;
+SIGNAL tmpINTERRUPT_0__LED_net_0 : bit;
+SIGNAL \Controller:clk\ : bit;
+SIGNAL \Controller:rst\ : bit;
+SIGNAL \Controller:control_out_0\ : bit;
+SIGNAL Net_103 : bit;
+SIGNAL \Controller:control_out_1\ : bit;
+SIGNAL Net_104 : bit;
+SIGNAL \Controller:control_out_2\ : bit;
+SIGNAL Net_105 : bit;
+SIGNAL \Controller:control_out_3\ : bit;
+SIGNAL Net_106 : bit;
+SIGNAL \Controller:control_out_4\ : bit;
+SIGNAL Net_107 : bit;
+SIGNAL \Controller:control_out_5\ : bit;
+SIGNAL Net_108 : bit;
+SIGNAL \Controller:control_out_6\ : bit;
+SIGNAL Net_109 : bit;
+SIGNAL \Controller:control_out_7\ : bit;
+SIGNAL \Controller:control_7\ : bit;
+SIGNAL \Controller:control_6\ : bit;
+SIGNAL \Controller:control_5\ : bit;
+SIGNAL \Controller:control_4\ : bit;
+SIGNAL \Controller:control_3\ : bit;
+SIGNAL \Controller:control_2\ : bit;
+SIGNAL \Controller:control_1\ : bit;
+SIGNAL \Controller:control_0\ : bit;
+BEGIN
+
+zero <=  ('0') ;
+
+tmpOE__LED_net_1 <=  ('1') ;
+
+LED:cy_psoc3_pins_v1_10
+	GENERIC MAP(id=>"52f31aa9-2f0a-497d-9a1f-1424095e13e6",
+		drive_mode=>"110110",
+		ibuf_enabled=>"11",
+		init_dr_st=>"00",
+		input_sync=>"11",
+		input_clk_en=>'0',
+		input_sync_mode=>"00",
+		intr_mode=>"0000",
+		invert_in_clock=>'0',
+		invert_in_clock_en=>'0',
+		invert_in_reset=>'0',
+		invert_out_clock=>'0',
+		invert_out_clock_en=>'0',
+		invert_out_reset=>'0',
+		io_voltage=>", ",
+		layout_mode=>"CONTIGUOUS",
+		output_conn=>"10",
+		output_sync=>"00",
+		output_clk_en=>'0',
+		output_mode=>"00",
+		output_reset=>'0',
+		output_clock_mode=>"00",
+		oe_sync=>"00",
+		oe_conn=>"00",
+		oe_reset=>'0',
+		pin_aliases=>",",
+		pin_mode=>"OO",
+		por_state=>4,
+		sio_group_cnt=>0,
+		sio_hifreq=>"",
+		sio_hyst=>"00",
+		sio_ibuf=>"00000000",
+		sio_info=>"0000",
+		sio_obuf=>"00000000",
+		sio_refsel=>"00000000",
+		sio_vtrip=>"00000000",
+		slew_rate=>"00",
+		spanning=>'0',
+		sw_only=>'0',
+		vtrip=>"1010",
+		width=>2,
+		port_alias_required=>'0',
+		port_alias_group=>"",
+		use_annotation=>"00",
+		pa_in_clock=>-1,
+		pa_in_clock_en=>-1,
+		pa_in_reset=>-1,
+		pa_out_clock=>-1,
+		pa_out_clock_en=>-1,
+		pa_out_reset=>-1)
+	PORT MAP(oe=>(tmpOE__LED_net_1, tmpOE__LED_net_1),
+		y=>(zero, Net_102),
+		fb=>(tmpFB_1__LED_net_1, tmpFB_1__LED_net_0),
+		analog=>(open, open),
+		io=>(tmpIO_1__LED_net_1, tmpIO_1__LED_net_0),
+		siovref=>(tmpSIOVREF__LED_net_0),
+		annotation=>(open, open),
+		in_clock=>zero,
+		in_clock_en=>tmpOE__LED_net_1,
+		in_reset=>zero,
+		out_clock=>zero,
+		out_clock_en=>tmpOE__LED_net_1,
+		out_reset=>zero,
+		interrupt=>tmpINTERRUPT_0__LED_net_0);
+\Controller:Sync:ctrl_reg\:cy_psoc3_control
+	GENERIC MAP(cy_init_value=>"00000000",
+		cy_force_order=>'1',
+		cy_ctrl_mode_1=>"00000000",
+		cy_ctrl_mode_0=>"00000000",
+		cy_ext_reset=>'0')
+	PORT MAP(reset=>zero,
+		clock=>zero,
+		control=>(\Controller:control_7\, \Controller:control_6\, \Controller:control_5\, \Controller:control_4\,
+			\Controller:control_3\, \Controller:control_2\, \Controller:control_1\, Net_102));
+
+END R_T_L;

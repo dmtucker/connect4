@@ -1,0 +1,41 @@
+
+----------------------------------------------------------------------
+
+Verifying bitstream.
+
+-----------------------------------------------------------------------
+
+
+---------Mapping jacks.---------
+
+
+---------Processing bitstream.---------
+
+Utilized "udb_hv_b@[UDB Pair=(0,5)]"
+Utilized "udb_hc@[UDB Pair=(0,5)]"
+Utilized "dsi_hc@[DSI=(0,5)][side=top]"
+Utilized "dsi_hv_a@[DSI=(0,5)][side=top]"
+
+---------Propagating signals.---------
+
+Found signal "Net_102" on jack "statctrl:out0[UDB=(0,5)]".
+Number of connected bvjacks: 1.
+
+    1. Connected jack name: "io_ijack_2[IOP=(6)]"
+    
+    
+
+
+---------Verifying signals (routing).---------
+
+
+---------Verifying configuration.---------
+
+
+
+----------------------------------------------------------------------
+
+Bitstream verification passed.
+
+-----------------------------------------------------------------------
+

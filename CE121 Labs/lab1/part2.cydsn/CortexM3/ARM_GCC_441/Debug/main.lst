@@ -1,0 +1,439 @@
+ARM GAS  C:\DOCUME~1\dtucker\LOCALS~1\Temp\cc9SrQ5C.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 18, 4
+  12              		.thumb
+  13              		.file	"main.c"
+  14              		.section	.debug_abbrev,"",%progbits
+  15              	.Ldebug_abbrev0:
+  16              		.section	.debug_info,"",%progbits
+  17              	.Ldebug_info0:
+  18              		.section	.debug_line,"",%progbits
+  19              	.Ldebug_line0:
+  20 0000 62000000 		.text
+  20      02004600 
+  20      00000201 
+  20      FB0E0D00 
+  20      01010101 
+  21              	.Ltext0:
+  22              		.cfi_sections	.debug_frame
+  23              		.section	.rodata
+  24              		.align	2
+  25              	.LC0:
+  26 0000 696E6974 		.ascii	"initializing...\000"
+  26      69616C69 
+  26      7A696E67 
+  26      2E2E2E00 
+  27              		.section	.text.main,"ax",%progbits
+  28              		.align	2
+  29              		.global	main
+  30              		.thumb
+  31              		.thumb_func
+  32              		.type	main, %function
+  33              	main:
+  34              	.LFB29:
+  35              		.file 1 ".\\main.c"
+   1:.\main.c      **** #include <device.h>
+   2:.\main.c      **** 
+   3:.\main.c      **** 
+   4:.\main.c      **** void main () {
+  36              		.loc 1 4 0
+  37              		.cfi_startproc
+  38              		@ args = 0, pretend = 0, frame = 0
+  39              		@ frame_needed = 1, uses_anonymous_args = 0
+  40 0000 80B5     		push	{r7, lr}
+  41              	.LCFI0:
+  42              		.cfi_def_cfa_offset 8
+  43 0002 00AF     		add	r7, sp, #0
+  44              		.cfi_offset 14, -4
+  45              		.cfi_offset 7, -8
+  46              	.LCFI1:
+ARM GAS  C:\DOCUME~1\dtucker\LOCALS~1\Temp\cc9SrQ5C.s 			page 2
+
+
+  47              		.cfi_def_cfa_register 7
+   5:.\main.c      ****     LCD_Start();
+  48              		.loc 1 5 0
+  49 0004 FFF7FEFF 		bl	LCD_Start
+   6:.\main.c      ****     LCD_Position(0,0);
+  50              		.loc 1 6 0
+  51 0008 4FF00000 		mov	r0, #0
+  52 000c 4FF00001 		mov	r1, #0
+  53 0010 FFF7FEFF 		bl	LCD_Position
+   7:.\main.c      ****     LCD_PrintString("initializing...");
+  54              		.loc 1 7 0
+  55 0014 40F20000 		movw	r0, #:lower16:.LC0
+  56 0018 C0F20000 		movt	r0, #:upper16:.LC0
+  57 001c FFF7FEFF 		bl	LCD_PrintString
+   8:.\main.c      ****     ISR_Start();
+  58              		.loc 1 8 0
+  59 0020 FFF7FEFF 		bl	ISR_Start
+   9:.\main.c      ****     ADC_Start();
+  60              		.loc 1 9 0
+  61 0024 FFF7FEFF 		bl	ADC_Start
+  10:.\main.c      ****     ADC_StartConvert();
+  62              		.loc 1 10 0
+  63 0028 FFF7FEFF 		bl	ADC_StartConvert
+  11:.\main.c      ****     PWM_Start();
+  64              		.loc 1 11 0
+  65 002c FFF7FEFF 		bl	PWM_Start
+  12:.\main.c      ****     /* CyGlobalIntEnable; */ /* Uncomment this line to enable global interrupts. */
+  13:.\main.c      ****     LCD_ClearDisplay();
+  66              		.loc 1 13 0
+  67 0030 4FF00100 		mov	r0, #1
+  68 0034 FFF7FEFF 		bl	LCD_WriteControl
+  69              	.L2:
+  14:.\main.c      ****     while (1) {
+  15:.\main.c      ****         
+  16:.\main.c      ****     }
+  70              		.loc 1 16 0
+  71 0038 FEE7     		b	.L2
+  72              		.cfi_endproc
+  73              	.LFE29:
+  74              		.size	main, .-main
+  75 003a 00BF     		.text
+  76              	.Letext0:
+  77              		.section	.debug_loc,"",%progbits
+  78              	.Ldebug_loc0:
+  79              	.LLST0:
+  80 0000 00000000 		.4byte	.LFB29
+  81 0004 02000000 		.4byte	.LCFI0
+  82 0008 0100     		.2byte	0x1
+  83 000a 5D       		.byte	0x5d
+  84 000b 02000000 		.4byte	.LCFI0
+  85 000f 04000000 		.4byte	.LCFI1
+  86 0013 0200     		.2byte	0x2
+  87 0015 7D       		.byte	0x7d
+  88 0016 08       		.sleb128 8
+  89 0017 04000000 		.4byte	.LCFI1
+  90 001b 3A000000 		.4byte	.LFE29
+  91 001f 0200     		.2byte	0x2
+ARM GAS  C:\DOCUME~1\dtucker\LOCALS~1\Temp\cc9SrQ5C.s 			page 3
+
+
+  92 0021 77       		.byte	0x77
+  93 0022 08       		.sleb128 8
+  94 0023 00000000 		.4byte	0x0
+  95 0027 00000000 		.4byte	0x0
+  96              		.file 2 "./Generated_Source/PSoC5/core_cm3.h"
+  97              		.section	.debug_info
+  98 0000 AB000000 		.4byte	0xab
+  99 0004 0200     		.2byte	0x2
+ 100 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 101 000a 04       		.byte	0x4
+ 102 000b 01       		.uleb128 0x1
+ 103 000c 49000000 		.4byte	.LASF12
+ 104 0010 01       		.byte	0x1
+ 105 0011 01010000 		.4byte	.LASF13
+ 106 0015 AE000000 		.4byte	.LASF14
+ 107 0019 00000000 		.4byte	0x0
+ 108 001d 00000000 		.4byte	0x0
+ 109 0021 00000000 		.4byte	.Ldebug_ranges0+0x0
+ 110 0025 00000000 		.4byte	.Ldebug_line0
+ 111 0029 02       		.uleb128 0x2
+ 112 002a 01       		.byte	0x1
+ 113 002b 06       		.byte	0x6
+ 114 002c A2000000 		.4byte	.LASF0
+ 115 0030 02       		.uleb128 0x2
+ 116 0031 01       		.byte	0x1
+ 117 0032 08       		.byte	0x8
+ 118 0033 55000000 		.4byte	.LASF1
+ 119 0037 02       		.uleb128 0x2
+ 120 0038 02       		.byte	0x2
+ 121 0039 05       		.byte	0x5
+ 122 003a 75000000 		.4byte	.LASF2
+ 123 003e 02       		.uleb128 0x2
+ 124 003f 02       		.byte	0x2
+ 125 0040 07       		.byte	0x7
+ 126 0041 8F000000 		.4byte	.LASF3
+ 127 0045 02       		.uleb128 0x2
+ 128 0046 04       		.byte	0x4
+ 129 0047 05       		.byte	0x5
+ 130 0048 86000000 		.4byte	.LASF4
+ 131 004c 02       		.uleb128 0x2
+ 132 004d 04       		.byte	0x4
+ 133 004e 07       		.byte	0x7
+ 134 004f 20000000 		.4byte	.LASF5
+ 135 0053 02       		.uleb128 0x2
+ 136 0054 08       		.byte	0x8
+ 137 0055 05       		.byte	0x5
+ 138 0056 00000000 		.4byte	.LASF6
+ 139 005a 02       		.uleb128 0x2
+ 140 005b 08       		.byte	0x8
+ 141 005c 07       		.byte	0x7
+ 142 005d 32000000 		.4byte	.LASF7
+ 143 0061 03       		.uleb128 0x3
+ 144 0062 04       		.byte	0x4
+ 145 0063 05       		.byte	0x5
+ 146 0064 696E7400 		.ascii	"int\000"
+ 147 0068 02       		.uleb128 0x2
+ 148 0069 04       		.byte	0x4
+ARM GAS  C:\DOCUME~1\dtucker\LOCALS~1\Temp\cc9SrQ5C.s 			page 4
+
+
+ 149 006a 07       		.byte	0x7
+ 150 006b 0E000000 		.4byte	.LASF8
+ 151 006f 02       		.uleb128 0x2
+ 152 0070 04       		.byte	0x4
+ 153 0071 04       		.byte	0x4
+ 154 0072 FB000000 		.4byte	.LASF9
+ 155 0076 02       		.uleb128 0x2
+ 156 0077 08       		.byte	0x8
+ 157 0078 04       		.byte	0x4
+ 158 0079 7F000000 		.4byte	.LASF10
+ 159 007d 02       		.uleb128 0x2
+ 160 007e 01       		.byte	0x1
+ 161 007f 08       		.byte	0x8
+ 162 0080 63000000 		.4byte	.LASF11
+ 163 0084 04       		.uleb128 0x4
+ 164 0085 04       		.byte	0x4
+ 165 0086 07       		.byte	0x7
+ 166 0087 05       		.uleb128 0x5
+ 167 0088 01       		.byte	0x1
+ 168 0089 1B000000 		.4byte	.LASF15
+ 169 008d 01       		.byte	0x1
+ 170 008e 04       		.byte	0x4
+ 171 008f 00000000 		.4byte	.LFB29
+ 172 0093 3A000000 		.4byte	.LFE29
+ 173 0097 00000000 		.4byte	.LLST0
+ 174 009b 06       		.uleb128 0x6
+ 175 009c 68000000 		.4byte	.LASF16
+ 176 00a0 02       		.byte	0x2
+ 177 00a1 CE06     		.2byte	0x6ce
+ 178 00a3 A9000000 		.4byte	0xa9
+ 179 00a7 01       		.byte	0x1
+ 180 00a8 01       		.byte	0x1
+ 181 00a9 07       		.uleb128 0x7
+ 182 00aa 61000000 		.4byte	0x61
+ 183 00ae 00       		.byte	0x0
+ 184              		.section	.debug_abbrev
+ 185 0000 01       		.uleb128 0x1
+ 186 0001 11       		.uleb128 0x11
+ 187 0002 01       		.byte	0x1
+ 188 0003 25       		.uleb128 0x25
+ 189 0004 0E       		.uleb128 0xe
+ 190 0005 13       		.uleb128 0x13
+ 191 0006 0B       		.uleb128 0xb
+ 192 0007 03       		.uleb128 0x3
+ 193 0008 0E       		.uleb128 0xe
+ 194 0009 1B       		.uleb128 0x1b
+ 195 000a 0E       		.uleb128 0xe
+ 196 000b 11       		.uleb128 0x11
+ 197 000c 01       		.uleb128 0x1
+ 198 000d 52       		.uleb128 0x52
+ 199 000e 01       		.uleb128 0x1
+ 200 000f 55       		.uleb128 0x55
+ 201 0010 06       		.uleb128 0x6
+ 202 0011 10       		.uleb128 0x10
+ 203 0012 06       		.uleb128 0x6
+ 204 0013 00       		.byte	0x0
+ 205 0014 00       		.byte	0x0
+ARM GAS  C:\DOCUME~1\dtucker\LOCALS~1\Temp\cc9SrQ5C.s 			page 5
+
+
+ 206 0015 02       		.uleb128 0x2
+ 207 0016 24       		.uleb128 0x24
+ 208 0017 00       		.byte	0x0
+ 209 0018 0B       		.uleb128 0xb
+ 210 0019 0B       		.uleb128 0xb
+ 211 001a 3E       		.uleb128 0x3e
+ 212 001b 0B       		.uleb128 0xb
+ 213 001c 03       		.uleb128 0x3
+ 214 001d 0E       		.uleb128 0xe
+ 215 001e 00       		.byte	0x0
+ 216 001f 00       		.byte	0x0
+ 217 0020 03       		.uleb128 0x3
+ 218 0021 24       		.uleb128 0x24
+ 219 0022 00       		.byte	0x0
+ 220 0023 0B       		.uleb128 0xb
+ 221 0024 0B       		.uleb128 0xb
+ 222 0025 3E       		.uleb128 0x3e
+ 223 0026 0B       		.uleb128 0xb
+ 224 0027 03       		.uleb128 0x3
+ 225 0028 08       		.uleb128 0x8
+ 226 0029 00       		.byte	0x0
+ 227 002a 00       		.byte	0x0
+ 228 002b 04       		.uleb128 0x4
+ 229 002c 24       		.uleb128 0x24
+ 230 002d 00       		.byte	0x0
+ 231 002e 0B       		.uleb128 0xb
+ 232 002f 0B       		.uleb128 0xb
+ 233 0030 3E       		.uleb128 0x3e
+ 234 0031 0B       		.uleb128 0xb
+ 235 0032 00       		.byte	0x0
+ 236 0033 00       		.byte	0x0
+ 237 0034 05       		.uleb128 0x5
+ 238 0035 2E       		.uleb128 0x2e
+ 239 0036 00       		.byte	0x0
+ 240 0037 3F       		.uleb128 0x3f
+ 241 0038 0C       		.uleb128 0xc
+ 242 0039 03       		.uleb128 0x3
+ 243 003a 0E       		.uleb128 0xe
+ 244 003b 3A       		.uleb128 0x3a
+ 245 003c 0B       		.uleb128 0xb
+ 246 003d 3B       		.uleb128 0x3b
+ 247 003e 0B       		.uleb128 0xb
+ 248 003f 11       		.uleb128 0x11
+ 249 0040 01       		.uleb128 0x1
+ 250 0041 12       		.uleb128 0x12
+ 251 0042 01       		.uleb128 0x1
+ 252 0043 40       		.uleb128 0x40
+ 253 0044 06       		.uleb128 0x6
+ 254 0045 00       		.byte	0x0
+ 255 0046 00       		.byte	0x0
+ 256 0047 06       		.uleb128 0x6
+ 257 0048 34       		.uleb128 0x34
+ 258 0049 00       		.byte	0x0
+ 259 004a 03       		.uleb128 0x3
+ 260 004b 0E       		.uleb128 0xe
+ 261 004c 3A       		.uleb128 0x3a
+ 262 004d 0B       		.uleb128 0xb
+ARM GAS  C:\DOCUME~1\dtucker\LOCALS~1\Temp\cc9SrQ5C.s 			page 6
+
+
+ 263 004e 3B       		.uleb128 0x3b
+ 264 004f 05       		.uleb128 0x5
+ 265 0050 49       		.uleb128 0x49
+ 266 0051 13       		.uleb128 0x13
+ 267 0052 3F       		.uleb128 0x3f
+ 268 0053 0C       		.uleb128 0xc
+ 269 0054 3C       		.uleb128 0x3c
+ 270 0055 0C       		.uleb128 0xc
+ 271 0056 00       		.byte	0x0
+ 272 0057 00       		.byte	0x0
+ 273 0058 07       		.uleb128 0x7
+ 274 0059 35       		.uleb128 0x35
+ 275 005a 00       		.byte	0x0
+ 276 005b 49       		.uleb128 0x49
+ 277 005c 13       		.uleb128 0x13
+ 278 005d 00       		.byte	0x0
+ 279 005e 00       		.byte	0x0
+ 280 005f 00       		.byte	0x0
+ 281              		.section	.debug_pubnames,"",%progbits
+ 282 0000 17000000 		.4byte	0x17
+ 283 0004 0200     		.2byte	0x2
+ 284 0006 00000000 		.4byte	.Ldebug_info0
+ 285 000a AF000000 		.4byte	0xaf
+ 286 000e 87000000 		.4byte	0x87
+ 287 0012 6D61696E 		.ascii	"main\000"
+ 287      00
+ 288 0017 00000000 		.4byte	0x0
+ 289              		.section	.debug_aranges,"",%progbits
+ 290 0000 1C000000 		.4byte	0x1c
+ 291 0004 0200     		.2byte	0x2
+ 292 0006 00000000 		.4byte	.Ldebug_info0
+ 293 000a 04       		.byte	0x4
+ 294 000b 00       		.byte	0x0
+ 295 000c 0000     		.2byte	0x0
+ 296 000e 0000     		.2byte	0x0
+ 297 0010 00000000 		.4byte	.LFB29
+ 298 0014 3A000000 		.4byte	.LFE29-.LFB29
+ 299 0018 00000000 		.4byte	0x0
+ 300 001c 00000000 		.4byte	0x0
+ 301              		.section	.debug_ranges,"",%progbits
+ 302              	.Ldebug_ranges0:
+ 303 0000 00000000 		.4byte	.Ltext0
+ 304 0004 00000000 		.4byte	.Letext0
+ 305 0008 00000000 		.4byte	.LFB29
+ 306 000c 3A000000 		.4byte	.LFE29
+ 307 0010 00000000 		.4byte	0x0
+ 308 0014 00000000 		.4byte	0x0
+ 309              		.section	.debug_str,"MS",%progbits,1
+ 310              	.LASF6:
+ 311 0000 6C6F6E67 		.ascii	"long long int\000"
+ 311      206C6F6E 
+ 311      6720696E 
+ 311      7400
+ 312              	.LASF8:
+ 313 000e 756E7369 		.ascii	"unsigned int\000"
+ 313      676E6564 
+ 313      20696E74 
+ARM GAS  C:\DOCUME~1\dtucker\LOCALS~1\Temp\cc9SrQ5C.s 			page 7
+
+
+ 313      00
+ 314              	.LASF15:
+ 315 001b 6D61696E 		.ascii	"main\000"
+ 315      00
+ 316              	.LASF5:
+ 317 0020 6C6F6E67 		.ascii	"long unsigned int\000"
+ 317      20756E73 
+ 317      69676E65 
+ 317      6420696E 
+ 317      7400
+ 318              	.LASF7:
+ 319 0032 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 319      206C6F6E 
+ 319      6720756E 
+ 319      7369676E 
+ 319      65642069 
+ 320              	.LASF12:
+ 321 0049 474E5520 		.ascii	"GNU C 4.4.1\000"
+ 321      4320342E 
+ 321      342E3100 
+ 322              	.LASF1:
+ 323 0055 756E7369 		.ascii	"unsigned char\000"
+ 323      676E6564 
+ 323      20636861 
+ 323      7200
+ 324              	.LASF11:
+ 325 0063 63686172 		.ascii	"char\000"
+ 325      00
+ 326              	.LASF16:
+ 327 0068 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 327      52784275 
+ 327      66666572 
+ 327      00
+ 328              	.LASF2:
+ 329 0075 73686F72 		.ascii	"short int\000"
+ 329      7420696E 
+ 329      7400
+ 330              	.LASF10:
+ 331 007f 646F7562 		.ascii	"double\000"
+ 331      6C6500
+ 332              	.LASF4:
+ 333 0086 6C6F6E67 		.ascii	"long int\000"
+ 333      20696E74 
+ 333      00
+ 334              	.LASF3:
+ 335 008f 73686F72 		.ascii	"short unsigned int\000"
+ 335      7420756E 
+ 335      7369676E 
+ 335      65642069 
+ 335      6E7400
+ 336              	.LASF0:
+ 337 00a2 7369676E 		.ascii	"signed char\000"
+ 337      65642063 
+ 337      68617200 
+ 338              	.LASF14:
+ 339 00ae 433A5C44 		.ascii	"C:\\Documents and Settings\\dtucker\\My Documents\\"
+ 339      6F63756D 
+ARM GAS  C:\DOCUME~1\dtucker\LOCALS~1\Temp\cc9SrQ5C.s 			page 8
+
+
+ 339      656E7473 
+ 339      20616E64 
+ 339      20536574 
+ 340 00dd 50536F43 		.ascii	"PSoC Creator\\lab1\\part2.cydsn\000"
+ 340      20437265 
+ 340      61746F72 
+ 340      5C6C6162 
+ 340      315C7061 
+ 341              	.LASF9:
+ 342 00fb 666C6F61 		.ascii	"float\000"
+ 342      7400
+ 343              	.LASF13:
+ 344 0101 2E5C6D61 		.ascii	".\\main.c\000"
+ 344      696E2E63 
+ 344      00
+ 345              		.ident	"GCC: (Sourcery G++ Lite 2010q1-188) 4.4.1"

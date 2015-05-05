@@ -1,0 +1,16 @@
+--------------- Rebuild Started: 06/15/2013 21:36:04 Project: LCD.c, Configuration: ARM GCC 4.4.1 Debug ---------------
+arm-none-eabi-gcc.exe -I. -Wno-main -mcpu=cortex-m3 -mthumb -Wall -g -D DEBUG -Wa,-alh=.\CortexM3\ARM_GCC_441\Debug\LCD.lst -ffunction-sections -c .\LCD.c -o .\CortexM3\ARM_GCC_441\Debug\LCD.o
+In file included from .\LCD.c:1:
+./LCD.h:4: error: expected ')' before 'line'
+./LCD.h:7: error: expected ')' before 'row'
+.\LCD.c:6: error: expected ')' before 'line'
+.\LCD.c: In function 'LCD_UpdateStatus':
+.\LCD.c:16: warning: implicit declaration of function 'LCD_ClearDisplay'
+.\LCD.c:17: warning: implicit declaration of function 'LCD_Position'
+.\LCD.c:18: warning: implicit declaration of function 'LCD_PrintString'
+.\LCD.c: In function 'LCD_UpdateMessage':
+.\LCD.c:25: warning: implicit declaration of function 'LCD_ClearLine'
+.\LCD.c: At top level:
+.\LCD.c:32: error: expected ')' before 'row'
+The command 'arm-none-eabi-gcc.exe' failed with exit code '1'.
+--------------- Rebuild Failed: 06/15/2013 21:36:05 ---------------

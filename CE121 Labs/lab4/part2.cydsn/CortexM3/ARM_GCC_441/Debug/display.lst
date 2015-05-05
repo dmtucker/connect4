@@ -1,0 +1,977 @@
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\ccmIGcdP.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 18, 4
+  12              		.thumb
+  13              		.file	"display.c"
+  14              		.section	.debug_abbrev,"",%progbits
+  15              	.Ldebug_abbrev0:
+  16              		.section	.debug_info,"",%progbits
+  17              	.Ldebug_info0:
+  18              		.section	.debug_line,"",%progbits
+  19              	.Ldebug_line0:
+  20 0000 A7000000 		.text
+  20      02004900 
+  20      00000201 
+  20      FB0E0D00 
+  20      01010101 
+  21              	.Ltext0:
+  22              		.cfi_sections	.debug_frame
+  23              		.section	.rodata
+  24              		.align	2
+  25              	.LC0:
+  26 0000 20202020 		.ascii	"                \000"
+  26      20202020 
+  26      20202020 
+  26      20202020 
+  26      00
+  27 0011 000000   		.section	.text.LCD_ClearLine,"ax",%progbits
+  28              		.align	2
+  29              		.global	LCD_ClearLine
+  30              		.thumb
+  31              		.thumb_func
+  32              		.type	LCD_ClearLine, %function
+  33              	LCD_ClearLine:
+  34              	.LFB29:
+  35              		.file 1 ".\\display.c"
+   1:.\display.c   **** #include <device.h>
+   2:.\display.c   **** 
+   3:.\display.c   **** 
+   4:.\display.c   **** 
+   5:.\display.c   **** 
+   6:.\display.c   **** void LCD_ClearLine (int line) {
+  36              		.loc 1 6 0
+  37              		.cfi_startproc
+  38              		@ args = 0, pretend = 0, frame = 8
+  39              		@ frame_needed = 1, uses_anonymous_args = 0
+  40 0000 80B5     		push	{r7, lr}
+  41              	.LCFI0:
+  42              		.cfi_def_cfa_offset 8
+  43 0002 82B0     		sub	sp, sp, #8
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\ccmIGcdP.s 			page 2
+
+
+  44              	.LCFI1:
+  45              		.cfi_def_cfa_offset 16
+  46 0004 00AF     		add	r7, sp, #0
+  47              		.cfi_offset 14, -4
+  48              		.cfi_offset 7, -8
+  49              	.LCFI2:
+  50              		.cfi_def_cfa_register 7
+  51 0006 7860     		str	r0, [r7, #4]
+   7:.\display.c   ****     LCD_Position(line,0);
+  52              		.loc 1 7 0
+  53 0008 7B68     		ldr	r3, [r7, #4]
+  54 000a DBB2     		uxtb	r3, r3
+  55 000c 1846     		mov	r0, r3
+  56 000e 4FF00001 		mov	r1, #0
+  57 0012 FFF7FEFF 		bl	LCD_Position
+   8:.\display.c   ****     LCD_PrintString("                ");
+  58              		.loc 1 8 0
+  59 0016 40F20000 		movw	r0, #:lower16:.LC0
+  60 001a C0F20000 		movt	r0, #:upper16:.LC0
+  61 001e FFF7FEFF 		bl	LCD_PrintString
+   9:.\display.c   **** }
+  62              		.loc 1 9 0
+  63 0022 07F10807 		add	r7, r7, #8
+  64 0026 BD46     		mov	sp, r7
+  65 0028 80BD     		pop	{r7, pc}
+  66              		.cfi_endproc
+  67              	.LFE29:
+  68              		.size	LCD_ClearLine, .-LCD_ClearLine
+  69 002a 00BF     		.section	.text.LCD_UpdateStatus,"ax",%progbits
+  70              		.align	2
+  71              		.global	LCD_UpdateStatus
+  72              		.thumb
+  73              		.thumb_func
+  74              		.type	LCD_UpdateStatus, %function
+  75              	LCD_UpdateStatus:
+  76              	.LFB30:
+  10:.\display.c   **** 
+  11:.\display.c   **** 
+  12:.\display.c   **** 
+  13:.\display.c   **** 
+  14:.\display.c   **** void LCD_UpdateStatus (const char string[]) {
+  77              		.loc 1 14 0
+  78              		.cfi_startproc
+  79              		@ args = 0, pretend = 0, frame = 8
+  80              		@ frame_needed = 1, uses_anonymous_args = 0
+  81 0000 80B5     		push	{r7, lr}
+  82              	.LCFI3:
+  83              		.cfi_def_cfa_offset 8
+  84 0002 82B0     		sub	sp, sp, #8
+  85              	.LCFI4:
+  86              		.cfi_def_cfa_offset 16
+  87 0004 00AF     		add	r7, sp, #0
+  88              		.cfi_offset 14, -4
+  89              		.cfi_offset 7, -8
+  90              	.LCFI5:
+  91              		.cfi_def_cfa_register 7
+  92 0006 7860     		str	r0, [r7, #4]
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\ccmIGcdP.s 			page 3
+
+
+  15:.\display.c   ****     LCD_ClearDisplay();
+  93              		.loc 1 15 0
+  94 0008 4FF00100 		mov	r0, #1
+  95 000c FFF7FEFF 		bl	LCD_WriteControl
+  16:.\display.c   ****     LCD_Position(0,0);
+  96              		.loc 1 16 0
+  97 0010 4FF00000 		mov	r0, #0
+  98 0014 4FF00001 		mov	r1, #0
+  99 0018 FFF7FEFF 		bl	LCD_Position
+  17:.\display.c   ****     LCD_PrintString(string);
+ 100              		.loc 1 17 0
+ 101 001c 7868     		ldr	r0, [r7, #4]
+ 102 001e FFF7FEFF 		bl	LCD_PrintString
+  18:.\display.c   **** }
+ 103              		.loc 1 18 0
+ 104 0022 07F10807 		add	r7, r7, #8
+ 105 0026 BD46     		mov	sp, r7
+ 106 0028 80BD     		pop	{r7, pc}
+ 107              		.cfi_endproc
+ 108              	.LFE30:
+ 109              		.size	LCD_UpdateStatus, .-LCD_UpdateStatus
+ 110 002a 00BF     		.section	.text.LCD_UpdateMessage,"ax",%progbits
+ 111              		.align	2
+ 112              		.global	LCD_UpdateMessage
+ 113              		.thumb
+ 114              		.thumb_func
+ 115              		.type	LCD_UpdateMessage, %function
+ 116              	LCD_UpdateMessage:
+ 117              	.LFB31:
+  19:.\display.c   **** 
+  20:.\display.c   **** 
+  21:.\display.c   **** 
+  22:.\display.c   **** 
+  23:.\display.c   **** void LCD_UpdateMessage (const char string[]) {
+ 118              		.loc 1 23 0
+ 119              		.cfi_startproc
+ 120              		@ args = 0, pretend = 0, frame = 8
+ 121              		@ frame_needed = 1, uses_anonymous_args = 0
+ 122 0000 80B5     		push	{r7, lr}
+ 123              	.LCFI6:
+ 124              		.cfi_def_cfa_offset 8
+ 125 0002 82B0     		sub	sp, sp, #8
+ 126              	.LCFI7:
+ 127              		.cfi_def_cfa_offset 16
+ 128 0004 00AF     		add	r7, sp, #0
+ 129              		.cfi_offset 14, -4
+ 130              		.cfi_offset 7, -8
+ 131              	.LCFI8:
+ 132              		.cfi_def_cfa_register 7
+ 133 0006 7860     		str	r0, [r7, #4]
+  24:.\display.c   ****     LCD_ClearLine(1);
+ 134              		.loc 1 24 0
+ 135 0008 4FF00100 		mov	r0, #1
+ 136 000c FFF7FEFF 		bl	LCD_ClearLine
+  25:.\display.c   ****     LCD_Position(1,0);
+ 137              		.loc 1 25 0
+ 138 0010 4FF00100 		mov	r0, #1
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\ccmIGcdP.s 			page 4
+
+
+ 139 0014 4FF00001 		mov	r1, #0
+ 140 0018 FFF7FEFF 		bl	LCD_Position
+  26:.\display.c   ****     LCD_PrintString(string);
+ 141              		.loc 1 26 0
+ 142 001c 7868     		ldr	r0, [r7, #4]
+ 143 001e FFF7FEFF 		bl	LCD_PrintString
+  27:.\display.c   **** }
+ 144              		.loc 1 27 0
+ 145 0022 07F10807 		add	r7, r7, #8
+ 146 0026 BD46     		mov	sp, r7
+ 147 0028 80BD     		pop	{r7, pc}
+ 148              		.cfi_endproc
+ 149              	.LFE31:
+ 150              		.size	LCD_UpdateMessage, .-LCD_UpdateMessage
+ 151 002a 00BF     		.section	.text.LCD_Spin,"ax",%progbits
+ 152              		.align	2
+ 153              		.global	LCD_Spin
+ 154              		.thumb
+ 155              		.thumb_func
+ 156              		.type	LCD_Spin, %function
+ 157              	LCD_Spin:
+ 158              	.LFB32:
+  28:.\display.c   **** 
+  29:.\display.c   **** 
+  30:.\display.c   **** 
+  31:.\display.c   **** 
+  32:.\display.c   **** void LCD_Spin (int row, int col, int speed, int count) {
+ 159              		.loc 1 32 0
+ 160              		.cfi_startproc
+ 161              		@ args = 0, pretend = 0, frame = 16
+ 162              		@ frame_needed = 1, uses_anonymous_args = 0
+ 163 0000 80B5     		push	{r7, lr}
+ 164              	.LCFI9:
+ 165              		.cfi_def_cfa_offset 8
+ 166 0002 84B0     		sub	sp, sp, #16
+ 167              	.LCFI10:
+ 168              		.cfi_def_cfa_offset 24
+ 169 0004 00AF     		add	r7, sp, #0
+ 170              		.cfi_offset 14, -4
+ 171              		.cfi_offset 7, -8
+ 172              	.LCFI11:
+ 173              		.cfi_def_cfa_register 7
+ 174 0006 F860     		str	r0, [r7, #12]
+ 175 0008 B960     		str	r1, [r7, #8]
+ 176 000a 7A60     		str	r2, [r7, #4]
+ 177 000c 3B60     		str	r3, [r7, #0]
+  33:.\display.c   ****     while (count-- > 0) {
+ 178              		.loc 1 33 0
+ 179 000e 5BE0     		b	.L8
+ 180              	.L9:
+  34:.\display.c   ****         LCD_Position(row,col);
+ 181              		.loc 1 34 0
+ 182 0010 FB68     		ldr	r3, [r7, #12]
+ 183 0012 DAB2     		uxtb	r2, r3
+ 184 0014 BB68     		ldr	r3, [r7, #8]
+ 185 0016 DBB2     		uxtb	r3, r3
+ 186 0018 1046     		mov	r0, r2
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\ccmIGcdP.s 			page 5
+
+
+ 187 001a 1946     		mov	r1, r3
+ 188 001c FFF7FEFF 		bl	LCD_Position
+  35:.\display.c   ****         LCD_PutChar('|');
+ 189              		.loc 1 35 0
+ 190 0020 4FF07C00 		mov	r0, #124
+ 191 0024 FFF7FEFF 		bl	LCD_PutChar
+  36:.\display.c   ****         CyDelay(speed/4);
+ 192              		.loc 1 36 0
+ 193 0028 7B68     		ldr	r3, [r7, #4]
+ 194 002a 03F10302 		add	r2, r3, #3
+ 195 002e 002B     		cmp	r3, #0
+ 196 0030 B8BF     		it	lt
+ 197 0032 1346     		movlt	r3, r2
+ 198 0034 4FEAA303 		asr	r3, r3, #2
+ 199 0038 1846     		mov	r0, r3
+ 200 003a FFF7FEFF 		bl	CyDelay
+  37:.\display.c   ****         LCD_Position(row,col);
+ 201              		.loc 1 37 0
+ 202 003e FB68     		ldr	r3, [r7, #12]
+ 203 0040 DAB2     		uxtb	r2, r3
+ 204 0042 BB68     		ldr	r3, [r7, #8]
+ 205 0044 DBB2     		uxtb	r3, r3
+ 206 0046 1046     		mov	r0, r2
+ 207 0048 1946     		mov	r1, r3
+ 208 004a FFF7FEFF 		bl	LCD_Position
+  38:.\display.c   ****         LCD_PutChar('/');
+ 209              		.loc 1 38 0
+ 210 004e 4FF02F00 		mov	r0, #47
+ 211 0052 FFF7FEFF 		bl	LCD_PutChar
+  39:.\display.c   ****         CyDelay(speed/4);
+ 212              		.loc 1 39 0
+ 213 0056 7B68     		ldr	r3, [r7, #4]
+ 214 0058 03F10302 		add	r2, r3, #3
+ 215 005c 002B     		cmp	r3, #0
+ 216 005e B8BF     		it	lt
+ 217 0060 1346     		movlt	r3, r2
+ 218 0062 4FEAA303 		asr	r3, r3, #2
+ 219 0066 1846     		mov	r0, r3
+ 220 0068 FFF7FEFF 		bl	CyDelay
+  40:.\display.c   ****         LCD_Position(row,col);
+ 221              		.loc 1 40 0
+ 222 006c FB68     		ldr	r3, [r7, #12]
+ 223 006e DAB2     		uxtb	r2, r3
+ 224 0070 BB68     		ldr	r3, [r7, #8]
+ 225 0072 DBB2     		uxtb	r3, r3
+ 226 0074 1046     		mov	r0, r2
+ 227 0076 1946     		mov	r1, r3
+ 228 0078 FFF7FEFF 		bl	LCD_Position
+  41:.\display.c   ****         LCD_PutChar('-');
+ 229              		.loc 1 41 0
+ 230 007c 4FF02D00 		mov	r0, #45
+ 231 0080 FFF7FEFF 		bl	LCD_PutChar
+  42:.\display.c   ****         CyDelay(speed/4);
+ 232              		.loc 1 42 0
+ 233 0084 7B68     		ldr	r3, [r7, #4]
+ 234 0086 03F10302 		add	r2, r3, #3
+ 235 008a 002B     		cmp	r3, #0
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\ccmIGcdP.s 			page 6
+
+
+ 236 008c B8BF     		it	lt
+ 237 008e 1346     		movlt	r3, r2
+ 238 0090 4FEAA303 		asr	r3, r3, #2
+ 239 0094 1846     		mov	r0, r3
+ 240 0096 FFF7FEFF 		bl	CyDelay
+  43:.\display.c   ****         LCD_Position(row,col);
+ 241              		.loc 1 43 0
+ 242 009a FB68     		ldr	r3, [r7, #12]
+ 243 009c DAB2     		uxtb	r2, r3
+ 244 009e BB68     		ldr	r3, [r7, #8]
+ 245 00a0 DBB2     		uxtb	r3, r3
+ 246 00a2 1046     		mov	r0, r2
+ 247 00a4 1946     		mov	r1, r3
+ 248 00a6 FFF7FEFF 		bl	LCD_Position
+  44:.\display.c   ****         LCD_PutChar('\\');
+ 249              		.loc 1 44 0
+ 250 00aa 4FF05C00 		mov	r0, #92
+ 251 00ae FFF7FEFF 		bl	LCD_PutChar
+  45:.\display.c   ****         CyDelay(speed/4);
+ 252              		.loc 1 45 0
+ 253 00b2 7B68     		ldr	r3, [r7, #4]
+ 254 00b4 03F10302 		add	r2, r3, #3
+ 255 00b8 002B     		cmp	r3, #0
+ 256 00ba B8BF     		it	lt
+ 257 00bc 1346     		movlt	r3, r2
+ 258 00be 4FEAA303 		asr	r3, r3, #2
+ 259 00c2 1846     		mov	r0, r3
+ 260 00c4 FFF7FEFF 		bl	CyDelay
+ 261              	.L8:
+ 262              		.loc 1 33 0
+ 263 00c8 3B68     		ldr	r3, [r7, #0]
+ 264 00ca 002B     		cmp	r3, #0
+ 265 00cc D4BF     		ite	le
+ 266 00ce 0023     		movle	r3, #0
+ 267 00d0 0123     		movgt	r3, #1
+ 268 00d2 DBB2     		uxtb	r3, r3
+ 269 00d4 3A68     		ldr	r2, [r7, #0]
+ 270 00d6 02F1FF32 		add	r2, r2, #-1
+ 271 00da 3A60     		str	r2, [r7, #0]
+ 272 00dc 002B     		cmp	r3, #0
+ 273 00de 97D1     		bne	.L9
+  46:.\display.c   ****     }
+  47:.\display.c   **** }
+ 274              		.loc 1 47 0
+ 275 00e0 07F11007 		add	r7, r7, #16
+ 276 00e4 BD46     		mov	sp, r7
+ 277 00e6 80BD     		pop	{r7, pc}
+ 278              		.cfi_endproc
+ 279              	.LFE32:
+ 280              		.size	LCD_Spin, .-LCD_Spin
+ 281              		.text
+ 282              	.Letext0:
+ 283              		.section	.debug_loc,"",%progbits
+ 284              	.Ldebug_loc0:
+ 285              	.LLST0:
+ 286 0000 00000000 		.4byte	.LFB29
+ 287 0004 02000000 		.4byte	.LCFI0
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\ccmIGcdP.s 			page 7
+
+
+ 288 0008 0100     		.2byte	0x1
+ 289 000a 5D       		.byte	0x5d
+ 290 000b 02000000 		.4byte	.LCFI0
+ 291 000f 04000000 		.4byte	.LCFI1
+ 292 0013 0200     		.2byte	0x2
+ 293 0015 7D       		.byte	0x7d
+ 294 0016 08       		.sleb128 8
+ 295 0017 04000000 		.4byte	.LCFI1
+ 296 001b 06000000 		.4byte	.LCFI2
+ 297 001f 0200     		.2byte	0x2
+ 298 0021 7D       		.byte	0x7d
+ 299 0022 10       		.sleb128 16
+ 300 0023 06000000 		.4byte	.LCFI2
+ 301 0027 2A000000 		.4byte	.LFE29
+ 302 002b 0200     		.2byte	0x2
+ 303 002d 77       		.byte	0x77
+ 304 002e 10       		.sleb128 16
+ 305 002f 00000000 		.4byte	0x0
+ 306 0033 00000000 		.4byte	0x0
+ 307              	.LLST1:
+ 308 0037 00000000 		.4byte	.LFB30
+ 309 003b 02000000 		.4byte	.LCFI3
+ 310 003f 0100     		.2byte	0x1
+ 311 0041 5D       		.byte	0x5d
+ 312 0042 02000000 		.4byte	.LCFI3
+ 313 0046 04000000 		.4byte	.LCFI4
+ 314 004a 0200     		.2byte	0x2
+ 315 004c 7D       		.byte	0x7d
+ 316 004d 08       		.sleb128 8
+ 317 004e 04000000 		.4byte	.LCFI4
+ 318 0052 06000000 		.4byte	.LCFI5
+ 319 0056 0200     		.2byte	0x2
+ 320 0058 7D       		.byte	0x7d
+ 321 0059 10       		.sleb128 16
+ 322 005a 06000000 		.4byte	.LCFI5
+ 323 005e 2A000000 		.4byte	.LFE30
+ 324 0062 0200     		.2byte	0x2
+ 325 0064 77       		.byte	0x77
+ 326 0065 10       		.sleb128 16
+ 327 0066 00000000 		.4byte	0x0
+ 328 006a 00000000 		.4byte	0x0
+ 329              	.LLST2:
+ 330 006e 00000000 		.4byte	.LFB31
+ 331 0072 02000000 		.4byte	.LCFI6
+ 332 0076 0100     		.2byte	0x1
+ 333 0078 5D       		.byte	0x5d
+ 334 0079 02000000 		.4byte	.LCFI6
+ 335 007d 04000000 		.4byte	.LCFI7
+ 336 0081 0200     		.2byte	0x2
+ 337 0083 7D       		.byte	0x7d
+ 338 0084 08       		.sleb128 8
+ 339 0085 04000000 		.4byte	.LCFI7
+ 340 0089 06000000 		.4byte	.LCFI8
+ 341 008d 0200     		.2byte	0x2
+ 342 008f 7D       		.byte	0x7d
+ 343 0090 10       		.sleb128 16
+ 344 0091 06000000 		.4byte	.LCFI8
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\ccmIGcdP.s 			page 8
+
+
+ 345 0095 2A000000 		.4byte	.LFE31
+ 346 0099 0200     		.2byte	0x2
+ 347 009b 77       		.byte	0x77
+ 348 009c 10       		.sleb128 16
+ 349 009d 00000000 		.4byte	0x0
+ 350 00a1 00000000 		.4byte	0x0
+ 351              	.LLST3:
+ 352 00a5 00000000 		.4byte	.LFB32
+ 353 00a9 02000000 		.4byte	.LCFI9
+ 354 00ad 0100     		.2byte	0x1
+ 355 00af 5D       		.byte	0x5d
+ 356 00b0 02000000 		.4byte	.LCFI9
+ 357 00b4 04000000 		.4byte	.LCFI10
+ 358 00b8 0200     		.2byte	0x2
+ 359 00ba 7D       		.byte	0x7d
+ 360 00bb 08       		.sleb128 8
+ 361 00bc 04000000 		.4byte	.LCFI10
+ 362 00c0 06000000 		.4byte	.LCFI11
+ 363 00c4 0200     		.2byte	0x2
+ 364 00c6 7D       		.byte	0x7d
+ 365 00c7 18       		.sleb128 24
+ 366 00c8 06000000 		.4byte	.LCFI11
+ 367 00cc E8000000 		.4byte	.LFE32
+ 368 00d0 0200     		.2byte	0x2
+ 369 00d2 77       		.byte	0x77
+ 370 00d3 18       		.sleb128 24
+ 371 00d4 00000000 		.4byte	0x0
+ 372 00d8 00000000 		.4byte	0x0
+ 373              		.file 2 "./Generated_Source/PSoC5/core_cm3.h"
+ 374              		.section	.debug_info
+ 375 0000 6C010000 		.4byte	0x16c
+ 376 0004 0200     		.2byte	0x2
+ 377 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 378 000a 04       		.byte	0x4
+ 379 000b 01       		.uleb128 0x1
+ 380 000c 64000000 		.4byte	.LASF20
+ 381 0010 01       		.byte	0x1
+ 382 0011 07010000 		.4byte	.LASF21
+ 383 0015 1A000000 		.4byte	.LASF22
+ 384 0019 00000000 		.4byte	0x0
+ 385 001d 00000000 		.4byte	0x0
+ 386 0021 00000000 		.4byte	.Ldebug_ranges0+0x0
+ 387 0025 00000000 		.4byte	.Ldebug_line0
+ 388 0029 02       		.uleb128 0x2
+ 389 002a 01       		.byte	0x1
+ 390 002b 06       		.byte	0x6
+ 391 002c D6000000 		.4byte	.LASF0
+ 392 0030 02       		.uleb128 0x2
+ 393 0031 01       		.byte	0x1
+ 394 0032 08       		.byte	0x8
+ 395 0033 70000000 		.4byte	.LASF1
+ 396 0037 02       		.uleb128 0x2
+ 397 0038 02       		.byte	0x2
+ 398 0039 05       		.byte	0x5
+ 399 003a A9000000 		.4byte	.LASF2
+ 400 003e 02       		.uleb128 0x2
+ 401 003f 02       		.byte	0x2
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\ccmIGcdP.s 			page 9
+
+
+ 402 0040 07       		.byte	0x7
+ 403 0041 C3000000 		.4byte	.LASF3
+ 404 0045 02       		.uleb128 0x2
+ 405 0046 04       		.byte	0x4
+ 406 0047 05       		.byte	0x5
+ 407 0048 BA000000 		.4byte	.LASF4
+ 408 004c 02       		.uleb128 0x2
+ 409 004d 04       		.byte	0x4
+ 410 004e 07       		.byte	0x7
+ 411 004f 3B000000 		.4byte	.LASF5
+ 412 0053 02       		.uleb128 0x2
+ 413 0054 08       		.byte	0x8
+ 414 0055 05       		.byte	0x5
+ 415 0056 00000000 		.4byte	.LASF6
+ 416 005a 02       		.uleb128 0x2
+ 417 005b 08       		.byte	0x8
+ 418 005c 07       		.byte	0x7
+ 419 005d 4D000000 		.4byte	.LASF7
+ 420 0061 03       		.uleb128 0x3
+ 421 0062 04       		.byte	0x4
+ 422 0063 05       		.byte	0x5
+ 423 0064 696E7400 		.ascii	"int\000"
+ 424 0068 02       		.uleb128 0x2
+ 425 0069 04       		.byte	0x4
+ 426 006a 07       		.byte	0x7
+ 427 006b 1C010000 		.4byte	.LASF8
+ 428 006f 02       		.uleb128 0x2
+ 429 0070 04       		.byte	0x4
+ 430 0071 04       		.byte	0x4
+ 431 0072 01010000 		.4byte	.LASF9
+ 432 0076 02       		.uleb128 0x2
+ 433 0077 08       		.byte	0x8
+ 434 0078 04       		.byte	0x4
+ 435 0079 B3000000 		.4byte	.LASF10
+ 436 007d 02       		.uleb128 0x2
+ 437 007e 01       		.byte	0x1
+ 438 007f 08       		.byte	0x8
+ 439 0080 29010000 		.4byte	.LASF11
+ 440 0084 04       		.uleb128 0x4
+ 441 0085 04       		.byte	0x4
+ 442 0086 07       		.byte	0x7
+ 443 0087 05       		.uleb128 0x5
+ 444 0088 04       		.byte	0x4
+ 445 0089 8D000000 		.4byte	0x8d
+ 446 008d 06       		.uleb128 0x6
+ 447 008e 7D000000 		.4byte	0x7d
+ 448 0092 07       		.uleb128 0x7
+ 449 0093 01       		.byte	0x1
+ 450 0094 F3000000 		.4byte	.LASF12
+ 451 0098 01       		.byte	0x1
+ 452 0099 06       		.byte	0x6
+ 453 009a 01       		.byte	0x1
+ 454 009b 00000000 		.4byte	.LFB29
+ 455 009f 2A000000 		.4byte	.LFE29
+ 456 00a3 00000000 		.4byte	.LLST0
+ 457 00a7 BA000000 		.4byte	0xba
+ 458 00ab 08       		.uleb128 0x8
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\ccmIGcdP.s 			page 10
+
+
+ 459 00ac 0E000000 		.4byte	.LASF14
+ 460 00b0 01       		.byte	0x1
+ 461 00b1 06       		.byte	0x6
+ 462 00b2 61000000 		.4byte	0x61
+ 463 00b6 02       		.byte	0x2
+ 464 00b7 91       		.byte	0x91
+ 465 00b8 74       		.sleb128 -12
+ 466 00b9 00       		.byte	0x0
+ 467 00ba 07       		.uleb128 0x7
+ 468 00bb 01       		.byte	0x1
+ 469 00bc E2000000 		.4byte	.LASF13
+ 470 00c0 01       		.byte	0x1
+ 471 00c1 0E       		.byte	0xe
+ 472 00c2 01       		.byte	0x1
+ 473 00c3 00000000 		.4byte	.LFB30
+ 474 00c7 2A000000 		.4byte	.LFE30
+ 475 00cb 37000000 		.4byte	.LLST1
+ 476 00cf E2000000 		.4byte	0xe2
+ 477 00d3 08       		.uleb128 0x8
+ 478 00d4 13000000 		.4byte	.LASF15
+ 479 00d8 01       		.byte	0x1
+ 480 00d9 0E       		.byte	0xe
+ 481 00da 87000000 		.4byte	0x87
+ 482 00de 02       		.byte	0x2
+ 483 00df 91       		.byte	0x91
+ 484 00e0 74       		.sleb128 -12
+ 485 00e1 00       		.byte	0x0
+ 486 00e2 07       		.uleb128 0x7
+ 487 00e3 01       		.byte	0x1
+ 488 00e4 84000000 		.4byte	.LASF16
+ 489 00e8 01       		.byte	0x1
+ 490 00e9 17       		.byte	0x17
+ 491 00ea 01       		.byte	0x1
+ 492 00eb 00000000 		.4byte	.LFB31
+ 493 00ef 2A000000 		.4byte	.LFE31
+ 494 00f3 6E000000 		.4byte	.LLST2
+ 495 00f7 0A010000 		.4byte	0x10a
+ 496 00fb 08       		.uleb128 0x8
+ 497 00fc 13000000 		.4byte	.LASF15
+ 498 0100 01       		.byte	0x1
+ 499 0101 17       		.byte	0x17
+ 500 0102 87000000 		.4byte	0x87
+ 501 0106 02       		.byte	0x2
+ 502 0107 91       		.byte	0x91
+ 503 0108 74       		.sleb128 -12
+ 504 0109 00       		.byte	0x0
+ 505 010a 07       		.uleb128 0x7
+ 506 010b 01       		.byte	0x1
+ 507 010c 13010000 		.4byte	.LASF17
+ 508 0110 01       		.byte	0x1
+ 509 0111 20       		.byte	0x20
+ 510 0112 01       		.byte	0x1
+ 511 0113 00000000 		.4byte	.LFB32
+ 512 0117 E8000000 		.4byte	.LFE32
+ 513 011b A5000000 		.4byte	.LLST3
+ 514 011f 5C010000 		.4byte	0x15c
+ 515 0123 09       		.uleb128 0x9
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\ccmIGcdP.s 			page 11
+
+
+ 516 0124 726F7700 		.ascii	"row\000"
+ 517 0128 01       		.byte	0x1
+ 518 0129 20       		.byte	0x20
+ 519 012a 61000000 		.4byte	0x61
+ 520 012e 02       		.byte	0x2
+ 521 012f 91       		.byte	0x91
+ 522 0130 74       		.sleb128 -12
+ 523 0131 09       		.uleb128 0x9
+ 524 0132 636F6C00 		.ascii	"col\000"
+ 525 0136 01       		.byte	0x1
+ 526 0137 20       		.byte	0x20
+ 527 0138 61000000 		.4byte	0x61
+ 528 013c 02       		.byte	0x2
+ 529 013d 91       		.byte	0x91
+ 530 013e 70       		.sleb128 -16
+ 531 013f 08       		.uleb128 0x8
+ 532 0140 7E000000 		.4byte	.LASF18
+ 533 0144 01       		.byte	0x1
+ 534 0145 20       		.byte	0x20
+ 535 0146 61000000 		.4byte	0x61
+ 536 014a 02       		.byte	0x2
+ 537 014b 91       		.byte	0x91
+ 538 014c 6C       		.sleb128 -20
+ 539 014d 08       		.uleb128 0x8
+ 540 014e 96000000 		.4byte	.LASF19
+ 541 0152 01       		.byte	0x1
+ 542 0153 20       		.byte	0x20
+ 543 0154 61000000 		.4byte	0x61
+ 544 0158 02       		.byte	0x2
+ 545 0159 91       		.byte	0x91
+ 546 015a 68       		.sleb128 -24
+ 547 015b 00       		.byte	0x0
+ 548 015c 0A       		.uleb128 0xa
+ 549 015d 9C000000 		.4byte	.LASF23
+ 550 0161 02       		.byte	0x2
+ 551 0162 CE06     		.2byte	0x6ce
+ 552 0164 6A010000 		.4byte	0x16a
+ 553 0168 01       		.byte	0x1
+ 554 0169 01       		.byte	0x1
+ 555 016a 0B       		.uleb128 0xb
+ 556 016b 61000000 		.4byte	0x61
+ 557 016f 00       		.byte	0x0
+ 558              		.section	.debug_abbrev
+ 559 0000 01       		.uleb128 0x1
+ 560 0001 11       		.uleb128 0x11
+ 561 0002 01       		.byte	0x1
+ 562 0003 25       		.uleb128 0x25
+ 563 0004 0E       		.uleb128 0xe
+ 564 0005 13       		.uleb128 0x13
+ 565 0006 0B       		.uleb128 0xb
+ 566 0007 03       		.uleb128 0x3
+ 567 0008 0E       		.uleb128 0xe
+ 568 0009 1B       		.uleb128 0x1b
+ 569 000a 0E       		.uleb128 0xe
+ 570 000b 11       		.uleb128 0x11
+ 571 000c 01       		.uleb128 0x1
+ 572 000d 52       		.uleb128 0x52
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\ccmIGcdP.s 			page 12
+
+
+ 573 000e 01       		.uleb128 0x1
+ 574 000f 55       		.uleb128 0x55
+ 575 0010 06       		.uleb128 0x6
+ 576 0011 10       		.uleb128 0x10
+ 577 0012 06       		.uleb128 0x6
+ 578 0013 00       		.byte	0x0
+ 579 0014 00       		.byte	0x0
+ 580 0015 02       		.uleb128 0x2
+ 581 0016 24       		.uleb128 0x24
+ 582 0017 00       		.byte	0x0
+ 583 0018 0B       		.uleb128 0xb
+ 584 0019 0B       		.uleb128 0xb
+ 585 001a 3E       		.uleb128 0x3e
+ 586 001b 0B       		.uleb128 0xb
+ 587 001c 03       		.uleb128 0x3
+ 588 001d 0E       		.uleb128 0xe
+ 589 001e 00       		.byte	0x0
+ 590 001f 00       		.byte	0x0
+ 591 0020 03       		.uleb128 0x3
+ 592 0021 24       		.uleb128 0x24
+ 593 0022 00       		.byte	0x0
+ 594 0023 0B       		.uleb128 0xb
+ 595 0024 0B       		.uleb128 0xb
+ 596 0025 3E       		.uleb128 0x3e
+ 597 0026 0B       		.uleb128 0xb
+ 598 0027 03       		.uleb128 0x3
+ 599 0028 08       		.uleb128 0x8
+ 600 0029 00       		.byte	0x0
+ 601 002a 00       		.byte	0x0
+ 602 002b 04       		.uleb128 0x4
+ 603 002c 24       		.uleb128 0x24
+ 604 002d 00       		.byte	0x0
+ 605 002e 0B       		.uleb128 0xb
+ 606 002f 0B       		.uleb128 0xb
+ 607 0030 3E       		.uleb128 0x3e
+ 608 0031 0B       		.uleb128 0xb
+ 609 0032 00       		.byte	0x0
+ 610 0033 00       		.byte	0x0
+ 611 0034 05       		.uleb128 0x5
+ 612 0035 0F       		.uleb128 0xf
+ 613 0036 00       		.byte	0x0
+ 614 0037 0B       		.uleb128 0xb
+ 615 0038 0B       		.uleb128 0xb
+ 616 0039 49       		.uleb128 0x49
+ 617 003a 13       		.uleb128 0x13
+ 618 003b 00       		.byte	0x0
+ 619 003c 00       		.byte	0x0
+ 620 003d 06       		.uleb128 0x6
+ 621 003e 26       		.uleb128 0x26
+ 622 003f 00       		.byte	0x0
+ 623 0040 49       		.uleb128 0x49
+ 624 0041 13       		.uleb128 0x13
+ 625 0042 00       		.byte	0x0
+ 626 0043 00       		.byte	0x0
+ 627 0044 07       		.uleb128 0x7
+ 628 0045 2E       		.uleb128 0x2e
+ 629 0046 01       		.byte	0x1
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\ccmIGcdP.s 			page 13
+
+
+ 630 0047 3F       		.uleb128 0x3f
+ 631 0048 0C       		.uleb128 0xc
+ 632 0049 03       		.uleb128 0x3
+ 633 004a 0E       		.uleb128 0xe
+ 634 004b 3A       		.uleb128 0x3a
+ 635 004c 0B       		.uleb128 0xb
+ 636 004d 3B       		.uleb128 0x3b
+ 637 004e 0B       		.uleb128 0xb
+ 638 004f 27       		.uleb128 0x27
+ 639 0050 0C       		.uleb128 0xc
+ 640 0051 11       		.uleb128 0x11
+ 641 0052 01       		.uleb128 0x1
+ 642 0053 12       		.uleb128 0x12
+ 643 0054 01       		.uleb128 0x1
+ 644 0055 40       		.uleb128 0x40
+ 645 0056 06       		.uleb128 0x6
+ 646 0057 01       		.uleb128 0x1
+ 647 0058 13       		.uleb128 0x13
+ 648 0059 00       		.byte	0x0
+ 649 005a 00       		.byte	0x0
+ 650 005b 08       		.uleb128 0x8
+ 651 005c 05       		.uleb128 0x5
+ 652 005d 00       		.byte	0x0
+ 653 005e 03       		.uleb128 0x3
+ 654 005f 0E       		.uleb128 0xe
+ 655 0060 3A       		.uleb128 0x3a
+ 656 0061 0B       		.uleb128 0xb
+ 657 0062 3B       		.uleb128 0x3b
+ 658 0063 0B       		.uleb128 0xb
+ 659 0064 49       		.uleb128 0x49
+ 660 0065 13       		.uleb128 0x13
+ 661 0066 02       		.uleb128 0x2
+ 662 0067 0A       		.uleb128 0xa
+ 663 0068 00       		.byte	0x0
+ 664 0069 00       		.byte	0x0
+ 665 006a 09       		.uleb128 0x9
+ 666 006b 05       		.uleb128 0x5
+ 667 006c 00       		.byte	0x0
+ 668 006d 03       		.uleb128 0x3
+ 669 006e 08       		.uleb128 0x8
+ 670 006f 3A       		.uleb128 0x3a
+ 671 0070 0B       		.uleb128 0xb
+ 672 0071 3B       		.uleb128 0x3b
+ 673 0072 0B       		.uleb128 0xb
+ 674 0073 49       		.uleb128 0x49
+ 675 0074 13       		.uleb128 0x13
+ 676 0075 02       		.uleb128 0x2
+ 677 0076 0A       		.uleb128 0xa
+ 678 0077 00       		.byte	0x0
+ 679 0078 00       		.byte	0x0
+ 680 0079 0A       		.uleb128 0xa
+ 681 007a 34       		.uleb128 0x34
+ 682 007b 00       		.byte	0x0
+ 683 007c 03       		.uleb128 0x3
+ 684 007d 0E       		.uleb128 0xe
+ 685 007e 3A       		.uleb128 0x3a
+ 686 007f 0B       		.uleb128 0xb
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\ccmIGcdP.s 			page 14
+
+
+ 687 0080 3B       		.uleb128 0x3b
+ 688 0081 05       		.uleb128 0x5
+ 689 0082 49       		.uleb128 0x49
+ 690 0083 13       		.uleb128 0x13
+ 691 0084 3F       		.uleb128 0x3f
+ 692 0085 0C       		.uleb128 0xc
+ 693 0086 3C       		.uleb128 0x3c
+ 694 0087 0C       		.uleb128 0xc
+ 695 0088 00       		.byte	0x0
+ 696 0089 00       		.byte	0x0
+ 697 008a 0B       		.uleb128 0xb
+ 698 008b 35       		.uleb128 0x35
+ 699 008c 00       		.byte	0x0
+ 700 008d 49       		.uleb128 0x49
+ 701 008e 13       		.uleb128 0x13
+ 702 008f 00       		.byte	0x0
+ 703 0090 00       		.byte	0x0
+ 704 0091 00       		.byte	0x0
+ 705              		.section	.debug_pubnames,"",%progbits
+ 706 0000 58000000 		.4byte	0x58
+ 707 0004 0200     		.2byte	0x2
+ 708 0006 00000000 		.4byte	.Ldebug_info0
+ 709 000a 70010000 		.4byte	0x170
+ 710 000e 92000000 		.4byte	0x92
+ 711 0012 4C43445F 		.ascii	"LCD_ClearLine\000"
+ 711      436C6561 
+ 711      724C696E 
+ 711      6500
+ 712 0020 BA000000 		.4byte	0xba
+ 713 0024 4C43445F 		.ascii	"LCD_UpdateStatus\000"
+ 713      55706461 
+ 713      74655374 
+ 713      61747573 
+ 713      00
+ 714 0035 E2000000 		.4byte	0xe2
+ 715 0039 4C43445F 		.ascii	"LCD_UpdateMessage\000"
+ 715      55706461 
+ 715      74654D65 
+ 715      73736167 
+ 715      6500
+ 716 004b 0A010000 		.4byte	0x10a
+ 717 004f 4C43445F 		.ascii	"LCD_Spin\000"
+ 717      5370696E 
+ 717      00
+ 718 0058 00000000 		.4byte	0x0
+ 719              		.section	.debug_aranges,"",%progbits
+ 720 0000 34000000 		.4byte	0x34
+ 721 0004 0200     		.2byte	0x2
+ 722 0006 00000000 		.4byte	.Ldebug_info0
+ 723 000a 04       		.byte	0x4
+ 724 000b 00       		.byte	0x0
+ 725 000c 0000     		.2byte	0x0
+ 726 000e 0000     		.2byte	0x0
+ 727 0010 00000000 		.4byte	.LFB29
+ 728 0014 2A000000 		.4byte	.LFE29-.LFB29
+ 729 0018 00000000 		.4byte	.LFB30
+ 730 001c 2A000000 		.4byte	.LFE30-.LFB30
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\ccmIGcdP.s 			page 15
+
+
+ 731 0020 00000000 		.4byte	.LFB31
+ 732 0024 2A000000 		.4byte	.LFE31-.LFB31
+ 733 0028 00000000 		.4byte	.LFB32
+ 734 002c E8000000 		.4byte	.LFE32-.LFB32
+ 735 0030 00000000 		.4byte	0x0
+ 736 0034 00000000 		.4byte	0x0
+ 737              		.section	.debug_ranges,"",%progbits
+ 738              	.Ldebug_ranges0:
+ 739 0000 00000000 		.4byte	.Ltext0
+ 740 0004 00000000 		.4byte	.Letext0
+ 741 0008 00000000 		.4byte	.LFB29
+ 742 000c 2A000000 		.4byte	.LFE29
+ 743 0010 00000000 		.4byte	.LFB30
+ 744 0014 2A000000 		.4byte	.LFE30
+ 745 0018 00000000 		.4byte	.LFB31
+ 746 001c 2A000000 		.4byte	.LFE31
+ 747 0020 00000000 		.4byte	.LFB32
+ 748 0024 E8000000 		.4byte	.LFE32
+ 749 0028 00000000 		.4byte	0x0
+ 750 002c 00000000 		.4byte	0x0
+ 751              		.section	.debug_str,"MS",%progbits,1
+ 752              	.LASF6:
+ 753 0000 6C6F6E67 		.ascii	"long long int\000"
+ 753      206C6F6E 
+ 753      6720696E 
+ 753      7400
+ 754              	.LASF14:
+ 755 000e 6C696E65 		.ascii	"line\000"
+ 755      00
+ 756              	.LASF15:
+ 757 0013 73747269 		.ascii	"string\000"
+ 757      6E6700
+ 758              	.LASF22:
+ 759 001a 463A5C50 		.ascii	"F:\\PSoC Creator\\lab4\\part2.cydsn\000"
+ 759      536F4320 
+ 759      43726561 
+ 759      746F725C 
+ 759      6C616234 
+ 760              	.LASF5:
+ 761 003b 6C6F6E67 		.ascii	"long unsigned int\000"
+ 761      20756E73 
+ 761      69676E65 
+ 761      6420696E 
+ 761      7400
+ 762              	.LASF7:
+ 763 004d 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 763      206C6F6E 
+ 763      6720756E 
+ 763      7369676E 
+ 763      65642069 
+ 764              	.LASF20:
+ 765 0064 474E5520 		.ascii	"GNU C 4.4.1\000"
+ 765      4320342E 
+ 765      342E3100 
+ 766              	.LASF1:
+ 767 0070 756E7369 		.ascii	"unsigned char\000"
+ 767      676E6564 
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\ccmIGcdP.s 			page 16
+
+
+ 767      20636861 
+ 767      7200
+ 768              	.LASF18:
+ 769 007e 73706565 		.ascii	"speed\000"
+ 769      6400
+ 770              	.LASF16:
+ 771 0084 4C43445F 		.ascii	"LCD_UpdateMessage\000"
+ 771      55706461 
+ 771      74654D65 
+ 771      73736167 
+ 771      6500
+ 772              	.LASF19:
+ 773 0096 636F756E 		.ascii	"count\000"
+ 773      7400
+ 774              	.LASF23:
+ 775 009c 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 775      52784275 
+ 775      66666572 
+ 775      00
+ 776              	.LASF2:
+ 777 00a9 73686F72 		.ascii	"short int\000"
+ 777      7420696E 
+ 777      7400
+ 778              	.LASF10:
+ 779 00b3 646F7562 		.ascii	"double\000"
+ 779      6C6500
+ 780              	.LASF4:
+ 781 00ba 6C6F6E67 		.ascii	"long int\000"
+ 781      20696E74 
+ 781      00
+ 782              	.LASF3:
+ 783 00c3 73686F72 		.ascii	"short unsigned int\000"
+ 783      7420756E 
+ 783      7369676E 
+ 783      65642069 
+ 783      6E7400
+ 784              	.LASF0:
+ 785 00d6 7369676E 		.ascii	"signed char\000"
+ 785      65642063 
+ 785      68617200 
+ 786              	.LASF13:
+ 787 00e2 4C43445F 		.ascii	"LCD_UpdateStatus\000"
+ 787      55706461 
+ 787      74655374 
+ 787      61747573 
+ 787      00
+ 788              	.LASF12:
+ 789 00f3 4C43445F 		.ascii	"LCD_ClearLine\000"
+ 789      436C6561 
+ 789      724C696E 
+ 789      6500
+ 790              	.LASF9:
+ 791 0101 666C6F61 		.ascii	"float\000"
+ 791      7400
+ 792              	.LASF21:
+ 793 0107 2E5C6469 		.ascii	".\\display.c\000"
+ 793      73706C61 
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\ccmIGcdP.s 			page 17
+
+
+ 793      792E6300 
+ 794              	.LASF17:
+ 795 0113 4C43445F 		.ascii	"LCD_Spin\000"
+ 795      5370696E 
+ 795      00
+ 796              	.LASF8:
+ 797 011c 756E7369 		.ascii	"unsigned int\000"
+ 797      676E6564 
+ 797      20696E74 
+ 797      00
+ 798              	.LASF11:
+ 799 0129 63686172 		.ascii	"char\000"
+ 799      00
+ 800              		.ident	"GCC: (Sourcery G++ Lite 2010q1-188) 4.4.1"

@@ -1,0 +1,4 @@
+E:/PSoC\ Creator/Libraries/LCD.cylib/CortexM3/ARM_GCC_441/Debug/LCD.o : E:/PSoC\ Creator/Libraries/LCD.cylib/LCD.c 
+
+E:/PSoC\ Creator/Libraries/LCD.cylib/LCD.c : 
+

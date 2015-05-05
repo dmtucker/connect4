@@ -1,0 +1,4 @@
+F:/PSoC\ Creator/lab4/part2.cydsn/CortexM3/ARM_GCC_441/Debug/CyBootAsmGnu.o : F:/PSoC\ Creator/lab4/part2.cydsn/Generated_Source/PSoC5/CyBootAsmGnu.s 
+
+F:/PSoC\ Creator/lab4/part2.cydsn/Generated_Source/PSoC5/CyBootAsmGnu.s : 
+

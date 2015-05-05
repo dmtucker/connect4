@@ -1,0 +1,25 @@
+Last Modified Date & Time: 06/10/2013 14:12:03
+
+Project : connect4
+		Schematic : TopDesign/TopDesign.cysch
+
+		LCD	v 1.90	v 1.80
+		Timer	v 2.50	v 2.40
+		RemoteLED	v 1.90	v 1.80
+		Connector	v 1.90	v 1.80
+		Din	v 1.90	v 1.80
+		Dout	v 1.90	v 1.80
+		Colors	v 1.90	v 1.80
+		Column	v 1.90	v 1.80
+		Blue	v 1.90	v 1.80
+		Green	v 1.90	v 1.80
+		Red	v 1.90	v 1.80
+		Row	v 1.90	v 1.80
+		Update	v 1.90	v 1.80
+
+Project : connect4
+		Design Wide APIs
+
+		cy_boot	v 3.40	v 3.30
+
+

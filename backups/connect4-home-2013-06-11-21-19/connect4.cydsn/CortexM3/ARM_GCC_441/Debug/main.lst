@@ -1,0 +1,5199 @@
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 18, 4
+  12              		.thumb
+  13              		.file	"main.c"
+  14              		.section	.debug_abbrev,"",%progbits
+  15              	.Ldebug_abbrev0:
+  16              		.section	.debug_info,"",%progbits
+  17              	.Ldebug_info0:
+  18              		.section	.debug_line,"",%progbits
+  19              	.Ldebug_line0:
+  20 0000 91020000 		.text
+  20      02005300 
+  20      00000201 
+  20      FB0E0D00 
+  20      01010101 
+  21              	.Ltext0:
+  22              		.cfi_sections	.debug_frame
+  23              		.comm	player1,64,4
+  24              		.comm	player2,64,4
+  25              		.global	player1_color
+  26              		.data
+  27              		.type	player1_color, %object
+  28              		.size	player1_color, 1
+  29              	player1_color:
+  30 0000 01       		.byte	1
+  31              		.global	player2_color
+  32              		.type	player2_color, %object
+  33              		.size	player2_color, 1
+  34              	player2_color:
+  35 0001 04       		.byte	4
+  36              		.global	player1_turn
+  37              		.type	player1_turn, %object
+  38              		.size	player1_turn, 1
+  39              	player1_turn:
+  40 0002 01       		.byte	1
+  41              		.global	player2_local
+  42              		.type	player2_local, %object
+  43              		.size	player2_local, 1
+  44              	player2_local:
+  45 0003 01       		.byte	1
+  46              		.global	locating
+  47              		.bss
+  48              		.type	locating, %object
+  49              		.size	locating, 1
+  50              	locating:
+  51 0000 00       		.space	1
+  52              		.section	.text.toggle,"ax",%progbits
+  53              		.align	2
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 2
+
+
+  54              		.global	toggle
+  55              		.thumb
+  56              		.thumb_func
+  57              		.type	toggle, %function
+  58              	toggle:
+  59              	.LFB29:
+  60              		.file 1 ".\\main.c"
+   1:.\main.c      **** #include <device.h>
+   2:.\main.c      **** #include <stdbool.h>
+   3:.\main.c      **** #include <display.h>
+   4:.\main.c      **** #include <matrix.h>
+   5:.\main.c      **** 
+   6:.\main.c      **** #define BUS_CLK_FREQ    24000000 // Hz
+   7:.\main.c      **** #define REFRESH_RATE    2500     // [370,BUS_CLK_FREQ] Hz
+   8:.\main.c      **** #define XBEE_GUARD_TIME 1000     // ms
+   9:.\main.c      **** #define XBEE_CHANNEL    0x0F
+  10:.\main.c      **** #define PLAYER1_ID      0xDA
+  11:.\main.c      **** #define PLAYER2_ID      0x07
+  12:.\main.c      **** 
+  13:.\main.c      **** bool  player1[MATRIX_ROWS][MATRIX_COLS];
+  14:.\main.c      **** bool  player2[MATRIX_ROWS][MATRIX_COLS];
+  15:.\main.c      **** uint8 player1_color = RED;
+  16:.\main.c      **** uint8 player2_color = BLUE;
+  17:.\main.c      **** bool  player1_turn  = true;
+  18:.\main.c      **** bool  player2_local = true;
+  19:.\main.c      **** 
+  20:.\main.c      **** /* remote play */
+  21:.\main.c      **** typedef struct packet {
+  22:.\main.c      ****     char   delimiter;
+  23:.\main.c      ****     uint16 length;
+  24:.\main.c      ****     uint8  api_id;
+  25:.\main.c      ****     uint8  frame_id;
+  26:.\main.c      ****     uint16 destination;
+  27:.\main.c      ****     uint8  disable_ack;
+  28:.\main.c      ****     uint8  player_id;
+  29:.\main.c      ****     uint8  packet_type;
+  30:.\main.c      ****     uint8  row;
+  31:.\main.c      ****     uint8  col;
+  32:.\main.c      ****     uint8  checksum;
+  33:.\main.c      **** } packet_t;
+  34:.\main.c      **** 
+  35:.\main.c      **** 
+  36:.\main.c      **** 
+  37:.\main.c      **** 
+  38:.\main.c      **** bool locating = false;
+  39:.\main.c      **** CY_ISR (toggle) { if (locating) player2_local = !player2_local; }
+  61              		.loc 1 39 0
+  62              		.cfi_startproc
+  63              		@ args = 0, pretend = 0, frame = 0
+  64              		@ frame_needed = 1, uses_anonymous_args = 0
+  65              		@ link register save eliminated.
+  66 0000 80B4     		push	{r7}
+  67              	.LCFI0:
+  68              		.cfi_def_cfa_offset 4
+  69 0002 00AF     		add	r7, sp, #0
+  70              		.cfi_offset 7, -4
+  71              	.LCFI1:
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 3
+
+
+  72              		.cfi_def_cfa_register 7
+  73              		.loc 1 39 0
+  74 0004 40F20003 		movw	r3, #:lower16:locating
+  75 0008 C0F20003 		movt	r3, #:upper16:locating
+  76 000c 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+  77 000e 002B     		cmp	r3, #0
+  78 0010 0DD0     		beq	.L3
+  79 0012 40F20003 		movw	r3, #:lower16:player2_local
+  80 0016 C0F20003 		movt	r3, #:upper16:player2_local
+  81 001a 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+  82 001c 83F00103 		eor	r3, r3, #1
+  83 0020 DBB2     		uxtb	r3, r3
+  84 0022 DAB2     		uxtb	r2, r3
+  85 0024 40F20003 		movw	r3, #:lower16:player2_local
+  86 0028 C0F20003 		movt	r3, #:upper16:player2_local
+  87 002c 1A70     		strb	r2, [r3, #0]
+  88              	.L3:
+  89 002e BD46     		mov	sp, r7
+  90 0030 80BC     		pop	{r7}
+  91 0032 7047     		bx	lr
+  92              		.cfi_endproc
+  93              	.LFE29:
+  94              		.size	toggle, .-toggle
+  95              		.section	.rodata
+  96              		.align	2
+  97              	.LC0:
+  98 0000 2B2B2B00 		.ascii	"+++\000"
+  99              		.align	2
+ 100              	.LC1:
+ 101 0004 20202000 		.ascii	"   \000"
+ 102              		.align	2
+ 103              	.LC2:
+ 104 0008 41544150 		.ascii	"ATAP1\015\000"
+ 104      310D00
+ 105 000f 00       		.align	2
+ 106              	.LC3:
+ 107 0010 41544348 		.ascii	"ATCH\000"
+ 107      00
+ 108 0015 000000   		.align	2
+ 109              	.LC4:
+ 110 0018 4154434E 		.ascii	"ATCN\015\000"
+ 110      0D00
+ 111              		.section	.text.configure_XBee,"ax",%progbits
+ 112              		.align	2
+ 113              		.global	configure_XBee
+ 114              		.thumb
+ 115              		.thumb_func
+ 116              		.type	configure_XBee, %function
+ 117              	configure_XBee:
+ 118              	.LFB30:
+  40:.\main.c      **** 
+  41:.\main.c      **** 
+  42:.\main.c      **** 
+  43:.\main.c      **** 
+  44:.\main.c      **** void configure_XBee () {    
+ 119              		.loc 1 44 0
+ 120              		.cfi_startproc
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 4
+
+
+ 121              		@ args = 0, pretend = 0, frame = 8
+ 122              		@ frame_needed = 1, uses_anonymous_args = 0
+ 123 0000 80B5     		push	{r7, lr}
+ 124              	.LCFI2:
+ 125              		.cfi_def_cfa_offset 8
+ 126 0002 82B0     		sub	sp, sp, #8
+ 127              	.LCFI3:
+ 128              		.cfi_def_cfa_offset 16
+ 129 0004 00AF     		add	r7, sp, #0
+ 130              		.cfi_offset 14, -4
+ 131              		.cfi_offset 7, -8
+ 132              	.LCFI4:
+ 133              		.cfi_def_cfa_register 7
+  45:.\main.c      ****     CyDelay(XBEE_GUARD_TIME);
+ 134              		.loc 1 45 0
+ 135 0006 4FF47A70 		mov	r0, #1000
+ 136 000a FFF7FEFF 		bl	CyDelay
+  46:.\main.c      ****     UART_PutString("+++");
+ 137              		.loc 1 46 0
+ 138 000e 40F20000 		movw	r0, #:lower16:.LC0
+ 139 0012 C0F20000 		movt	r0, #:upper16:.LC0
+ 140 0016 FFF7FEFF 		bl	UART_PutString
+  47:.\main.c      ****     //UART_PutChar('+');UART_PutChar('+');UART_PutChar('+');
+  48:.\main.c      ****     CyDelay(XBEE_GUARD_TIME*3);
+ 141              		.loc 1 48 0
+ 142 001a 40F6B830 		movw	r0, #3000
+ 143 001e FFF7FEFF 		bl	CyDelay
+  49:.\main.c      ****     uint8 d, result; // DEBUG
+  50:.\main.c      ****     while (!(UART_ReadRxStatus() & UART_RX_STS_FIFO_NOTEMPTY) && UART_GetRxBufferSize() < 3) {
+ 144              		.loc 1 50 0
+ 145 0022 2BE0     		b	.L5
+ 146              	.L9:
+  51:.\main.c      ****         switch (d++%3) {
+ 147              		.loc 1 51 0
+ 148 0024 BA79     		ldrb	r2, [r7, #6]	@ zero_extendqisi2
+ 149 0026 4AF6AB23 		movw	r3, #:lower16:-1431655765
+ 150 002a CAF6AA23 		movt	r3, #:upper16:-1431655765
+ 151 002e A3FB0213 		umull	r1, r3, r3, r2
+ 152 0032 4FEA5301 		lsr	r1, r3, #1
+ 153 0036 0B46     		mov	r3, r1
+ 154 0038 4FEA4303 		lsl	r3, r3, #1
+ 155 003c 0B44     		add	r3, r3, r1
+ 156 003e C3EB0203 		rsb	r3, r3, r2
+ 157 0042 DBB2     		uxtb	r3, r3
+ 158 0044 BA79     		ldrb	r2, [r7, #6]
+ 159 0046 02F10102 		add	r2, r2, #1
+ 160 004a BA71     		strb	r2, [r7, #6]
+ 161 004c 002B     		cmp	r3, #0
+ 162 004e 11D1     		bne	.L6
+ 163              	.L7:
+  52:.\main.c      ****             case 0: LCD_Position(1,13); LCD_PrintString("   "); LCD_Position(1,13);
+ 164              		.loc 1 52 0
+ 165 0050 4FF00100 		mov	r0, #1
+ 166 0054 4FF00D01 		mov	r1, #13
+ 167 0058 FFF7FEFF 		bl	LCD_Position
+ 168 005c 40F20000 		movw	r0, #:lower16:.LC1
+ 169 0060 C0F20000 		movt	r0, #:upper16:.LC1
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 5
+
+
+ 170 0064 FFF7FEFF 		bl	LCD_PrintString
+ 171 0068 4FF00100 		mov	r0, #1
+ 172 006c 4FF00D01 		mov	r1, #13
+ 173 0070 FFF7FEFF 		bl	LCD_Position
+ 174              	.L6:
+  53:.\main.c      ****             default: LCD_PutChar('.'); break;
+ 175              		.loc 1 53 0
+ 176 0074 4FF02E00 		mov	r0, #46
+ 177 0078 FFF7FEFF 		bl	LCD_PutChar
+ 178              	.L5:
+ 179              		.loc 1 50 0
+ 180 007c FFF7FEFF 		bl	UART_ReadRxStatus
+ 181 0080 0346     		mov	r3, r0
+ 182 0082 03F02003 		and	r3, r3, #32
+ 183 0086 002B     		cmp	r3, #0
+ 184 0088 04D1     		bne	.L8
+ 185 008a FFF7FEFF 		bl	UART_GetRxBufferSize
+ 186 008e 0346     		mov	r3, r0
+ 187 0090 022B     		cmp	r3, #2
+ 188 0092 C7D9     		bls	.L9
+ 189              	.L8:
+  54:.\main.c      ****         }
+  55:.\main.c      ****     }
+  56:.\main.c      ****     if (UART_ReadRxData() != 'O' || UART_ReadRxData() != 'K' || UART_ReadRxData() != '\r') {
+ 190              		.loc 1 56 0
+ 191 0094 FFF7FEFF 		bl	UART_ReadRxData
+ 192 0098 0346     		mov	r3, r0
+ 193 009a 4F2B     		cmp	r3, #79
+ 194 009c 09D1     		bne	.L10
+ 195 009e FFF7FEFF 		bl	UART_ReadRxData
+ 196 00a2 0346     		mov	r3, r0
+ 197 00a4 4B2B     		cmp	r3, #75
+ 198 00a6 04D1     		bne	.L10
+ 199 00a8 FFF7FEFF 		bl	UART_ReadRxData
+ 200 00ac 0346     		mov	r3, r0
+ 201 00ae 0D2B     		cmp	r3, #13
+ 202 00b0 07D0     		beq	.L11
+ 203              	.L10:
+  57:.\main.c      ****         LED_Write(0x01);
+ 204              		.loc 1 57 0
+ 205 00b2 4FF00100 		mov	r0, #1
+ 206 00b6 FFF7FEFF 		bl	LED_Write
+  58:.\main.c      ****         result += 1;
+ 207              		.loc 1 58 0
+ 208 00ba FB79     		ldrb	r3, [r7, #7]
+ 209 00bc 03F10103 		add	r3, r3, #1
+ 210 00c0 FB71     		strb	r3, [r7, #7]
+ 211              	.L11:
+  59:.\main.c      ****     }
+  60:.\main.c      ****     
+  61:.\main.c      ****     UART_PutString("ATAP1\r");
+ 212              		.loc 1 61 0
+ 213 00c2 40F20000 		movw	r0, #:lower16:.LC2
+ 214 00c6 C0F20000 		movt	r0, #:upper16:.LC2
+ 215 00ca FFF7FEFF 		bl	UART_PutString
+  62:.\main.c      ****     if (UART_ReadRxData() != 'O' || UART_ReadRxData() != 'K' || UART_ReadRxData() != '\r') LED_Writ
+ 216              		.loc 1 62 0
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 6
+
+
+ 217 00ce FFF7FEFF 		bl	UART_ReadRxData
+ 218 00d2 0346     		mov	r3, r0
+ 219 00d4 4F2B     		cmp	r3, #79
+ 220 00d6 09D1     		bne	.L12
+ 221 00d8 FFF7FEFF 		bl	UART_ReadRxData
+ 222 00dc 0346     		mov	r3, r0
+ 223 00de 4B2B     		cmp	r3, #75
+ 224 00e0 04D1     		bne	.L12
+ 225 00e2 FFF7FEFF 		bl	UART_ReadRxData
+ 226 00e6 0346     		mov	r3, r0
+ 227 00e8 0D2B     		cmp	r3, #13
+ 228 00ea 03D0     		beq	.L13
+ 229              	.L12:
+ 230 00ec 4FF00100 		mov	r0, #1
+ 231 00f0 FFF7FEFF 		bl	LED_Write
+ 232              	.L13:
+  63:.\main.c      ****     
+  64:.\main.c      ****     UART_PutString("ATCH");
+ 233              		.loc 1 64 0
+ 234 00f4 40F20000 		movw	r0, #:lower16:.LC3
+ 235 00f8 C0F20000 		movt	r0, #:upper16:.LC3
+ 236 00fc FFF7FEFF 		bl	UART_PutString
+  65:.\main.c      ****     UART_WriteTxData(XBEE_CHANNEL);
+ 237              		.loc 1 65 0
+ 238 0100 4FF00F00 		mov	r0, #15
+ 239 0104 FFF7FEFF 		bl	UART_WriteTxData
+  66:.\main.c      ****     UART_PutChar('\r');
+ 240              		.loc 1 66 0
+ 241 0108 4FF00D00 		mov	r0, #13
+ 242 010c FFF7FEFF 		bl	UART_PutChar
+  67:.\main.c      ****     if (UART_ReadRxData() != 'O' || UART_ReadRxData() != 'K' || UART_ReadRxData() != '\r') LED_Writ
+ 243              		.loc 1 67 0
+ 244 0110 FFF7FEFF 		bl	UART_ReadRxData
+ 245 0114 0346     		mov	r3, r0
+ 246 0116 4F2B     		cmp	r3, #79
+ 247 0118 09D1     		bne	.L14
+ 248 011a FFF7FEFF 		bl	UART_ReadRxData
+ 249 011e 0346     		mov	r3, r0
+ 250 0120 4B2B     		cmp	r3, #75
+ 251 0122 04D1     		bne	.L14
+ 252 0124 FFF7FEFF 		bl	UART_ReadRxData
+ 253 0128 0346     		mov	r3, r0
+ 254 012a 0D2B     		cmp	r3, #13
+ 255 012c 03D0     		beq	.L15
+ 256              	.L14:
+ 257 012e 4FF00100 		mov	r0, #1
+ 258 0132 FFF7FEFF 		bl	LED_Write
+ 259              	.L15:
+  68:.\main.c      ****     
+  69:.\main.c      ****     //UART_PutString("ATWR\r");
+  70:.\main.c      ****     //if (UART_ReadRxData() != 'O' || UART_ReadRxData() != 'K' || UART_ReadRxData() != '\r') LED_Wr
+  71:.\main.c      ****     
+  72:.\main.c      ****     UART_PutString("ATCN\r");
+ 260              		.loc 1 72 0
+ 261 0136 40F20000 		movw	r0, #:lower16:.LC4
+ 262 013a C0F20000 		movt	r0, #:upper16:.LC4
+ 263 013e FFF7FEFF 		bl	UART_PutString
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 7
+
+
+  73:.\main.c      ****     if (UART_ReadRxData() != 'O' || UART_ReadRxData() != 'K' || UART_ReadRxData() != '\r') LED_Writ
+ 264              		.loc 1 73 0
+ 265 0142 FFF7FEFF 		bl	UART_ReadRxData
+ 266 0146 0346     		mov	r3, r0
+ 267 0148 4F2B     		cmp	r3, #79
+ 268 014a 09D1     		bne	.L16
+ 269 014c FFF7FEFF 		bl	UART_ReadRxData
+ 270 0150 0346     		mov	r3, r0
+ 271 0152 4B2B     		cmp	r3, #75
+ 272 0154 04D1     		bne	.L16
+ 273 0156 FFF7FEFF 		bl	UART_ReadRxData
+ 274 015a 0346     		mov	r3, r0
+ 275 015c 0D2B     		cmp	r3, #13
+ 276 015e 03D0     		beq	.L17
+ 277              	.L16:
+ 278 0160 4FF00100 		mov	r0, #1
+ 279 0164 FFF7FEFF 		bl	LED_Write
+ 280              	.L17:
+  74:.\main.c      ****     
+  75:.\main.c      ****     Remote_Write(0x01);
+ 281              		.loc 1 75 0
+ 282 0168 4FF00100 		mov	r0, #1
+ 283 016c FFF7FEFF 		bl	Remote_Write
+  76:.\main.c      **** }
+ 284              		.loc 1 76 0
+ 285 0170 07F10807 		add	r7, r7, #8
+ 286 0174 BD46     		mov	sp, r7
+ 287 0176 80BD     		pop	{r7, pc}
+ 288              		.cfi_endproc
+ 289              	.LFE30:
+ 290              		.size	configure_XBee, .-configure_XBee
+ 291              		.section	.rodata
+ 292 001e 0000     		.align	2
+ 293              	.LC5:
+ 294 0020 44656C69 		.ascii	"Delimiter\000"
+ 294      6D697465 
+ 294      7200
+ 295 002a 0000     		.align	2
+ 296              	.LC6:
+ 297 002c 4C656E67 		.ascii	"Length\000"
+ 297      746800
+ 298 0033 00       		.align	2
+ 299              	.LC7:
+ 300 0034 41504920 		.ascii	"API ID\000"
+ 300      494400
+ 301 003b 00       		.align	2
+ 302              	.LC8:
+ 303 003c 307800   		.ascii	"0x\000"
+ 304 003f 00       		.align	2
+ 305              	.LC9:
+ 306 0040 4672616D 		.ascii	"Frame ID\000"
+ 306      65204944 
+ 306      00
+ 307 0049 000000   		.align	2
+ 308              	.LC10:
+ 309 004c 44657374 		.ascii	"Destination\000"
+ 309      696E6174 
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 8
+
+
+ 309      696F6E00 
+ 310              		.align	2
+ 311              	.LC11:
+ 312 0058 44697361 		.ascii	"Disable ACK\000"
+ 312      626C6520 
+ 312      41434B00 
+ 313              		.align	2
+ 314              	.LC12:
+ 315 0064 506C6179 		.ascii	"Player ID\000"
+ 315      65722049 
+ 315      4400
+ 316 006e 0000     		.align	2
+ 317              	.LC13:
+ 318 0070 5061636B 		.ascii	"Packet Type\000"
+ 318      65742054 
+ 318      79706500 
+ 319              		.align	2
+ 320              	.LC14:
+ 321 007c 526F7700 		.ascii	"Row\000"
+ 322              		.align	2
+ 323              	.LC15:
+ 324 0080 436F6C75 		.ascii	"Column\000"
+ 324      6D6E00
+ 325 0087 00       		.align	2
+ 326              	.LC16:
+ 327 0088 43686563 		.ascii	"Checksum\000"
+ 327      6B73756D 
+ 327      00
+ 328              		.section	.text.show_packet,"ax",%progbits
+ 329              		.align	2
+ 330              		.global	show_packet
+ 331              		.thumb
+ 332              		.thumb_func
+ 333              		.type	show_packet, %function
+ 334              	show_packet:
+ 335              	.LFB31:
+  77:.\main.c      **** 
+  78:.\main.c      **** 
+  79:.\main.c      **** 
+  80:.\main.c      **** 
+  81:.\main.c      **** void show_packet (packet_t * move) {
+ 336              		.loc 1 81 0
+ 337              		.cfi_startproc
+ 338              		@ args = 0, pretend = 0, frame = 16
+ 339              		@ frame_needed = 1, uses_anonymous_args = 0
+ 340 0000 80B5     		push	{r7, lr}
+ 341              	.LCFI5:
+ 342              		.cfi_def_cfa_offset 8
+ 343 0002 84B0     		sub	sp, sp, #16
+ 344              	.LCFI6:
+ 345              		.cfi_def_cfa_offset 24
+ 346 0004 00AF     		add	r7, sp, #0
+ 347              		.cfi_offset 14, -4
+ 348              		.cfi_offset 7, -8
+ 349              	.LCFI7:
+ 350              		.cfi_def_cfa_register 7
+ 351 0006 7860     		str	r0, [r7, #4]
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 9
+
+
+  82:.\main.c      ****     uint16 delay = 1000;
+ 352              		.loc 1 82 0
+ 353 0008 4FF47A73 		mov	r3, #1000
+ 354 000c FB81     		strh	r3, [r7, #14]	@ movhi
+  83:.\main.c      ****     
+  84:.\main.c      ****     LCD_UpdateStatus("Delimiter");
+ 355              		.loc 1 84 0
+ 356 000e 40F20000 		movw	r0, #:lower16:.LC5
+ 357 0012 C0F20000 		movt	r0, #:upper16:.LC5
+ 358 0016 FFF7FEFF 		bl	LCD_UpdateStatus
+  85:.\main.c      ****     LCD_ClearLine(1);
+ 359              		.loc 1 85 0
+ 360 001a 4FF00100 		mov	r0, #1
+ 361 001e FFF7FEFF 		bl	LCD_ClearLine
+  86:.\main.c      ****     LCD_Position(1,0);
+ 362              		.loc 1 86 0
+ 363 0022 4FF00100 		mov	r0, #1
+ 364 0026 4FF00001 		mov	r1, #0
+ 365 002a FFF7FEFF 		bl	LCD_Position
+  87:.\main.c      ****     LCD_PutChar(move->delimiter);
+ 366              		.loc 1 87 0
+ 367 002e 7B68     		ldr	r3, [r7, #4]
+ 368 0030 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 369 0032 1846     		mov	r0, r3
+ 370 0034 FFF7FEFF 		bl	LCD_PutChar
+  88:.\main.c      ****     LCD_Position(1,2);
+ 371              		.loc 1 88 0
+ 372 0038 4FF00100 		mov	r0, #1
+ 373 003c 4FF00201 		mov	r1, #2
+ 374 0040 FFF7FEFF 		bl	LCD_Position
+  89:.\main.c      ****     LCD_PrintNumber(move->delimiter);
+ 375              		.loc 1 89 0
+ 376 0044 7B68     		ldr	r3, [r7, #4]
+ 377 0046 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 378 0048 1846     		mov	r0, r3
+ 379 004a FFF7FEFF 		bl	LCD_PrintNumber
+  90:.\main.c      ****     CyDelay(delay);
+ 380              		.loc 1 90 0
+ 381 004e FB89     		ldrh	r3, [r7, #14]
+ 382 0050 1846     		mov	r0, r3
+ 383 0052 FFF7FEFF 		bl	CyDelay
+  91:.\main.c      ****     
+  92:.\main.c      ****     LCD_UpdateStatus("Length");
+ 384              		.loc 1 92 0
+ 385 0056 40F20000 		movw	r0, #:lower16:.LC6
+ 386 005a C0F20000 		movt	r0, #:upper16:.LC6
+ 387 005e FFF7FEFF 		bl	LCD_UpdateStatus
+  93:.\main.c      ****     LCD_ClearLine(1);
+ 388              		.loc 1 93 0
+ 389 0062 4FF00100 		mov	r0, #1
+ 390 0066 FFF7FEFF 		bl	LCD_ClearLine
+  94:.\main.c      ****     LCD_Position(1,0);
+ 391              		.loc 1 94 0
+ 392 006a 4FF00100 		mov	r0, #1
+ 393 006e 4FF00001 		mov	r1, #0
+ 394 0072 FFF7FEFF 		bl	LCD_Position
+  95:.\main.c      ****     LCD_PrintNumber(move->length);
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 10
+
+
+ 395              		.loc 1 95 0
+ 396 0076 7B68     		ldr	r3, [r7, #4]
+ 397 0078 5B88     		ldrh	r3, [r3, #2]
+ 398 007a 1846     		mov	r0, r3
+ 399 007c FFF7FEFF 		bl	LCD_PrintNumber
+  96:.\main.c      ****     CyDelay(delay);
+ 400              		.loc 1 96 0
+ 401 0080 FB89     		ldrh	r3, [r7, #14]
+ 402 0082 1846     		mov	r0, r3
+ 403 0084 FFF7FEFF 		bl	CyDelay
+  97:.\main.c      ****     
+  98:.\main.c      ****     LCD_UpdateStatus("API ID");
+ 404              		.loc 1 98 0
+ 405 0088 40F20000 		movw	r0, #:lower16:.LC7
+ 406 008c C0F20000 		movt	r0, #:upper16:.LC7
+ 407 0090 FFF7FEFF 		bl	LCD_UpdateStatus
+  99:.\main.c      ****     LCD_ClearLine(1);
+ 408              		.loc 1 99 0
+ 409 0094 4FF00100 		mov	r0, #1
+ 410 0098 FFF7FEFF 		bl	LCD_ClearLine
+ 100:.\main.c      ****     LCD_Position(1,0);
+ 411              		.loc 1 100 0
+ 412 009c 4FF00100 		mov	r0, #1
+ 413 00a0 4FF00001 		mov	r1, #0
+ 414 00a4 FFF7FEFF 		bl	LCD_Position
+ 101:.\main.c      ****     LCD_PrintString("0x");
+ 415              		.loc 1 101 0
+ 416 00a8 40F20000 		movw	r0, #:lower16:.LC8
+ 417 00ac C0F20000 		movt	r0, #:upper16:.LC8
+ 418 00b0 FFF7FEFF 		bl	LCD_PrintString
+ 102:.\main.c      ****     LCD_PrintInt8(move->api_id);
+ 419              		.loc 1 102 0
+ 420 00b4 7B68     		ldr	r3, [r7, #4]
+ 421 00b6 1B79     		ldrb	r3, [r3, #4]	@ zero_extendqisi2
+ 422 00b8 1846     		mov	r0, r3
+ 423 00ba FFF7FEFF 		bl	LCD_PrintInt8
+ 103:.\main.c      ****     CyDelay(delay);
+ 424              		.loc 1 103 0
+ 425 00be FB89     		ldrh	r3, [r7, #14]
+ 426 00c0 1846     		mov	r0, r3
+ 427 00c2 FFF7FEFF 		bl	CyDelay
+ 104:.\main.c      ****     
+ 105:.\main.c      ****     LCD_UpdateStatus("Frame ID");
+ 428              		.loc 1 105 0
+ 429 00c6 40F20000 		movw	r0, #:lower16:.LC9
+ 430 00ca C0F20000 		movt	r0, #:upper16:.LC9
+ 431 00ce FFF7FEFF 		bl	LCD_UpdateStatus
+ 106:.\main.c      ****     LCD_ClearLine(1);
+ 432              		.loc 1 106 0
+ 433 00d2 4FF00100 		mov	r0, #1
+ 434 00d6 FFF7FEFF 		bl	LCD_ClearLine
+ 107:.\main.c      ****     LCD_Position(1,0);
+ 435              		.loc 1 107 0
+ 436 00da 4FF00100 		mov	r0, #1
+ 437 00de 4FF00001 		mov	r1, #0
+ 438 00e2 FFF7FEFF 		bl	LCD_Position
+ 108:.\main.c      ****     LCD_PrintString("0x");
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 11
+
+
+ 439              		.loc 1 108 0
+ 440 00e6 40F20000 		movw	r0, #:lower16:.LC8
+ 441 00ea C0F20000 		movt	r0, #:upper16:.LC8
+ 442 00ee FFF7FEFF 		bl	LCD_PrintString
+ 109:.\main.c      ****     LCD_PrintInt8(move->frame_id);
+ 443              		.loc 1 109 0
+ 444 00f2 7B68     		ldr	r3, [r7, #4]
+ 445 00f4 5B79     		ldrb	r3, [r3, #5]	@ zero_extendqisi2
+ 446 00f6 1846     		mov	r0, r3
+ 447 00f8 FFF7FEFF 		bl	LCD_PrintInt8
+ 110:.\main.c      ****     CyDelay(delay);
+ 448              		.loc 1 110 0
+ 449 00fc FB89     		ldrh	r3, [r7, #14]
+ 450 00fe 1846     		mov	r0, r3
+ 451 0100 FFF7FEFF 		bl	CyDelay
+ 111:.\main.c      ****     
+ 112:.\main.c      ****     LCD_UpdateStatus("Destination");
+ 452              		.loc 1 112 0
+ 453 0104 40F20000 		movw	r0, #:lower16:.LC10
+ 454 0108 C0F20000 		movt	r0, #:upper16:.LC10
+ 455 010c FFF7FEFF 		bl	LCD_UpdateStatus
+ 113:.\main.c      ****     LCD_ClearLine(1);
+ 456              		.loc 1 113 0
+ 457 0110 4FF00100 		mov	r0, #1
+ 458 0114 FFF7FEFF 		bl	LCD_ClearLine
+ 114:.\main.c      ****     LCD_Position(1,0);
+ 459              		.loc 1 114 0
+ 460 0118 4FF00100 		mov	r0, #1
+ 461 011c 4FF00001 		mov	r1, #0
+ 462 0120 FFF7FEFF 		bl	LCD_Position
+ 115:.\main.c      ****     LCD_PrintString("0x");
+ 463              		.loc 1 115 0
+ 464 0124 40F20000 		movw	r0, #:lower16:.LC8
+ 465 0128 C0F20000 		movt	r0, #:upper16:.LC8
+ 466 012c FFF7FEFF 		bl	LCD_PrintString
+ 116:.\main.c      ****     LCD_PrintInt16(move->destination);
+ 467              		.loc 1 116 0
+ 468 0130 7B68     		ldr	r3, [r7, #4]
+ 469 0132 DB88     		ldrh	r3, [r3, #6]
+ 470 0134 1846     		mov	r0, r3
+ 471 0136 FFF7FEFF 		bl	LCD_PrintInt16
+ 117:.\main.c      ****     CyDelay(delay);
+ 472              		.loc 1 117 0
+ 473 013a FB89     		ldrh	r3, [r7, #14]
+ 474 013c 1846     		mov	r0, r3
+ 475 013e FFF7FEFF 		bl	CyDelay
+ 118:.\main.c      ****     
+ 119:.\main.c      ****     LCD_UpdateStatus("Disable ACK");
+ 476              		.loc 1 119 0
+ 477 0142 40F20000 		movw	r0, #:lower16:.LC11
+ 478 0146 C0F20000 		movt	r0, #:upper16:.LC11
+ 479 014a FFF7FEFF 		bl	LCD_UpdateStatus
+ 120:.\main.c      ****     LCD_ClearLine(1);
+ 480              		.loc 1 120 0
+ 481 014e 4FF00100 		mov	r0, #1
+ 482 0152 FFF7FEFF 		bl	LCD_ClearLine
+ 121:.\main.c      ****     LCD_Position(1,0);
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 12
+
+
+ 483              		.loc 1 121 0
+ 484 0156 4FF00100 		mov	r0, #1
+ 485 015a 4FF00001 		mov	r1, #0
+ 486 015e FFF7FEFF 		bl	LCD_Position
+ 122:.\main.c      ****     LCD_PrintString("0x");
+ 487              		.loc 1 122 0
+ 488 0162 40F20000 		movw	r0, #:lower16:.LC8
+ 489 0166 C0F20000 		movt	r0, #:upper16:.LC8
+ 490 016a FFF7FEFF 		bl	LCD_PrintString
+ 123:.\main.c      ****     LCD_PrintInt8(move->disable_ack);
+ 491              		.loc 1 123 0
+ 492 016e 7B68     		ldr	r3, [r7, #4]
+ 493 0170 1B7A     		ldrb	r3, [r3, #8]	@ zero_extendqisi2
+ 494 0172 1846     		mov	r0, r3
+ 495 0174 FFF7FEFF 		bl	LCD_PrintInt8
+ 124:.\main.c      ****     CyDelay(delay);
+ 496              		.loc 1 124 0
+ 497 0178 FB89     		ldrh	r3, [r7, #14]
+ 498 017a 1846     		mov	r0, r3
+ 499 017c FFF7FEFF 		bl	CyDelay
+ 125:.\main.c      ****     
+ 126:.\main.c      ****     LCD_UpdateStatus("Player ID");
+ 500              		.loc 1 126 0
+ 501 0180 40F20000 		movw	r0, #:lower16:.LC12
+ 502 0184 C0F20000 		movt	r0, #:upper16:.LC12
+ 503 0188 FFF7FEFF 		bl	LCD_UpdateStatus
+ 127:.\main.c      ****     LCD_ClearLine(1);
+ 504              		.loc 1 127 0
+ 505 018c 4FF00100 		mov	r0, #1
+ 506 0190 FFF7FEFF 		bl	LCD_ClearLine
+ 128:.\main.c      ****     LCD_Position(1,0);
+ 507              		.loc 1 128 0
+ 508 0194 4FF00100 		mov	r0, #1
+ 509 0198 4FF00001 		mov	r1, #0
+ 510 019c FFF7FEFF 		bl	LCD_Position
+ 129:.\main.c      ****     LCD_PrintString("0x");
+ 511              		.loc 1 129 0
+ 512 01a0 40F20000 		movw	r0, #:lower16:.LC8
+ 513 01a4 C0F20000 		movt	r0, #:upper16:.LC8
+ 514 01a8 FFF7FEFF 		bl	LCD_PrintString
+ 130:.\main.c      ****     LCD_PrintInt8(move->player_id);
+ 515              		.loc 1 130 0
+ 516 01ac 7B68     		ldr	r3, [r7, #4]
+ 517 01ae 5B7A     		ldrb	r3, [r3, #9]	@ zero_extendqisi2
+ 518 01b0 1846     		mov	r0, r3
+ 519 01b2 FFF7FEFF 		bl	LCD_PrintInt8
+ 131:.\main.c      ****     CyDelay(delay);
+ 520              		.loc 1 131 0
+ 521 01b6 FB89     		ldrh	r3, [r7, #14]
+ 522 01b8 1846     		mov	r0, r3
+ 523 01ba FFF7FEFF 		bl	CyDelay
+ 132:.\main.c      ****     
+ 133:.\main.c      ****     LCD_UpdateStatus("Packet Type");
+ 524              		.loc 1 133 0
+ 525 01be 40F20000 		movw	r0, #:lower16:.LC13
+ 526 01c2 C0F20000 		movt	r0, #:upper16:.LC13
+ 527 01c6 FFF7FEFF 		bl	LCD_UpdateStatus
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 13
+
+
+ 134:.\main.c      ****     LCD_ClearLine(1);
+ 528              		.loc 1 134 0
+ 529 01ca 4FF00100 		mov	r0, #1
+ 530 01ce FFF7FEFF 		bl	LCD_ClearLine
+ 135:.\main.c      ****     LCD_Position(1,0);
+ 531              		.loc 1 135 0
+ 532 01d2 4FF00100 		mov	r0, #1
+ 533 01d6 4FF00001 		mov	r1, #0
+ 534 01da FFF7FEFF 		bl	LCD_Position
+ 136:.\main.c      ****     LCD_PrintString("0x");
+ 535              		.loc 1 136 0
+ 536 01de 40F20000 		movw	r0, #:lower16:.LC8
+ 537 01e2 C0F20000 		movt	r0, #:upper16:.LC8
+ 538 01e6 FFF7FEFF 		bl	LCD_PrintString
+ 137:.\main.c      ****     LCD_PrintInt8(move->packet_type);
+ 539              		.loc 1 137 0
+ 540 01ea 7B68     		ldr	r3, [r7, #4]
+ 541 01ec 9B7A     		ldrb	r3, [r3, #10]	@ zero_extendqisi2
+ 542 01ee 1846     		mov	r0, r3
+ 543 01f0 FFF7FEFF 		bl	LCD_PrintInt8
+ 138:.\main.c      ****     CyDelay(delay);
+ 544              		.loc 1 138 0
+ 545 01f4 FB89     		ldrh	r3, [r7, #14]
+ 546 01f6 1846     		mov	r0, r3
+ 547 01f8 FFF7FEFF 		bl	CyDelay
+ 139:.\main.c      ****     
+ 140:.\main.c      ****     LCD_UpdateStatus("Row");
+ 548              		.loc 1 140 0
+ 549 01fc 40F20000 		movw	r0, #:lower16:.LC14
+ 550 0200 C0F20000 		movt	r0, #:upper16:.LC14
+ 551 0204 FFF7FEFF 		bl	LCD_UpdateStatus
+ 141:.\main.c      ****     LCD_ClearLine(1);
+ 552              		.loc 1 141 0
+ 553 0208 4FF00100 		mov	r0, #1
+ 554 020c FFF7FEFF 		bl	LCD_ClearLine
+ 142:.\main.c      ****     LCD_Position(1,0);
+ 555              		.loc 1 142 0
+ 556 0210 4FF00100 		mov	r0, #1
+ 557 0214 4FF00001 		mov	r1, #0
+ 558 0218 FFF7FEFF 		bl	LCD_Position
+ 143:.\main.c      ****     LCD_PrintNumber(move->row);
+ 559              		.loc 1 143 0
+ 560 021c 7B68     		ldr	r3, [r7, #4]
+ 561 021e DB7A     		ldrb	r3, [r3, #11]	@ zero_extendqisi2
+ 562 0220 1846     		mov	r0, r3
+ 563 0222 FFF7FEFF 		bl	LCD_PrintNumber
+ 144:.\main.c      ****     CyDelay(delay);
+ 564              		.loc 1 144 0
+ 565 0226 FB89     		ldrh	r3, [r7, #14]
+ 566 0228 1846     		mov	r0, r3
+ 567 022a FFF7FEFF 		bl	CyDelay
+ 145:.\main.c      ****     
+ 146:.\main.c      ****     LCD_UpdateStatus("Column");
+ 568              		.loc 1 146 0
+ 569 022e 40F20000 		movw	r0, #:lower16:.LC15
+ 570 0232 C0F20000 		movt	r0, #:upper16:.LC15
+ 571 0236 FFF7FEFF 		bl	LCD_UpdateStatus
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 14
+
+
+ 147:.\main.c      ****     LCD_ClearLine(1);
+ 572              		.loc 1 147 0
+ 573 023a 4FF00100 		mov	r0, #1
+ 574 023e FFF7FEFF 		bl	LCD_ClearLine
+ 148:.\main.c      ****     LCD_Position(1,0);
+ 575              		.loc 1 148 0
+ 576 0242 4FF00100 		mov	r0, #1
+ 577 0246 4FF00001 		mov	r1, #0
+ 578 024a FFF7FEFF 		bl	LCD_Position
+ 149:.\main.c      ****     LCD_PrintNumber(move->col);
+ 579              		.loc 1 149 0
+ 580 024e 7B68     		ldr	r3, [r7, #4]
+ 581 0250 1B7B     		ldrb	r3, [r3, #12]	@ zero_extendqisi2
+ 582 0252 1846     		mov	r0, r3
+ 583 0254 FFF7FEFF 		bl	LCD_PrintNumber
+ 150:.\main.c      ****     CyDelay(delay);
+ 584              		.loc 1 150 0
+ 585 0258 FB89     		ldrh	r3, [r7, #14]
+ 586 025a 1846     		mov	r0, r3
+ 587 025c FFF7FEFF 		bl	CyDelay
+ 151:.\main.c      ****     
+ 152:.\main.c      ****     LCD_UpdateStatus("Checksum");
+ 588              		.loc 1 152 0
+ 589 0260 40F20000 		movw	r0, #:lower16:.LC16
+ 590 0264 C0F20000 		movt	r0, #:upper16:.LC16
+ 591 0268 FFF7FEFF 		bl	LCD_UpdateStatus
+ 153:.\main.c      ****     LCD_ClearLine(1);
+ 592              		.loc 1 153 0
+ 593 026c 4FF00100 		mov	r0, #1
+ 594 0270 FFF7FEFF 		bl	LCD_ClearLine
+ 154:.\main.c      ****     LCD_Position(1,0);
+ 595              		.loc 1 154 0
+ 596 0274 4FF00100 		mov	r0, #1
+ 597 0278 4FF00001 		mov	r1, #0
+ 598 027c FFF7FEFF 		bl	LCD_Position
+ 155:.\main.c      ****     LCD_PrintString("0x");
+ 599              		.loc 1 155 0
+ 600 0280 40F20000 		movw	r0, #:lower16:.LC8
+ 601 0284 C0F20000 		movt	r0, #:upper16:.LC8
+ 602 0288 FFF7FEFF 		bl	LCD_PrintString
+ 156:.\main.c      ****     LCD_PrintInt8(move->checksum);
+ 603              		.loc 1 156 0
+ 604 028c 7B68     		ldr	r3, [r7, #4]
+ 605 028e 5B7B     		ldrb	r3, [r3, #13]	@ zero_extendqisi2
+ 606 0290 1846     		mov	r0, r3
+ 607 0292 FFF7FEFF 		bl	LCD_PrintInt8
+ 157:.\main.c      ****     CyDelay(delay);
+ 608              		.loc 1 157 0
+ 609 0296 FB89     		ldrh	r3, [r7, #14]
+ 610 0298 1846     		mov	r0, r3
+ 611 029a FFF7FEFF 		bl	CyDelay
+ 158:.\main.c      **** }
+ 612              		.loc 1 158 0
+ 613 029e 07F11007 		add	r7, r7, #16
+ 614 02a2 BD46     		mov	sp, r7
+ 615 02a4 80BD     		pop	{r7, pc}
+ 616              		.cfi_endproc
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 15
+
+
+ 617              	.LFE31:
+ 618              		.size	show_packet, .-show_packet
+ 619 02a6 00BF     		.section	.text.send_packet,"ax",%progbits
+ 620              		.align	2
+ 621              		.global	send_packet
+ 622              		.thumb
+ 623              		.thumb_func
+ 624              		.type	send_packet, %function
+ 625              	send_packet:
+ 626              	.LFB32:
+ 159:.\main.c      **** 
+ 160:.\main.c      **** 
+ 161:.\main.c      **** 
+ 162:.\main.c      **** 
+ 163:.\main.c      **** void send_packet ( packet_t * move ) {
+ 627              		.loc 1 163 0
+ 628              		.cfi_startproc
+ 629              		@ args = 0, pretend = 0, frame = 8
+ 630              		@ frame_needed = 1, uses_anonymous_args = 0
+ 631 0000 80B5     		push	{r7, lr}
+ 632              	.LCFI8:
+ 633              		.cfi_def_cfa_offset 8
+ 634 0002 82B0     		sub	sp, sp, #8
+ 635              	.LCFI9:
+ 636              		.cfi_def_cfa_offset 16
+ 637 0004 00AF     		add	r7, sp, #0
+ 638              		.cfi_offset 14, -4
+ 639              		.cfi_offset 7, -8
+ 640              	.LCFI10:
+ 641              		.cfi_def_cfa_register 7
+ 642 0006 7860     		str	r0, [r7, #4]
+ 164:.\main.c      ****     UART_ClearTxBuffer();
+ 643              		.loc 1 164 0
+ 644 0008 FFF7FEFF 		bl	UART_ClearTxBuffer
+ 165:.\main.c      ****     UART_WriteTxData(move->delimiter);
+ 645              		.loc 1 165 0
+ 646 000c 7B68     		ldr	r3, [r7, #4]
+ 647 000e 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 648 0010 1846     		mov	r0, r3
+ 649 0012 FFF7FEFF 		bl	UART_WriteTxData
+ 166:.\main.c      ****     UART_WriteTxData((uint8) (move->length >> 4));
+ 650              		.loc 1 166 0
+ 651 0016 7B68     		ldr	r3, [r7, #4]
+ 652 0018 5B88     		ldrh	r3, [r3, #2]
+ 653 001a 4FEA1313 		lsr	r3, r3, #4
+ 654 001e 9BB2     		uxth	r3, r3
+ 655 0020 DBB2     		uxtb	r3, r3
+ 656 0022 1846     		mov	r0, r3
+ 657 0024 FFF7FEFF 		bl	UART_WriteTxData
+ 167:.\main.c      ****     UART_WriteTxData((uint8) move->length);
+ 658              		.loc 1 167 0
+ 659 0028 7B68     		ldr	r3, [r7, #4]
+ 660 002a 5B88     		ldrh	r3, [r3, #2]
+ 661 002c DBB2     		uxtb	r3, r3
+ 662 002e 1846     		mov	r0, r3
+ 663 0030 FFF7FEFF 		bl	UART_WriteTxData
+ 168:.\main.c      ****     UART_WriteTxData(move->api_id);
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 16
+
+
+ 664              		.loc 1 168 0
+ 665 0034 7B68     		ldr	r3, [r7, #4]
+ 666 0036 1B79     		ldrb	r3, [r3, #4]	@ zero_extendqisi2
+ 667 0038 1846     		mov	r0, r3
+ 668 003a FFF7FEFF 		bl	UART_WriteTxData
+ 169:.\main.c      ****     UART_WriteTxData(move->frame_id);
+ 669              		.loc 1 169 0
+ 670 003e 7B68     		ldr	r3, [r7, #4]
+ 671 0040 5B79     		ldrb	r3, [r3, #5]	@ zero_extendqisi2
+ 672 0042 1846     		mov	r0, r3
+ 673 0044 FFF7FEFF 		bl	UART_WriteTxData
+ 170:.\main.c      ****     UART_WriteTxData((uint8) (move->destination >> 4));
+ 674              		.loc 1 170 0
+ 675 0048 7B68     		ldr	r3, [r7, #4]
+ 676 004a DB88     		ldrh	r3, [r3, #6]
+ 677 004c 4FEA1313 		lsr	r3, r3, #4
+ 678 0050 9BB2     		uxth	r3, r3
+ 679 0052 DBB2     		uxtb	r3, r3
+ 680 0054 1846     		mov	r0, r3
+ 681 0056 FFF7FEFF 		bl	UART_WriteTxData
+ 171:.\main.c      ****     UART_WriteTxData((uint8) (move->destination));
+ 682              		.loc 1 171 0
+ 683 005a 7B68     		ldr	r3, [r7, #4]
+ 684 005c DB88     		ldrh	r3, [r3, #6]
+ 685 005e DBB2     		uxtb	r3, r3
+ 686 0060 1846     		mov	r0, r3
+ 687 0062 FFF7FEFF 		bl	UART_WriteTxData
+ 172:.\main.c      ****     UART_WriteTxData(move->disable_ack);
+ 688              		.loc 1 172 0
+ 689 0066 7B68     		ldr	r3, [r7, #4]
+ 690 0068 1B7A     		ldrb	r3, [r3, #8]	@ zero_extendqisi2
+ 691 006a 1846     		mov	r0, r3
+ 692 006c FFF7FEFF 		bl	UART_WriteTxData
+ 173:.\main.c      ****     UART_WriteTxData(move->player_id);
+ 693              		.loc 1 173 0
+ 694 0070 7B68     		ldr	r3, [r7, #4]
+ 695 0072 5B7A     		ldrb	r3, [r3, #9]	@ zero_extendqisi2
+ 696 0074 1846     		mov	r0, r3
+ 697 0076 FFF7FEFF 		bl	UART_WriteTxData
+ 174:.\main.c      ****     UART_WriteTxData(move->packet_type);
+ 698              		.loc 1 174 0
+ 699 007a 7B68     		ldr	r3, [r7, #4]
+ 700 007c 9B7A     		ldrb	r3, [r3, #10]	@ zero_extendqisi2
+ 701 007e 1846     		mov	r0, r3
+ 702 0080 FFF7FEFF 		bl	UART_WriteTxData
+ 175:.\main.c      ****     UART_WriteTxData(move->row);
+ 703              		.loc 1 175 0
+ 704 0084 7B68     		ldr	r3, [r7, #4]
+ 705 0086 DB7A     		ldrb	r3, [r3, #11]	@ zero_extendqisi2
+ 706 0088 1846     		mov	r0, r3
+ 707 008a FFF7FEFF 		bl	UART_WriteTxData
+ 176:.\main.c      ****     UART_WriteTxData(move->col);
+ 708              		.loc 1 176 0
+ 709 008e 7B68     		ldr	r3, [r7, #4]
+ 710 0090 1B7B     		ldrb	r3, [r3, #12]	@ zero_extendqisi2
+ 711 0092 1846     		mov	r0, r3
+ 712 0094 FFF7FEFF 		bl	UART_WriteTxData
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 17
+
+
+ 177:.\main.c      ****     UART_WriteTxData(move->checksum);
+ 713              		.loc 1 177 0
+ 714 0098 7B68     		ldr	r3, [r7, #4]
+ 715 009a 5B7B     		ldrb	r3, [r3, #13]	@ zero_extendqisi2
+ 716 009c 1846     		mov	r0, r3
+ 717 009e FFF7FEFF 		bl	UART_WriteTxData
+ 178:.\main.c      **** }
+ 718              		.loc 1 178 0
+ 719 00a2 07F10807 		add	r7, r7, #8
+ 720 00a6 BD46     		mov	sp, r7
+ 721 00a8 80BD     		pop	{r7, pc}
+ 722              		.cfi_endproc
+ 723              	.LFE32:
+ 724              		.size	send_packet, .-send_packet
+ 725 00aa 00BF     		.section	.rodata
+ 726 0091 000000   		.align	2
+ 727              	.LC17:
+ 728 0094 77616974 		.ascii	"waiting\000"
+ 728      696E6700 
+ 729              		.align	2
+ 730              	.LC18:
+ 731 009c 72656365 		.ascii	"received\000"
+ 731      69766564 
+ 731      00
+ 732 00a5 000000   		.align	2
+ 733              	.LC19:
+ 734 00a8 7E00     		.ascii	"~\000"
+ 735              		.section	.text.receive_packet,"ax",%progbits
+ 736              		.align	2
+ 737              		.global	receive_packet
+ 738              		.thumb
+ 739              		.thumb_func
+ 740              		.type	receive_packet, %function
+ 741              	receive_packet:
+ 742              	.LFB33:
+ 179:.\main.c      **** 
+ 180:.\main.c      **** 
+ 181:.\main.c      **** 
+ 182:.\main.c      **** 
+ 183:.\main.c      **** void receive_packet ( packet_t * move ) {
+ 743              		.loc 1 183 0
+ 744              		.cfi_startproc
+ 745              		@ args = 0, pretend = 0, frame = 16
+ 746              		@ frame_needed = 1, uses_anonymous_args = 0
+ 747 0000 90B5     		push	{r4, r7, lr}
+ 748              	.LCFI11:
+ 749              		.cfi_def_cfa_offset 12
+ 750 0002 85B0     		sub	sp, sp, #20
+ 751              	.LCFI12:
+ 752              		.cfi_def_cfa_offset 32
+ 753 0004 00AF     		add	r7, sp, #0
+ 754              		.cfi_offset 14, -4
+ 755              		.cfi_offset 7, -8
+ 756              		.cfi_offset 4, -12
+ 757              	.LCFI13:
+ 758              		.cfi_def_cfa_register 7
+ 759 0006 7860     		str	r0, [r7, #4]
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 18
+
+
+ 760              	.L35:
+ 761              	.LBB2:
+ 184:.\main.c      ****     while (true) {
+ 185:.\main.c      ****         UART_ClearRxBuffer();
+ 762              		.loc 1 185 0
+ 763 0008 FFF7FEFF 		bl	UART_ClearRxBuffer
+ 186:.\main.c      ****         LCD_UpdateMessage("waiting"); // DEBUG
+ 764              		.loc 1 186 0
+ 765 000c 40F20000 		movw	r0, #:lower16:.LC17
+ 766 0010 C0F20000 		movt	r0, #:upper16:.LC17
+ 767 0014 FFF7FEFF 		bl	LCD_UpdateMessage
+ 768              	.L24:
+ 187:.\main.c      ****         while (!(UART_ReadRxStatus() & UART_RX_STS_FIFO_NOTEMPTY));
+ 769              		.loc 1 187 0
+ 770 0018 FFF7FEFF 		bl	UART_ReadRxStatus
+ 771 001c 0346     		mov	r3, r0
+ 772 001e 03F02003 		and	r3, r3, #32
+ 773 0022 002B     		cmp	r3, #0
+ 774 0024 F8D0     		beq	.L24
+ 188:.\main.c      ****         LCD_UpdateMessage("received"); // DEBUG
+ 775              		.loc 1 188 0
+ 776 0026 40F20000 		movw	r0, #:lower16:.LC18
+ 777 002a C0F20000 		movt	r0, #:upper16:.LC18
+ 778 002e FFF7FEFF 		bl	LCD_UpdateMessage
+ 189:.\main.c      ****         CyDelay(500); // DEBUG?
+ 779              		.loc 1 189 0
+ 780 0032 4FF4FA70 		mov	r0, #500
+ 781 0036 FFF7FEFF 		bl	CyDelay
+ 190:.\main.c      ****         
+ 191:.\main.c      ****         LCD_Position(1,12); // DEBUG
+ 782              		.loc 1 191 0
+ 783 003a 4FF00100 		mov	r0, #1
+ 784 003e 4FF00C01 		mov	r1, #12
+ 785 0042 FFF7FEFF 		bl	LCD_Position
+ 192:.\main.c      ****         uint16 tst = UART_GetRxBufferSize(); // DEBUG
+ 786              		.loc 1 192 0
+ 787 0046 FFF7FEFF 		bl	UART_GetRxBufferSize
+ 788 004a 0346     		mov	r3, r0
+ 789 004c BB81     		strh	r3, [r7, #12]	@ movhi
+ 193:.\main.c      ****         LCD_PrintNumber(tst); // DEBUG
+ 790              		.loc 1 193 0
+ 791 004e BB89     		ldrh	r3, [r7, #12]
+ 792 0050 1846     		mov	r0, r3
+ 793 0052 FFF7FEFF 		bl	LCD_PrintNumber
+ 194:.\main.c      ****         CyDelay(2000); // DEBUG
+ 794              		.loc 1 194 0
+ 795 0056 4FF4FA60 		mov	r0, #2000
+ 796 005a FFF7FEFF 		bl	CyDelay
+ 195:.\main.c      ****         
+ 196:.\main.c      ****         /* DEBUG */
+ 197:.\main.c      ****         uint16 tmp;
+ 198:.\main.c      ****         for (tmp=tst; tmp > 0 ;--tmp) {
+ 797              		.loc 1 198 0
+ 798 005e BB89     		ldrh	r3, [r7, #12]	@ movhi
+ 799 0060 FB81     		strh	r3, [r7, #14]	@ movhi
+ 800 0062 25E0     		b	.L25
+ 801              	.L26:
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 19
+
+
+ 199:.\main.c      ****             LCD_ClearLine(1);
+ 802              		.loc 1 199 0
+ 803 0064 4FF00100 		mov	r0, #1
+ 804 0068 FFF7FEFF 		bl	LCD_ClearLine
+ 200:.\main.c      ****             LCD_Position(1,0);
+ 805              		.loc 1 200 0
+ 806 006c 4FF00100 		mov	r0, #1
+ 807 0070 4FF00001 		mov	r1, #0
+ 808 0074 FFF7FEFF 		bl	LCD_Position
+ 201:.\main.c      ****             LCD_PrintNumber(UART_GetChar());
+ 809              		.loc 1 201 0
+ 810 0078 FFF7FEFF 		bl	UART_GetChar
+ 811 007c 0346     		mov	r3, r0
+ 812 007e 1846     		mov	r0, r3
+ 813 0080 FFF7FEFF 		bl	LCD_PrintNumber
+ 202:.\main.c      ****             LCD_Position(1,12);
+ 814              		.loc 1 202 0
+ 815 0084 4FF00100 		mov	r0, #1
+ 816 0088 4FF00C01 		mov	r1, #12
+ 817 008c FFF7FEFF 		bl	LCD_Position
+ 203:.\main.c      ****             LCD_PrintInt16(tst-tmp);
+ 818              		.loc 1 203 0
+ 819 0090 BA89     		ldrh	r2, [r7, #12]	@ movhi
+ 820 0092 FB89     		ldrh	r3, [r7, #14]	@ movhi
+ 821 0094 C3EB0203 		rsb	r3, r3, r2
+ 822 0098 9BB2     		uxth	r3, r3
+ 823 009a 1846     		mov	r0, r3
+ 824 009c FFF7FEFF 		bl	LCD_PrintInt16
+ 204:.\main.c      ****             CyDelay(1000);
+ 825              		.loc 1 204 0
+ 826 00a0 4FF47A70 		mov	r0, #1000
+ 827 00a4 FFF7FEFF 		bl	CyDelay
+ 828              		.loc 1 198 0
+ 829 00a8 FB89     		ldrh	r3, [r7, #14]	@ movhi
+ 830 00aa 03F1FF33 		add	r3, r3, #-1
+ 831 00ae FB81     		strh	r3, [r7, #14]	@ movhi
+ 832              	.L25:
+ 833 00b0 FB89     		ldrh	r3, [r7, #14]
+ 834 00b2 002B     		cmp	r3, #0
+ 835 00b4 D6D1     		bne	.L26
+ 205:.\main.c      ****         }
+ 206:.\main.c      ****         /**/
+ 207:.\main.c      ****         
+ 208:.\main.c      ****         //if (tst != 13) continue; // DEBUG
+ 209:.\main.c      ****         //if (UART_GetRxBufferSize() != 13) continue;
+ 210:.\main.c      ****         
+ 211:.\main.c      ****         move->delimiter = UART_ReadRxData();
+ 836              		.loc 1 211 0
+ 837 00b6 FFF7FEFF 		bl	UART_ReadRxData
+ 838 00ba 0346     		mov	r3, r0
+ 839 00bc 1A46     		mov	r2, r3
+ 840 00be 7B68     		ldr	r3, [r7, #4]
+ 841 00c0 1A70     		strb	r2, [r3, #0]
+ 212:.\main.c      ****         if (move->delimiter != '~') continue;
+ 842              		.loc 1 212 0
+ 843 00c2 7B68     		ldr	r3, [r7, #4]
+ 844 00c4 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 20
+
+
+ 845 00c6 7E2B     		cmp	r3, #126
+ 846 00c8 00D0     		beq	.L27
+ 847 00ca AFE0     		b	.L28
+ 848              	.L27:
+ 213:.\main.c      ****         
+ 214:.\main.c      ****         LCD_UpdateMessage("~"); // DEBUG
+ 849              		.loc 1 214 0
+ 850 00cc 40F20000 		movw	r0, #:lower16:.LC19
+ 851 00d0 C0F20000 		movt	r0, #:upper16:.LC19
+ 852 00d4 FFF7FEFF 		bl	LCD_UpdateMessage
+ 215:.\main.c      ****         CyDelay(500); // DEBUG
+ 853              		.loc 1 215 0
+ 854 00d8 4FF4FA70 		mov	r0, #500
+ 855 00dc FFF7FEFF 		bl	CyDelay
+ 216:.\main.c      ****         
+ 217:.\main.c      ****         move->length   = UART_ReadRxData();
+ 856              		.loc 1 217 0
+ 857 00e0 FFF7FEFF 		bl	UART_ReadRxData
+ 858 00e4 0346     		mov	r3, r0
+ 859 00e6 1A46     		mov	r2, r3
+ 860 00e8 7B68     		ldr	r3, [r7, #4]
+ 861 00ea 5A80     		strh	r2, [r3, #2]	@ movhi
+ 218:.\main.c      ****         move->length <<= 8;
+ 862              		.loc 1 218 0
+ 863 00ec 7B68     		ldr	r3, [r7, #4]
+ 864 00ee 5B88     		ldrh	r3, [r3, #2]
+ 865 00f0 4FEA0323 		lsl	r3, r3, #8
+ 866 00f4 9AB2     		uxth	r2, r3
+ 867 00f6 7B68     		ldr	r3, [r7, #4]
+ 868 00f8 5A80     		strh	r2, [r3, #2]	@ movhi
+ 219:.\main.c      ****         move->length  |= UART_ReadRxData();
+ 869              		.loc 1 219 0
+ 870 00fa 7B68     		ldr	r3, [r7, #4]
+ 871 00fc 5C88     		ldrh	r4, [r3, #2]
+ 872 00fe FFF7FEFF 		bl	UART_ReadRxData
+ 873 0102 0346     		mov	r3, r0
+ 874 0104 44EA0303 		orr	r3, r4, r3
+ 875 0108 9AB2     		uxth	r2, r3
+ 876 010a 7B68     		ldr	r3, [r7, #4]
+ 877 010c 5A80     		strh	r2, [r3, #2]	@ movhi
+ 220:.\main.c      ****         
+ 221:.\main.c      ****         LCD_ClearLine(1); // DEBUG
+ 878              		.loc 1 221 0
+ 879 010e 4FF00100 		mov	r0, #1
+ 880 0112 FFF7FEFF 		bl	LCD_ClearLine
+ 222:.\main.c      ****         LCD_Position(1,0); // DEBUG
+ 881              		.loc 1 222 0
+ 882 0116 4FF00100 		mov	r0, #1
+ 883 011a 4FF00001 		mov	r1, #0
+ 884 011e FFF7FEFF 		bl	LCD_Position
+ 223:.\main.c      ****         LCD_PrintNumber(move->length); // DEBUG
+ 885              		.loc 1 223 0
+ 886 0122 7B68     		ldr	r3, [r7, #4]
+ 887 0124 5B88     		ldrh	r3, [r3, #2]
+ 888 0126 1846     		mov	r0, r3
+ 889 0128 FFF7FEFF 		bl	LCD_PrintNumber
+ 224:.\main.c      ****         CyDelay(500); // DEBUG
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 21
+
+
+ 890              		.loc 1 224 0
+ 891 012c 4FF4FA70 		mov	r0, #500
+ 892 0130 FFF7FEFF 		bl	CyDelay
+ 225:.\main.c      ****         
+ 226:.\main.c      ****         move->api_id = UART_ReadRxData();
+ 893              		.loc 1 226 0
+ 894 0134 FFF7FEFF 		bl	UART_ReadRxData
+ 895 0138 0346     		mov	r3, r0
+ 896 013a 1A46     		mov	r2, r3
+ 897 013c 7B68     		ldr	r3, [r7, #4]
+ 898 013e 1A71     		strb	r2, [r3, #4]
+ 227:.\main.c      ****         if (move->api_id != 0x01); //means what???
+ 228:.\main.c      ****         
+ 229:.\main.c      ****         move->frame_id = UART_ReadRxData();
+ 899              		.loc 1 229 0
+ 900 0140 FFF7FEFF 		bl	UART_ReadRxData
+ 901 0144 0346     		mov	r3, r0
+ 902 0146 1A46     		mov	r2, r3
+ 903 0148 7B68     		ldr	r3, [r7, #4]
+ 904 014a 5A71     		strb	r2, [r3, #5]
+ 230:.\main.c      ****         if (move->frame_id != 0x00); //maybe this needs to be a sequence #?
+ 231:.\main.c      ****         
+ 232:.\main.c      ****         move->destination   = UART_ReadRxData();
+ 905              		.loc 1 232 0
+ 906 014c FFF7FEFF 		bl	UART_ReadRxData
+ 907 0150 0346     		mov	r3, r0
+ 908 0152 1A46     		mov	r2, r3
+ 909 0154 7B68     		ldr	r3, [r7, #4]
+ 910 0156 DA80     		strh	r2, [r3, #6]	@ movhi
+ 233:.\main.c      ****         move->destination <<= 8;
+ 911              		.loc 1 233 0
+ 912 0158 7B68     		ldr	r3, [r7, #4]
+ 913 015a DB88     		ldrh	r3, [r3, #6]
+ 914 015c 4FEA0323 		lsl	r3, r3, #8
+ 915 0160 9AB2     		uxth	r2, r3
+ 916 0162 7B68     		ldr	r3, [r7, #4]
+ 917 0164 DA80     		strh	r2, [r3, #6]	@ movhi
+ 234:.\main.c      ****         move->destination  |= UART_ReadRxData();
+ 918              		.loc 1 234 0
+ 919 0166 7B68     		ldr	r3, [r7, #4]
+ 920 0168 DC88     		ldrh	r4, [r3, #6]
+ 921 016a FFF7FEFF 		bl	UART_ReadRxData
+ 922 016e 0346     		mov	r3, r0
+ 923 0170 44EA0303 		orr	r3, r4, r3
+ 924 0174 9AB2     		uxth	r2, r3
+ 925 0176 7B68     		ldr	r3, [r7, #4]
+ 926 0178 DA80     		strh	r2, [r3, #6]	@ movhi
+ 235:.\main.c      ****         if (move->destination != 0xFFFF); //means what???
+ 236:.\main.c      ****         
+ 237:.\main.c      ****         move->disable_ack = UART_ReadRxData();
+ 927              		.loc 1 237 0
+ 928 017a FFF7FEFF 		bl	UART_ReadRxData
+ 929 017e 0346     		mov	r3, r0
+ 930 0180 1A46     		mov	r2, r3
+ 931 0182 7B68     		ldr	r3, [r7, #4]
+ 932 0184 1A72     		strb	r2, [r3, #8]
+ 238:.\main.c      ****         if (move->disable_ack != 0x01); //ack?
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 22
+
+
+ 239:.\main.c      ****         
+ 240:.\main.c      ****         move->player_id = UART_ReadRxData();
+ 933              		.loc 1 240 0
+ 934 0186 FFF7FEFF 		bl	UART_ReadRxData
+ 935 018a 0346     		mov	r3, r0
+ 936 018c 1A46     		mov	r2, r3
+ 937 018e 7B68     		ldr	r3, [r7, #4]
+ 938 0190 5A72     		strb	r2, [r3, #9]
+ 241:.\main.c      ****         if (move->player_id != PLAYER2_ID) continue;
+ 939              		.loc 1 241 0
+ 940 0192 7B68     		ldr	r3, [r7, #4]
+ 941 0194 5B7A     		ldrb	r3, [r3, #9]	@ zero_extendqisi2
+ 942 0196 072B     		cmp	r3, #7
+ 943 0198 00D0     		beq	.L29
+ 944 019a 47E0     		b	.L28
+ 945              	.L29:
+ 242:.\main.c      ****         
+ 243:.\main.c      ****         move->packet_type = UART_ReadRxData();
+ 946              		.loc 1 243 0
+ 947 019c FFF7FEFF 		bl	UART_ReadRxData
+ 948 01a0 0346     		mov	r3, r0
+ 949 01a2 1A46     		mov	r2, r3
+ 950 01a4 7B68     		ldr	r3, [r7, #4]
+ 951 01a6 9A72     		strb	r2, [r3, #10]
+ 244:.\main.c      ****         if (move->packet_type != 0x00); //a later version is trying to play with this game
+ 245:.\main.c      ****         
+ 246:.\main.c      ****         move->row = UART_ReadRxData();
+ 952              		.loc 1 246 0
+ 953 01a8 FFF7FEFF 		bl	UART_ReadRxData
+ 954 01ac 0346     		mov	r3, r0
+ 955 01ae 1A46     		mov	r2, r3
+ 956 01b0 7B68     		ldr	r3, [r7, #4]
+ 957 01b2 DA72     		strb	r2, [r3, #11]
+ 247:.\main.c      ****         if (move->row < 1 || move->row > MATRIX_ROWS-1) continue;
+ 958              		.loc 1 247 0
+ 959 01b4 7B68     		ldr	r3, [r7, #4]
+ 960 01b6 DB7A     		ldrb	r3, [r3, #11]	@ zero_extendqisi2
+ 961 01b8 002B     		cmp	r3, #0
+ 962 01ba 03D0     		beq	.L30
+ 963 01bc 7B68     		ldr	r3, [r7, #4]
+ 964 01be DB7A     		ldrb	r3, [r3, #11]	@ zero_extendqisi2
+ 965 01c0 072B     		cmp	r3, #7
+ 966 01c2 00D9     		bls	.L31
+ 967              	.L30:
+ 968 01c4 32E0     		b	.L28
+ 969              	.L31:
+ 248:.\main.c      ****         
+ 249:.\main.c      ****         move->col = UART_ReadRxData();
+ 970              		.loc 1 249 0
+ 971 01c6 FFF7FEFF 		bl	UART_ReadRxData
+ 972 01ca 0346     		mov	r3, r0
+ 973 01cc 1A46     		mov	r2, r3
+ 974 01ce 7B68     		ldr	r3, [r7, #4]
+ 975 01d0 1A73     		strb	r2, [r3, #12]
+ 250:.\main.c      ****         if (move->col < 1 || move->row > MATRIX_COLS) continue;
+ 976              		.loc 1 250 0
+ 977 01d2 7B68     		ldr	r3, [r7, #4]
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 23
+
+
+ 978 01d4 1B7B     		ldrb	r3, [r3, #12]	@ zero_extendqisi2
+ 979 01d6 002B     		cmp	r3, #0
+ 980 01d8 03D0     		beq	.L32
+ 981 01da 7B68     		ldr	r3, [r7, #4]
+ 982 01dc DB7A     		ldrb	r3, [r3, #11]	@ zero_extendqisi2
+ 983 01de 082B     		cmp	r3, #8
+ 984 01e0 00D9     		bls	.L33
+ 985              	.L32:
+ 986 01e2 23E0     		b	.L28
+ 987              	.L33:
+ 251:.\main.c      ****         
+ 252:.\main.c      ****         move->checksum = UART_ReadRxData();
+ 988              		.loc 1 252 0
+ 989 01e4 FFF7FEFF 		bl	UART_ReadRxData
+ 990 01e8 0346     		mov	r3, r0
+ 991 01ea 1A46     		mov	r2, r3
+ 992 01ec 7B68     		ldr	r3, [r7, #4]
+ 993 01ee 5A73     		strb	r2, [r3, #13]
+ 253:.\main.c      ****         if ((move->api_id +
+ 254:.\main.c      ****              move->frame_id +
+ 994              		.loc 1 254 0
+ 995 01f0 7B68     		ldr	r3, [r7, #4]
+ 996 01f2 1B79     		ldrb	r3, [r3, #4]	@ zero_extendqisi2
+ 997 01f4 1A46     		mov	r2, r3
+ 998 01f6 7B68     		ldr	r3, [r7, #4]
+ 999 01f8 5B79     		ldrb	r3, [r3, #5]	@ zero_extendqisi2
+ 1000 01fa 1A44     		add	r2, r2, r3
+ 255:.\main.c      ****              move->destination +
+ 1001              		.loc 1 255 0
+ 1002 01fc 7B68     		ldr	r3, [r7, #4]
+ 1003 01fe DB88     		ldrh	r3, [r3, #6]
+ 1004 0200 1A44     		add	r2, r2, r3
+ 256:.\main.c      ****              move->disable_ack +
+ 1005              		.loc 1 256 0
+ 1006 0202 7B68     		ldr	r3, [r7, #4]
+ 1007 0204 1B7A     		ldrb	r3, [r3, #8]	@ zero_extendqisi2
+ 1008 0206 1A44     		add	r2, r2, r3
+ 257:.\main.c      ****              move->player_id +
+ 1009              		.loc 1 257 0
+ 1010 0208 7B68     		ldr	r3, [r7, #4]
+ 1011 020a 5B7A     		ldrb	r3, [r3, #9]	@ zero_extendqisi2
+ 1012 020c 1A44     		add	r2, r2, r3
+ 258:.\main.c      ****              move->packet_type +
+ 1013              		.loc 1 258 0
+ 1014 020e 7B68     		ldr	r3, [r7, #4]
+ 1015 0210 9B7A     		ldrb	r3, [r3, #10]	@ zero_extendqisi2
+ 1016 0212 1A44     		add	r2, r2, r3
+ 259:.\main.c      ****              move->row +
+ 1017              		.loc 1 259 0
+ 1018 0214 7B68     		ldr	r3, [r7, #4]
+ 1019 0216 DB7A     		ldrb	r3, [r3, #11]	@ zero_extendqisi2
+ 1020 0218 1A44     		add	r2, r2, r3
+ 260:.\main.c      ****              move->col + 
+ 1021              		.loc 1 260 0
+ 1022 021a 7B68     		ldr	r3, [r7, #4]
+ 1023 021c 1B7B     		ldrb	r3, [r3, #12]	@ zero_extendqisi2
+ 1024 021e 1A44     		add	r2, r2, r3
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 24
+
+
+ 1025              		.loc 1 253 0
+ 1026 0220 7B68     		ldr	r3, [r7, #4]
+ 1027 0222 5B7B     		ldrb	r3, [r3, #13]	@ zero_extendqisi2
+ 1028 0224 1344     		add	r3, r2, r3
+ 1029 0226 FF2B     		cmp	r3, #255
+ 1030 0228 01D0     		beq	.L37
+ 1031              	.LBE2:
+ 261:.\main.c      ****              move->checksum) != 0xFF); //bad checksum, silently discard?
+ 262:.\main.c      ****         else break;
+ 263:.\main.c      ****     }
+ 1032              		.loc 1 263 0
+ 1033 022a EDE6     		b	.L35
+ 1034              	.L28:
+ 1035 022c ECE6     		b	.L35
+ 1036              	.L37:
+ 264:.\main.c      **** }
+ 1037              		.loc 1 264 0
+ 1038 022e 00BF     		nop
+ 1039              	.L36:
+ 1040 0230 07F11407 		add	r7, r7, #20
+ 1041 0234 BD46     		mov	sp, r7
+ 1042 0236 90BD     		pop	{r4, r7, pc}
+ 1043              		.cfi_endproc
+ 1044              	.LFE33:
+ 1045              		.size	receive_packet, .-receive_packet
+ 1046              		.section	.text.clear_board,"ax",%progbits
+ 1047              		.align	2
+ 1048              		.global	clear_board
+ 1049              		.thumb
+ 1050              		.thumb_func
+ 1051              		.type	clear_board, %function
+ 1052              	clear_board:
+ 1053              	.LFB34:
+ 265:.\main.c      **** /**/
+ 266:.\main.c      **** 
+ 267:.\main.c      **** 
+ 268:.\main.c      **** 
+ 269:.\main.c      **** 
+ 270:.\main.c      **** void clear_board () {
+ 1054              		.loc 1 270 0
+ 1055              		.cfi_startproc
+ 1056              		@ args = 0, pretend = 0, frame = 8
+ 1057              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1058              		@ link register save eliminated.
+ 1059 0000 80B4     		push	{r7}
+ 1060              	.LCFI14:
+ 1061              		.cfi_def_cfa_offset 4
+ 1062 0002 83B0     		sub	sp, sp, #12
+ 1063              	.LCFI15:
+ 1064              		.cfi_def_cfa_offset 16
+ 1065 0004 00AF     		add	r7, sp, #0
+ 1066              		.cfi_offset 7, -4
+ 1067              	.LCFI16:
+ 1068              		.cfi_def_cfa_register 7
+ 271:.\main.c      ****     uint8 r, c;
+ 272:.\main.c      ****     for (r=0; r < MATRIX_ROWS ;++r) {
+ 1069              		.loc 1 272 0
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 25
+
+
+ 1070 0006 4FF00003 		mov	r3, #0
+ 1071 000a BB71     		strb	r3, [r7, #6]
+ 1072 000c 28E0     		b	.L39
+ 1073              	.L42:
+ 273:.\main.c      ****         for (c=0; c < MATRIX_COLS ;++c) {
+ 1074              		.loc 1 273 0
+ 1075 000e 4FF00003 		mov	r3, #0
+ 1076 0012 FB71     		strb	r3, [r7, #7]
+ 1077 0014 1DE0     		b	.L40
+ 1078              	.L41:
+ 274:.\main.c      ****             player1[r][c] = false;
+ 1079              		.loc 1 274 0
+ 1080 0016 B979     		ldrb	r1, [r7, #6]	@ zero_extendqisi2
+ 1081 0018 FA79     		ldrb	r2, [r7, #7]	@ zero_extendqisi2
+ 1082 001a 40F20003 		movw	r3, #:lower16:player1
+ 1083 001e C0F20003 		movt	r3, #:upper16:player1
+ 1084 0022 4FEAC101 		lsl	r1, r1, #3
+ 1085 0026 0A44     		add	r2, r1, r2
+ 1086 0028 1344     		add	r3, r2, r3
+ 1087 002a 4FF00002 		mov	r2, #0
+ 1088 002e 1A70     		strb	r2, [r3, #0]
+ 275:.\main.c      ****             player2[r][c] = false;
+ 1089              		.loc 1 275 0
+ 1090 0030 B979     		ldrb	r1, [r7, #6]	@ zero_extendqisi2
+ 1091 0032 FA79     		ldrb	r2, [r7, #7]	@ zero_extendqisi2
+ 1092 0034 40F20003 		movw	r3, #:lower16:player2
+ 1093 0038 C0F20003 		movt	r3, #:upper16:player2
+ 1094 003c 4FEAC101 		lsl	r1, r1, #3
+ 1095 0040 0A44     		add	r2, r1, r2
+ 1096 0042 1344     		add	r3, r2, r3
+ 1097 0044 4FF00002 		mov	r2, #0
+ 1098 0048 1A70     		strb	r2, [r3, #0]
+ 1099              		.loc 1 273 0
+ 1100 004a FB79     		ldrb	r3, [r7, #7]
+ 1101 004c 03F10103 		add	r3, r3, #1
+ 1102 0050 FB71     		strb	r3, [r7, #7]
+ 1103              	.L40:
+ 1104 0052 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1105 0054 072B     		cmp	r3, #7
+ 1106 0056 DED9     		bls	.L41
+ 1107              		.loc 1 272 0
+ 1108 0058 BB79     		ldrb	r3, [r7, #6]
+ 1109 005a 03F10103 		add	r3, r3, #1
+ 1110 005e BB71     		strb	r3, [r7, #6]
+ 1111              	.L39:
+ 1112 0060 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 1113 0062 072B     		cmp	r3, #7
+ 1114 0064 D3D9     		bls	.L42
+ 276:.\main.c      ****         }
+ 277:.\main.c      ****     }
+ 278:.\main.c      **** }
+ 1115              		.loc 1 278 0
+ 1116 0066 07F10C07 		add	r7, r7, #12
+ 1117 006a BD46     		mov	sp, r7
+ 1118 006c 80BC     		pop	{r7}
+ 1119 006e 7047     		bx	lr
+ 1120              		.cfi_endproc
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 26
+
+
+ 1121              	.LFE34:
+ 1122              		.size	clear_board, .-clear_board
+ 1123              		.section	.rodata
+ 1124 00aa 0000     		.align	2
+ 1125              	.LC20:
+ 1126 00ac 596F7520 		.ascii	"You win!\000"
+ 1126      77696E21 
+ 1126      00
+ 1127              		.section	.text.winner_check,"ax",%progbits
+ 1128              		.align	2
+ 1129              		.global	winner_check
+ 1130              		.thumb
+ 1131              		.thumb_func
+ 1132              		.type	winner_check, %function
+ 1133              	winner_check:
+ 1134              	.LFB35:
+ 279:.\main.c      **** 
+ 280:.\main.c      **** 
+ 281:.\main.c      **** 
+ 282:.\main.c      **** 
+ 283:.\main.c      **** void winner_check () {
+ 1135              		.loc 1 283 0
+ 1136              		.cfi_startproc
+ 1137              		@ args = 0, pretend = 0, frame = 24
+ 1138              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1139 0000 80B5     		push	{r7, lr}
+ 1140              	.LCFI17:
+ 1141              		.cfi_def_cfa_offset 8
+ 1142 0002 86B0     		sub	sp, sp, #24
+ 1143              	.LCFI18:
+ 1144              		.cfi_def_cfa_offset 32
+ 1145 0004 00AF     		add	r7, sp, #0
+ 1146              		.cfi_offset 14, -4
+ 1147              		.cfi_offset 7, -8
+ 1148              	.LCFI19:
+ 1149              		.cfi_def_cfa_register 7
+ 284:.\main.c      ****     int r, c;
+ 285:.\main.c      ****     for (r=1; r < MATRIX_ROWS ;++r) {
+ 1150              		.loc 1 285 0
+ 1151 0006 4FF00103 		mov	r3, #1
+ 1152 000a 7B60     		str	r3, [r7, #4]
+ 1153 000c 77E2     		b	.L45
+ 1154              	.L100:
+ 286:.\main.c      ****         for (c=0; c < MATRIX_COLS ;++c) {
+ 1155              		.loc 1 286 0
+ 1156 000e 4FF00003 		mov	r3, #0
+ 1157 0012 BB60     		str	r3, [r7, #8]
+ 1158 0014 6BE2     		b	.L46
+ 1159              	.L99:
+ 1160              	.LBB3:
+ 287:.\main.c      ****             int offset;
+ 288:.\main.c      ****             
+ 289:.\main.c      ****             //vertical
+ 290:.\main.c      ****             if (r < MATRIX_ROWS-3) {
+ 1161              		.loc 1 290 0
+ 1162 0016 7B68     		ldr	r3, [r7, #4]
+ 1163 0018 042B     		cmp	r3, #4
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 27
+
+
+ 1164 001a 00F39180 		bgt	.L47
+ 1165              	.LBB4:
+ 291:.\main.c      ****                 bool win = true;
+ 1166              		.loc 1 291 0
+ 1167 001e 4FF00103 		mov	r3, #1
+ 1168 0022 3B74     		strb	r3, [r7, #16]
+ 292:.\main.c      ****                 for (offset=0; win && offset < 4 ;++offset) {
+ 1169              		.loc 1 292 0
+ 1170 0024 4FF00003 		mov	r3, #0
+ 1171 0028 FB60     		str	r3, [r7, #12]
+ 1172 002a 39E0     		b	.L48
+ 1173              	.L53:
+ 293:.\main.c      ****                     if (player1_turn) { if (!player1[r+offset][c]) win = false; }
+ 1174              		.loc 1 293 0
+ 1175 002c 40F20003 		movw	r3, #:lower16:player1_turn
+ 1176 0030 C0F20003 		movt	r3, #:upper16:player1_turn
+ 1177 0034 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 1178 0036 002B     		cmp	r3, #0
+ 1179 0038 16D0     		beq	.L49
+ 1180 003a 7A68     		ldr	r2, [r7, #4]
+ 1181 003c FB68     		ldr	r3, [r7, #12]
+ 1182 003e 02EB0301 		add	r1, r2, r3
+ 1183 0042 BA68     		ldr	r2, [r7, #8]
+ 1184 0044 40F20003 		movw	r3, #:lower16:player1
+ 1185 0048 C0F20003 		movt	r3, #:upper16:player1
+ 1186 004c 4FEAC101 		lsl	r1, r1, #3
+ 1187 0050 0A44     		add	r2, r1, r2
+ 1188 0052 1344     		add	r3, r2, r3
+ 1189 0054 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 1190 0056 83F00103 		eor	r3, r3, #1
+ 1191 005a DBB2     		uxtb	r3, r3
+ 1192 005c 002B     		cmp	r3, #0
+ 1193 005e 1AD0     		beq	.L102
+ 1194 0060 4FF00003 		mov	r3, #0
+ 1195 0064 3B74     		strb	r3, [r7, #16]
+ 1196 0066 17E0     		b	.L51
+ 1197              	.L49:
+ 294:.\main.c      ****                     else              { if (!player2[r+offset][c]) win = false; }
+ 1198              		.loc 1 294 0
+ 1199 0068 7A68     		ldr	r2, [r7, #4]
+ 1200 006a FB68     		ldr	r3, [r7, #12]
+ 1201 006c 02EB0301 		add	r1, r2, r3
+ 1202 0070 BA68     		ldr	r2, [r7, #8]
+ 1203 0072 40F20003 		movw	r3, #:lower16:player2
+ 1204 0076 C0F20003 		movt	r3, #:upper16:player2
+ 1205 007a 4FEAC101 		lsl	r1, r1, #3
+ 1206 007e 0A44     		add	r2, r1, r2
+ 1207 0080 1344     		add	r3, r2, r3
+ 1208 0082 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 1209 0084 83F00103 		eor	r3, r3, #1
+ 1210 0088 DBB2     		uxtb	r3, r3
+ 1211 008a 002B     		cmp	r3, #0
+ 1212 008c 04D0     		beq	.L51
+ 1213 008e 4FF00003 		mov	r3, #0
+ 1214 0092 3B74     		strb	r3, [r7, #16]
+ 1215 0094 00E0     		b	.L51
+ 1216              	.L102:
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 28
+
+
+ 1217              		.loc 1 293 0
+ 1218 0096 00BF     		nop
+ 1219              	.L51:
+ 1220              		.loc 1 292 0
+ 1221 0098 FB68     		ldr	r3, [r7, #12]
+ 1222 009a 03F10103 		add	r3, r3, #1
+ 1223 009e FB60     		str	r3, [r7, #12]
+ 1224              	.L48:
+ 1225 00a0 3B7C     		ldrb	r3, [r7, #16]	@ zero_extendqisi2
+ 1226 00a2 002B     		cmp	r3, #0
+ 1227 00a4 02D0     		beq	.L52
+ 1228 00a6 FB68     		ldr	r3, [r7, #12]
+ 1229 00a8 032B     		cmp	r3, #3
+ 1230 00aa BFDD     		ble	.L53
+ 1231              	.L52:
+ 295:.\main.c      ****                 }
+ 296:.\main.c      ****                 if (win) {
+ 1232              		.loc 1 296 0
+ 1233 00ac 3B7C     		ldrb	r3, [r7, #16]	@ zero_extendqisi2
+ 1234 00ae 002B     		cmp	r3, #0
+ 1235 00b0 46D0     		beq	.L47
+ 1236              	.LBB5:
+ 297:.\main.c      ****                     LCD_UpdateMessage("You win!");
+ 1237              		.loc 1 297 0
+ 1238 00b2 40F20000 		movw	r0, #:lower16:.LC20
+ 1239 00b6 C0F20000 		movt	r0, #:upper16:.LC20
+ 1240 00ba FFF7FEFF 		bl	LCD_UpdateMessage
+ 298:.\main.c      ****                     bool blink = false;
+ 1241              		.loc 1 298 0
+ 1242 00be 4FF00003 		mov	r3, #0
+ 1243 00c2 7B74     		strb	r3, [r7, #17]
+ 1244              	.L59:
+ 299:.\main.c      ****                     while (true) {
+ 300:.\main.c      ****                         for (offset=0; win && offset < 4 ;++offset) {
+ 1245              		.loc 1 300 0
+ 1246 00c4 4FF00003 		mov	r3, #0
+ 1247 00c8 FB60     		str	r3, [r7, #12]
+ 1248 00ca 29E0     		b	.L54
+ 1249              	.L58:
+ 301:.\main.c      ****                             if (player1_turn) player1[r+offset][c] = blink;
+ 1250              		.loc 1 301 0
+ 1251 00cc 40F20003 		movw	r3, #:lower16:player1_turn
+ 1252 00d0 C0F20003 		movt	r3, #:upper16:player1_turn
+ 1253 00d4 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 1254 00d6 002B     		cmp	r3, #0
+ 1255 00d8 0FD0     		beq	.L55
+ 1256 00da 7A68     		ldr	r2, [r7, #4]
+ 1257 00dc FB68     		ldr	r3, [r7, #12]
+ 1258 00de 02EB0301 		add	r1, r2, r3
+ 1259 00e2 BA68     		ldr	r2, [r7, #8]
+ 1260 00e4 40F20003 		movw	r3, #:lower16:player1
+ 1261 00e8 C0F20003 		movt	r3, #:upper16:player1
+ 1262 00ec 4FEAC101 		lsl	r1, r1, #3
+ 1263 00f0 0A44     		add	r2, r1, r2
+ 1264 00f2 1344     		add	r3, r2, r3
+ 1265 00f4 7A7C     		ldrb	r2, [r7, #17]
+ 1266 00f6 1A70     		strb	r2, [r3, #0]
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 29
+
+
+ 1267 00f8 0EE0     		b	.L56
+ 1268              	.L55:
+ 302:.\main.c      ****                             else              player2[r+offset][c] = blink;
+ 1269              		.loc 1 302 0
+ 1270 00fa 7A68     		ldr	r2, [r7, #4]
+ 1271 00fc FB68     		ldr	r3, [r7, #12]
+ 1272 00fe 02EB0301 		add	r1, r2, r3
+ 1273 0102 BA68     		ldr	r2, [r7, #8]
+ 1274 0104 40F20003 		movw	r3, #:lower16:player2
+ 1275 0108 C0F20003 		movt	r3, #:upper16:player2
+ 1276 010c 4FEAC101 		lsl	r1, r1, #3
+ 1277 0110 0A44     		add	r2, r1, r2
+ 1278 0112 1344     		add	r3, r2, r3
+ 1279 0114 7A7C     		ldrb	r2, [r7, #17]
+ 1280 0116 1A70     		strb	r2, [r3, #0]
+ 1281              	.L56:
+ 1282              		.loc 1 300 0
+ 1283 0118 FB68     		ldr	r3, [r7, #12]
+ 1284 011a 03F10103 		add	r3, r3, #1
+ 1285 011e FB60     		str	r3, [r7, #12]
+ 1286              	.L54:
+ 1287 0120 3B7C     		ldrb	r3, [r7, #16]	@ zero_extendqisi2
+ 1288 0122 002B     		cmp	r3, #0
+ 1289 0124 02D0     		beq	.L57
+ 1290 0126 FB68     		ldr	r3, [r7, #12]
+ 1291 0128 032B     		cmp	r3, #3
+ 1292 012a CFDD     		ble	.L58
+ 1293              	.L57:
+ 303:.\main.c      ****                         }
+ 304:.\main.c      ****                         CyDelay(100);
+ 1294              		.loc 1 304 0
+ 1295 012c 4FF06400 		mov	r0, #100
+ 1296 0130 FFF7FEFF 		bl	CyDelay
+ 305:.\main.c      ****                         blink = !blink;
+ 1297              		.loc 1 305 0
+ 1298 0134 7B7C     		ldrb	r3, [r7, #17]
+ 1299 0136 83F00103 		eor	r3, r3, #1
+ 1300 013a DBB2     		uxtb	r3, r3
+ 1301 013c 7B74     		strb	r3, [r7, #17]
+ 306:.\main.c      ****                     }
+ 1302              		.loc 1 306 0
+ 1303 013e C1E7     		b	.L59
+ 1304              	.L47:
+ 1305              	.LBE5:
+ 1306              	.LBE4:
+ 307:.\main.c      ****                 }
+ 308:.\main.c      ****             }
+ 309:.\main.c      ****             
+ 310:.\main.c      ****             //lateral
+ 311:.\main.c      ****             if (c < MATRIX_COLS-3) {
+ 1307              		.loc 1 311 0
+ 1308 0140 BB68     		ldr	r3, [r7, #8]
+ 1309 0142 042B     		cmp	r3, #4
+ 1310 0144 00F38D80 		bgt	.L60
+ 1311              	.LBB6:
+ 312:.\main.c      ****                 bool win = true;
+ 1312              		.loc 1 312 0
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 30
+
+
+ 1313 0148 4FF00103 		mov	r3, #1
+ 1314 014c BB74     		strb	r3, [r7, #18]
+ 313:.\main.c      ****                 for (offset=0; win && offset < 4 ;++offset) {
+ 1315              		.loc 1 313 0
+ 1316 014e 4FF00003 		mov	r3, #0
+ 1317 0152 FB60     		str	r3, [r7, #12]
+ 1318 0154 37E0     		b	.L61
+ 1319              	.L66:
+ 314:.\main.c      ****                     if (player1_turn) { if (!player1[r][c+offset]) win = false; }
+ 1320              		.loc 1 314 0
+ 1321 0156 40F20003 		movw	r3, #:lower16:player1_turn
+ 1322 015a C0F20003 		movt	r3, #:upper16:player1_turn
+ 1323 015e 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 1324 0160 002B     		cmp	r3, #0
+ 1325 0162 15D0     		beq	.L62
+ 1326 0164 7968     		ldr	r1, [r7, #4]
+ 1327 0166 BA68     		ldr	r2, [r7, #8]
+ 1328 0168 FB68     		ldr	r3, [r7, #12]
+ 1329 016a 1A44     		add	r2, r2, r3
+ 1330 016c 40F20003 		movw	r3, #:lower16:player1
+ 1331 0170 C0F20003 		movt	r3, #:upper16:player1
+ 1332 0174 4FEAC101 		lsl	r1, r1, #3
+ 1333 0178 0A44     		add	r2, r1, r2
+ 1334 017a 1344     		add	r3, r2, r3
+ 1335 017c 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 1336 017e 83F00103 		eor	r3, r3, #1
+ 1337 0182 DBB2     		uxtb	r3, r3
+ 1338 0184 002B     		cmp	r3, #0
+ 1339 0186 19D0     		beq	.L103
+ 1340 0188 4FF00003 		mov	r3, #0
+ 1341 018c BB74     		strb	r3, [r7, #18]
+ 1342 018e 16E0     		b	.L64
+ 1343              	.L62:
+ 315:.\main.c      ****                     else              { if (!player2[r][c+offset]) win = false; }
+ 1344              		.loc 1 315 0
+ 1345 0190 7968     		ldr	r1, [r7, #4]
+ 1346 0192 BA68     		ldr	r2, [r7, #8]
+ 1347 0194 FB68     		ldr	r3, [r7, #12]
+ 1348 0196 1A44     		add	r2, r2, r3
+ 1349 0198 40F20003 		movw	r3, #:lower16:player2
+ 1350 019c C0F20003 		movt	r3, #:upper16:player2
+ 1351 01a0 4FEAC101 		lsl	r1, r1, #3
+ 1352 01a4 0A44     		add	r2, r1, r2
+ 1353 01a6 1344     		add	r3, r2, r3
+ 1354 01a8 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 1355 01aa 83F00103 		eor	r3, r3, #1
+ 1356 01ae DBB2     		uxtb	r3, r3
+ 1357 01b0 002B     		cmp	r3, #0
+ 1358 01b2 04D0     		beq	.L64
+ 1359 01b4 4FF00003 		mov	r3, #0
+ 1360 01b8 BB74     		strb	r3, [r7, #18]
+ 1361 01ba 00E0     		b	.L64
+ 1362              	.L103:
+ 1363              		.loc 1 314 0
+ 1364 01bc 00BF     		nop
+ 1365              	.L64:
+ 1366              		.loc 1 313 0
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 31
+
+
+ 1367 01be FB68     		ldr	r3, [r7, #12]
+ 1368 01c0 03F10103 		add	r3, r3, #1
+ 1369 01c4 FB60     		str	r3, [r7, #12]
+ 1370              	.L61:
+ 1371 01c6 BB7C     		ldrb	r3, [r7, #18]	@ zero_extendqisi2
+ 1372 01c8 002B     		cmp	r3, #0
+ 1373 01ca 02D0     		beq	.L65
+ 1374 01cc FB68     		ldr	r3, [r7, #12]
+ 1375 01ce 032B     		cmp	r3, #3
+ 1376 01d0 C1DD     		ble	.L66
+ 1377              	.L65:
+ 316:.\main.c      ****                 }
+ 317:.\main.c      ****                 if (win) {
+ 1378              		.loc 1 317 0
+ 1379 01d2 BB7C     		ldrb	r3, [r7, #18]	@ zero_extendqisi2
+ 1380 01d4 002B     		cmp	r3, #0
+ 1381 01d6 44D0     		beq	.L60
+ 1382              	.LBB7:
+ 318:.\main.c      ****                     LCD_UpdateMessage("You win!");
+ 1383              		.loc 1 318 0
+ 1384 01d8 40F20000 		movw	r0, #:lower16:.LC20
+ 1385 01dc C0F20000 		movt	r0, #:upper16:.LC20
+ 1386 01e0 FFF7FEFF 		bl	LCD_UpdateMessage
+ 319:.\main.c      ****                     bool blink = false;
+ 1387              		.loc 1 319 0
+ 1388 01e4 4FF00003 		mov	r3, #0
+ 1389 01e8 FB74     		strb	r3, [r7, #19]
+ 1390              	.L72:
+ 320:.\main.c      ****                     while (true) {
+ 321:.\main.c      ****                         for (offset=0; win && offset < 4 ;++offset) {
+ 1391              		.loc 1 321 0
+ 1392 01ea 4FF00003 		mov	r3, #0
+ 1393 01ee FB60     		str	r3, [r7, #12]
+ 1394 01f0 27E0     		b	.L67
+ 1395              	.L71:
+ 322:.\main.c      ****                             if (player1_turn) player1[r][c+offset] = blink;
+ 1396              		.loc 1 322 0
+ 1397 01f2 40F20003 		movw	r3, #:lower16:player1_turn
+ 1398 01f6 C0F20003 		movt	r3, #:upper16:player1_turn
+ 1399 01fa 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 1400 01fc 002B     		cmp	r3, #0
+ 1401 01fe 0ED0     		beq	.L68
+ 1402 0200 7968     		ldr	r1, [r7, #4]
+ 1403 0202 BA68     		ldr	r2, [r7, #8]
+ 1404 0204 FB68     		ldr	r3, [r7, #12]
+ 1405 0206 1A44     		add	r2, r2, r3
+ 1406 0208 40F20003 		movw	r3, #:lower16:player1
+ 1407 020c C0F20003 		movt	r3, #:upper16:player1
+ 1408 0210 4FEAC101 		lsl	r1, r1, #3
+ 1409 0214 0A44     		add	r2, r1, r2
+ 1410 0216 1344     		add	r3, r2, r3
+ 1411 0218 FA7C     		ldrb	r2, [r7, #19]
+ 1412 021a 1A70     		strb	r2, [r3, #0]
+ 1413 021c 0DE0     		b	.L69
+ 1414              	.L68:
+ 323:.\main.c      ****                             else              player2[r][c+offset] = blink;
+ 1415              		.loc 1 323 0
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 32
+
+
+ 1416 021e 7968     		ldr	r1, [r7, #4]
+ 1417 0220 BA68     		ldr	r2, [r7, #8]
+ 1418 0222 FB68     		ldr	r3, [r7, #12]
+ 1419 0224 1A44     		add	r2, r2, r3
+ 1420 0226 40F20003 		movw	r3, #:lower16:player2
+ 1421 022a C0F20003 		movt	r3, #:upper16:player2
+ 1422 022e 4FEAC101 		lsl	r1, r1, #3
+ 1423 0232 0A44     		add	r2, r1, r2
+ 1424 0234 1344     		add	r3, r2, r3
+ 1425 0236 FA7C     		ldrb	r2, [r7, #19]
+ 1426 0238 1A70     		strb	r2, [r3, #0]
+ 1427              	.L69:
+ 1428              		.loc 1 321 0
+ 1429 023a FB68     		ldr	r3, [r7, #12]
+ 1430 023c 03F10103 		add	r3, r3, #1
+ 1431 0240 FB60     		str	r3, [r7, #12]
+ 1432              	.L67:
+ 1433 0242 BB7C     		ldrb	r3, [r7, #18]	@ zero_extendqisi2
+ 1434 0244 002B     		cmp	r3, #0
+ 1435 0246 02D0     		beq	.L70
+ 1436 0248 FB68     		ldr	r3, [r7, #12]
+ 1437 024a 032B     		cmp	r3, #3
+ 1438 024c D1DD     		ble	.L71
+ 1439              	.L70:
+ 324:.\main.c      ****                         }
+ 325:.\main.c      ****                         CyDelay(100);
+ 1440              		.loc 1 325 0
+ 1441 024e 4FF06400 		mov	r0, #100
+ 1442 0252 FFF7FEFF 		bl	CyDelay
+ 326:.\main.c      ****                         blink = !blink;
+ 1443              		.loc 1 326 0
+ 1444 0256 FB7C     		ldrb	r3, [r7, #19]
+ 1445 0258 83F00103 		eor	r3, r3, #1
+ 1446 025c DBB2     		uxtb	r3, r3
+ 1447 025e FB74     		strb	r3, [r7, #19]
+ 327:.\main.c      ****                     }
+ 1448              		.loc 1 327 0
+ 1449 0260 C3E7     		b	.L72
+ 1450              	.L60:
+ 1451              	.LBE7:
+ 1452              	.LBE6:
+ 328:.\main.c      ****                 }
+ 329:.\main.c      ****             }
+ 330:.\main.c      ****             
+ 331:.\main.c      ****             //down-diagonal
+ 332:.\main.c      ****             if (r < MATRIX_ROWS-3 && c < MATRIX_COLS-3) {
+ 1453              		.loc 1 332 0
+ 1454 0262 7B68     		ldr	r3, [r7, #4]
+ 1455 0264 042B     		cmp	r3, #4
+ 1456 0266 00F39D80 		bgt	.L73
+ 1457 026a BB68     		ldr	r3, [r7, #8]
+ 1458 026c 042B     		cmp	r3, #4
+ 1459 026e 00F39980 		bgt	.L73
+ 1460              	.LBB8:
+ 333:.\main.c      ****                 bool win = true;
+ 1461              		.loc 1 333 0
+ 1462 0272 4FF00103 		mov	r3, #1
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 33
+
+
+ 1463 0276 3B75     		strb	r3, [r7, #20]
+ 334:.\main.c      ****                 for (offset=0; win && offset < 4 ;++offset) {
+ 1464              		.loc 1 334 0
+ 1465 0278 4FF00003 		mov	r3, #0
+ 1466 027c FB60     		str	r3, [r7, #12]
+ 1467 027e 3DE0     		b	.L74
+ 1468              	.L79:
+ 335:.\main.c      ****                     if (player1_turn) { if (!player1[r+offset][c+offset]) win = false; }
+ 1469              		.loc 1 335 0
+ 1470 0280 40F20003 		movw	r3, #:lower16:player1_turn
+ 1471 0284 C0F20003 		movt	r3, #:upper16:player1_turn
+ 1472 0288 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 1473 028a 002B     		cmp	r3, #0
+ 1474 028c 18D0     		beq	.L75
+ 1475 028e 7A68     		ldr	r2, [r7, #4]
+ 1476 0290 FB68     		ldr	r3, [r7, #12]
+ 1477 0292 02EB0301 		add	r1, r2, r3
+ 1478 0296 BA68     		ldr	r2, [r7, #8]
+ 1479 0298 FB68     		ldr	r3, [r7, #12]
+ 1480 029a 1A44     		add	r2, r2, r3
+ 1481 029c 40F20003 		movw	r3, #:lower16:player1
+ 1482 02a0 C0F20003 		movt	r3, #:upper16:player1
+ 1483 02a4 4FEAC101 		lsl	r1, r1, #3
+ 1484 02a8 0A44     		add	r2, r1, r2
+ 1485 02aa 1344     		add	r3, r2, r3
+ 1486 02ac 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 1487 02ae 83F00103 		eor	r3, r3, #1
+ 1488 02b2 DBB2     		uxtb	r3, r3
+ 1489 02b4 002B     		cmp	r3, #0
+ 1490 02b6 1CD0     		beq	.L104
+ 1491 02b8 4FF00003 		mov	r3, #0
+ 1492 02bc 3B75     		strb	r3, [r7, #20]
+ 1493 02be 19E0     		b	.L77
+ 1494              	.L75:
+ 336:.\main.c      ****                     else              { if (!player2[r+offset][c+offset]) win = false; }
+ 1495              		.loc 1 336 0
+ 1496 02c0 7A68     		ldr	r2, [r7, #4]
+ 1497 02c2 FB68     		ldr	r3, [r7, #12]
+ 1498 02c4 02EB0301 		add	r1, r2, r3
+ 1499 02c8 BA68     		ldr	r2, [r7, #8]
+ 1500 02ca FB68     		ldr	r3, [r7, #12]
+ 1501 02cc 1A44     		add	r2, r2, r3
+ 1502 02ce 40F20003 		movw	r3, #:lower16:player2
+ 1503 02d2 C0F20003 		movt	r3, #:upper16:player2
+ 1504 02d6 4FEAC101 		lsl	r1, r1, #3
+ 1505 02da 0A44     		add	r2, r1, r2
+ 1506 02dc 1344     		add	r3, r2, r3
+ 1507 02de 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 1508 02e0 83F00103 		eor	r3, r3, #1
+ 1509 02e4 DBB2     		uxtb	r3, r3
+ 1510 02e6 002B     		cmp	r3, #0
+ 1511 02e8 04D0     		beq	.L77
+ 1512 02ea 4FF00003 		mov	r3, #0
+ 1513 02ee 3B75     		strb	r3, [r7, #20]
+ 1514 02f0 00E0     		b	.L77
+ 1515              	.L104:
+ 1516              		.loc 1 335 0
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 34
+
+
+ 1517 02f2 00BF     		nop
+ 1518              	.L77:
+ 1519              		.loc 1 334 0
+ 1520 02f4 FB68     		ldr	r3, [r7, #12]
+ 1521 02f6 03F10103 		add	r3, r3, #1
+ 1522 02fa FB60     		str	r3, [r7, #12]
+ 1523              	.L74:
+ 1524 02fc 3B7D     		ldrb	r3, [r7, #20]	@ zero_extendqisi2
+ 1525 02fe 002B     		cmp	r3, #0
+ 1526 0300 02D0     		beq	.L78
+ 1527 0302 FB68     		ldr	r3, [r7, #12]
+ 1528 0304 032B     		cmp	r3, #3
+ 1529 0306 BBDD     		ble	.L79
+ 1530              	.L78:
+ 337:.\main.c      ****                 }
+ 338:.\main.c      ****                 if (win) {
+ 1531              		.loc 1 338 0
+ 1532 0308 3B7D     		ldrb	r3, [r7, #20]	@ zero_extendqisi2
+ 1533 030a 002B     		cmp	r3, #0
+ 1534 030c 4AD0     		beq	.L73
+ 1535              	.LBB9:
+ 339:.\main.c      ****                     LCD_UpdateMessage("You win!");
+ 1536              		.loc 1 339 0
+ 1537 030e 40F20000 		movw	r0, #:lower16:.LC20
+ 1538 0312 C0F20000 		movt	r0, #:upper16:.LC20
+ 1539 0316 FFF7FEFF 		bl	LCD_UpdateMessage
+ 340:.\main.c      ****                     bool blink = false;
+ 1540              		.loc 1 340 0
+ 1541 031a 4FF00003 		mov	r3, #0
+ 1542 031e 7B75     		strb	r3, [r7, #21]
+ 1543              	.L85:
+ 341:.\main.c      ****                     while (true) {
+ 342:.\main.c      ****                         for (offset=0; win && offset < 4 ;++offset) {
+ 1544              		.loc 1 342 0
+ 1545 0320 4FF00003 		mov	r3, #0
+ 1546 0324 FB60     		str	r3, [r7, #12]
+ 1547 0326 2DE0     		b	.L80
+ 1548              	.L84:
+ 343:.\main.c      ****                             if (player1_turn) player1[r+offset][c+offset] = blink;
+ 1549              		.loc 1 343 0
+ 1550 0328 40F20003 		movw	r3, #:lower16:player1_turn
+ 1551 032c C0F20003 		movt	r3, #:upper16:player1_turn
+ 1552 0330 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 1553 0332 002B     		cmp	r3, #0
+ 1554 0334 11D0     		beq	.L81
+ 1555 0336 7A68     		ldr	r2, [r7, #4]
+ 1556 0338 FB68     		ldr	r3, [r7, #12]
+ 1557 033a 02EB0301 		add	r1, r2, r3
+ 1558 033e BA68     		ldr	r2, [r7, #8]
+ 1559 0340 FB68     		ldr	r3, [r7, #12]
+ 1560 0342 1A44     		add	r2, r2, r3
+ 1561 0344 40F20003 		movw	r3, #:lower16:player1
+ 1562 0348 C0F20003 		movt	r3, #:upper16:player1
+ 1563 034c 4FEAC101 		lsl	r1, r1, #3
+ 1564 0350 0A44     		add	r2, r1, r2
+ 1565 0352 1344     		add	r3, r2, r3
+ 1566 0354 7A7D     		ldrb	r2, [r7, #21]
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 35
+
+
+ 1567 0356 1A70     		strb	r2, [r3, #0]
+ 1568 0358 10E0     		b	.L82
+ 1569              	.L81:
+ 344:.\main.c      ****                             else              player2[r+offset][c+offset] = blink;
+ 1570              		.loc 1 344 0
+ 1571 035a 7A68     		ldr	r2, [r7, #4]
+ 1572 035c FB68     		ldr	r3, [r7, #12]
+ 1573 035e 02EB0301 		add	r1, r2, r3
+ 1574 0362 BA68     		ldr	r2, [r7, #8]
+ 1575 0364 FB68     		ldr	r3, [r7, #12]
+ 1576 0366 1A44     		add	r2, r2, r3
+ 1577 0368 40F20003 		movw	r3, #:lower16:player2
+ 1578 036c C0F20003 		movt	r3, #:upper16:player2
+ 1579 0370 4FEAC101 		lsl	r1, r1, #3
+ 1580 0374 0A44     		add	r2, r1, r2
+ 1581 0376 1344     		add	r3, r2, r3
+ 1582 0378 7A7D     		ldrb	r2, [r7, #21]
+ 1583 037a 1A70     		strb	r2, [r3, #0]
+ 1584              	.L82:
+ 1585              		.loc 1 342 0
+ 1586 037c FB68     		ldr	r3, [r7, #12]
+ 1587 037e 03F10103 		add	r3, r3, #1
+ 1588 0382 FB60     		str	r3, [r7, #12]
+ 1589              	.L80:
+ 1590 0384 3B7D     		ldrb	r3, [r7, #20]	@ zero_extendqisi2
+ 1591 0386 002B     		cmp	r3, #0
+ 1592 0388 02D0     		beq	.L83
+ 1593 038a FB68     		ldr	r3, [r7, #12]
+ 1594 038c 032B     		cmp	r3, #3
+ 1595 038e CBDD     		ble	.L84
+ 1596              	.L83:
+ 345:.\main.c      ****                         }
+ 346:.\main.c      ****                         CyDelay(100);
+ 1597              		.loc 1 346 0
+ 1598 0390 4FF06400 		mov	r0, #100
+ 1599 0394 FFF7FEFF 		bl	CyDelay
+ 347:.\main.c      ****                         blink = !blink;
+ 1600              		.loc 1 347 0
+ 1601 0398 7B7D     		ldrb	r3, [r7, #21]
+ 1602 039a 83F00103 		eor	r3, r3, #1
+ 1603 039e DBB2     		uxtb	r3, r3
+ 1604 03a0 7B75     		strb	r3, [r7, #21]
+ 348:.\main.c      ****                     }
+ 1605              		.loc 1 348 0
+ 1606 03a2 BDE7     		b	.L85
+ 1607              	.L73:
+ 1608              	.LBE9:
+ 1609              	.LBE8:
+ 349:.\main.c      ****                 }
+ 350:.\main.c      ****             }
+ 351:.\main.c      ****             
+ 352:.\main.c      ****             //up-diagonal
+ 353:.\main.c      ****             if (r > 3 && c < MATRIX_COLS-3) {
+ 1610              		.loc 1 353 0
+ 1611 03a4 7B68     		ldr	r3, [r7, #4]
+ 1612 03a6 032B     		cmp	r3, #3
+ 1613 03a8 40F39D80 		ble	.L86
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 36
+
+
+ 1614 03ac BB68     		ldr	r3, [r7, #8]
+ 1615 03ae 042B     		cmp	r3, #4
+ 1616 03b0 00F39980 		bgt	.L86
+ 1617              	.LBB10:
+ 354:.\main.c      ****                 bool win = true;
+ 1618              		.loc 1 354 0
+ 1619 03b4 4FF00103 		mov	r3, #1
+ 1620 03b8 BB75     		strb	r3, [r7, #22]
+ 355:.\main.c      ****                 for (offset=0; win && offset < 4 ;++offset) {
+ 1621              		.loc 1 355 0
+ 1622 03ba 4FF00003 		mov	r3, #0
+ 1623 03be FB60     		str	r3, [r7, #12]
+ 1624 03c0 3DE0     		b	.L87
+ 1625              	.L92:
+ 356:.\main.c      ****                     if (player1_turn) { if (!player1[r-offset][c+offset]) win = false; }
+ 1626              		.loc 1 356 0
+ 1627 03c2 40F20003 		movw	r3, #:lower16:player1_turn
+ 1628 03c6 C0F20003 		movt	r3, #:upper16:player1_turn
+ 1629 03ca 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 1630 03cc 002B     		cmp	r3, #0
+ 1631 03ce 18D0     		beq	.L88
+ 1632 03d0 7A68     		ldr	r2, [r7, #4]
+ 1633 03d2 FB68     		ldr	r3, [r7, #12]
+ 1634 03d4 C3EB0201 		rsb	r1, r3, r2
+ 1635 03d8 BA68     		ldr	r2, [r7, #8]
+ 1636 03da FB68     		ldr	r3, [r7, #12]
+ 1637 03dc 1A44     		add	r2, r2, r3
+ 1638 03de 40F20003 		movw	r3, #:lower16:player1
+ 1639 03e2 C0F20003 		movt	r3, #:upper16:player1
+ 1640 03e6 4FEAC101 		lsl	r1, r1, #3
+ 1641 03ea 0A44     		add	r2, r1, r2
+ 1642 03ec 1344     		add	r3, r2, r3
+ 1643 03ee 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 1644 03f0 83F00103 		eor	r3, r3, #1
+ 1645 03f4 DBB2     		uxtb	r3, r3
+ 1646 03f6 002B     		cmp	r3, #0
+ 1647 03f8 1CD0     		beq	.L105
+ 1648 03fa 4FF00003 		mov	r3, #0
+ 1649 03fe BB75     		strb	r3, [r7, #22]
+ 1650 0400 19E0     		b	.L90
+ 1651              	.L88:
+ 357:.\main.c      ****                     else              { if (!player2[r-offset][c+offset]) win = false; }
+ 1652              		.loc 1 357 0
+ 1653 0402 7A68     		ldr	r2, [r7, #4]
+ 1654 0404 FB68     		ldr	r3, [r7, #12]
+ 1655 0406 C3EB0201 		rsb	r1, r3, r2
+ 1656 040a BA68     		ldr	r2, [r7, #8]
+ 1657 040c FB68     		ldr	r3, [r7, #12]
+ 1658 040e 1A44     		add	r2, r2, r3
+ 1659 0410 40F20003 		movw	r3, #:lower16:player2
+ 1660 0414 C0F20003 		movt	r3, #:upper16:player2
+ 1661 0418 4FEAC101 		lsl	r1, r1, #3
+ 1662 041c 0A44     		add	r2, r1, r2
+ 1663 041e 1344     		add	r3, r2, r3
+ 1664 0420 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 1665 0422 83F00103 		eor	r3, r3, #1
+ 1666 0426 DBB2     		uxtb	r3, r3
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 37
+
+
+ 1667 0428 002B     		cmp	r3, #0
+ 1668 042a 04D0     		beq	.L90
+ 1669 042c 4FF00003 		mov	r3, #0
+ 1670 0430 BB75     		strb	r3, [r7, #22]
+ 1671 0432 00E0     		b	.L90
+ 1672              	.L105:
+ 1673              		.loc 1 356 0
+ 1674 0434 00BF     		nop
+ 1675              	.L90:
+ 1676              		.loc 1 355 0
+ 1677 0436 FB68     		ldr	r3, [r7, #12]
+ 1678 0438 03F10103 		add	r3, r3, #1
+ 1679 043c FB60     		str	r3, [r7, #12]
+ 1680              	.L87:
+ 1681 043e BB7D     		ldrb	r3, [r7, #22]	@ zero_extendqisi2
+ 1682 0440 002B     		cmp	r3, #0
+ 1683 0442 02D0     		beq	.L91
+ 1684 0444 FB68     		ldr	r3, [r7, #12]
+ 1685 0446 032B     		cmp	r3, #3
+ 1686 0448 BBDD     		ble	.L92
+ 1687              	.L91:
+ 358:.\main.c      ****                 }
+ 359:.\main.c      ****                 if (win) {
+ 1688              		.loc 1 359 0
+ 1689 044a BB7D     		ldrb	r3, [r7, #22]	@ zero_extendqisi2
+ 1690 044c 002B     		cmp	r3, #0
+ 1691 044e 4AD0     		beq	.L86
+ 1692              	.LBB11:
+ 360:.\main.c      ****                     LCD_UpdateMessage("You win!");
+ 1693              		.loc 1 360 0
+ 1694 0450 40F20000 		movw	r0, #:lower16:.LC20
+ 1695 0454 C0F20000 		movt	r0, #:upper16:.LC20
+ 1696 0458 FFF7FEFF 		bl	LCD_UpdateMessage
+ 361:.\main.c      ****                     bool blink = false;
+ 1697              		.loc 1 361 0
+ 1698 045c 4FF00003 		mov	r3, #0
+ 1699 0460 FB75     		strb	r3, [r7, #23]
+ 1700              	.L98:
+ 362:.\main.c      ****                     while (true) {
+ 363:.\main.c      ****                         for (offset=0; win && offset < 4 ;++offset) {
+ 1701              		.loc 1 363 0
+ 1702 0462 4FF00003 		mov	r3, #0
+ 1703 0466 FB60     		str	r3, [r7, #12]
+ 1704 0468 2DE0     		b	.L93
+ 1705              	.L97:
+ 364:.\main.c      ****                             if (player1_turn) player1[r-offset][c+offset] = blink;
+ 1706              		.loc 1 364 0
+ 1707 046a 40F20003 		movw	r3, #:lower16:player1_turn
+ 1708 046e C0F20003 		movt	r3, #:upper16:player1_turn
+ 1709 0472 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 1710 0474 002B     		cmp	r3, #0
+ 1711 0476 11D0     		beq	.L94
+ 1712 0478 7A68     		ldr	r2, [r7, #4]
+ 1713 047a FB68     		ldr	r3, [r7, #12]
+ 1714 047c C3EB0201 		rsb	r1, r3, r2
+ 1715 0480 BA68     		ldr	r2, [r7, #8]
+ 1716 0482 FB68     		ldr	r3, [r7, #12]
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 38
+
+
+ 1717 0484 1A44     		add	r2, r2, r3
+ 1718 0486 40F20003 		movw	r3, #:lower16:player1
+ 1719 048a C0F20003 		movt	r3, #:upper16:player1
+ 1720 048e 4FEAC101 		lsl	r1, r1, #3
+ 1721 0492 0A44     		add	r2, r1, r2
+ 1722 0494 1344     		add	r3, r2, r3
+ 1723 0496 FA7D     		ldrb	r2, [r7, #23]
+ 1724 0498 1A70     		strb	r2, [r3, #0]
+ 1725 049a 10E0     		b	.L95
+ 1726              	.L94:
+ 365:.\main.c      ****                             else              player2[r-offset][c+offset] = blink;
+ 1727              		.loc 1 365 0
+ 1728 049c 7A68     		ldr	r2, [r7, #4]
+ 1729 049e FB68     		ldr	r3, [r7, #12]
+ 1730 04a0 C3EB0201 		rsb	r1, r3, r2
+ 1731 04a4 BA68     		ldr	r2, [r7, #8]
+ 1732 04a6 FB68     		ldr	r3, [r7, #12]
+ 1733 04a8 1A44     		add	r2, r2, r3
+ 1734 04aa 40F20003 		movw	r3, #:lower16:player2
+ 1735 04ae C0F20003 		movt	r3, #:upper16:player2
+ 1736 04b2 4FEAC101 		lsl	r1, r1, #3
+ 1737 04b6 0A44     		add	r2, r1, r2
+ 1738 04b8 1344     		add	r3, r2, r3
+ 1739 04ba FA7D     		ldrb	r2, [r7, #23]
+ 1740 04bc 1A70     		strb	r2, [r3, #0]
+ 1741              	.L95:
+ 1742              		.loc 1 363 0
+ 1743 04be FB68     		ldr	r3, [r7, #12]
+ 1744 04c0 03F10103 		add	r3, r3, #1
+ 1745 04c4 FB60     		str	r3, [r7, #12]
+ 1746              	.L93:
+ 1747 04c6 BB7D     		ldrb	r3, [r7, #22]	@ zero_extendqisi2
+ 1748 04c8 002B     		cmp	r3, #0
+ 1749 04ca 02D0     		beq	.L96
+ 1750 04cc FB68     		ldr	r3, [r7, #12]
+ 1751 04ce 032B     		cmp	r3, #3
+ 1752 04d0 CBDD     		ble	.L97
+ 1753              	.L96:
+ 366:.\main.c      ****                         }
+ 367:.\main.c      ****                         CyDelay(100);
+ 1754              		.loc 1 367 0
+ 1755 04d2 4FF06400 		mov	r0, #100
+ 1756 04d6 FFF7FEFF 		bl	CyDelay
+ 368:.\main.c      ****                         blink = !blink;
+ 1757              		.loc 1 368 0
+ 1758 04da FB7D     		ldrb	r3, [r7, #23]
+ 1759 04dc 83F00103 		eor	r3, r3, #1
+ 1760 04e0 DBB2     		uxtb	r3, r3
+ 1761 04e2 FB75     		strb	r3, [r7, #23]
+ 369:.\main.c      ****                     }
+ 1762              		.loc 1 369 0
+ 1763 04e4 BDE7     		b	.L98
+ 1764              	.L86:
+ 1765              	.LBE11:
+ 1766              	.LBE10:
+ 1767              	.LBE3:
+ 1768              		.loc 1 286 0
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 39
+
+
+ 1769 04e6 BB68     		ldr	r3, [r7, #8]
+ 1770 04e8 03F10103 		add	r3, r3, #1
+ 1771 04ec BB60     		str	r3, [r7, #8]
+ 1772              	.L46:
+ 1773 04ee BB68     		ldr	r3, [r7, #8]
+ 1774 04f0 072B     		cmp	r3, #7
+ 1775 04f2 7FF790AD 		ble	.L99
+ 1776              		.loc 1 285 0
+ 1777 04f6 7B68     		ldr	r3, [r7, #4]
+ 1778 04f8 03F10103 		add	r3, r3, #1
+ 1779 04fc 7B60     		str	r3, [r7, #4]
+ 1780              	.L45:
+ 1781 04fe 7B68     		ldr	r3, [r7, #4]
+ 1782 0500 072B     		cmp	r3, #7
+ 1783 0502 7FF784AD 		ble	.L100
+ 370:.\main.c      ****                 }
+ 371:.\main.c      ****             }  
+ 372:.\main.c      ****         }
+ 373:.\main.c      ****     }
+ 374:.\main.c      **** }
+ 1784              		.loc 1 374 0
+ 1785 0506 07F11807 		add	r7, r7, #24
+ 1786 050a BD46     		mov	sp, r7
+ 1787 050c 80BD     		pop	{r7, pc}
+ 1788              		.cfi_endproc
+ 1789              	.LFE35:
+ 1790              		.size	winner_check, .-winner_check
+ 1791              		.global	row
+ 1792 050e 00BF     		.data
+ 1793              		.type	row, %object
+ 1794              		.size	row, 1
+ 1795              	row:
+ 1796 0004 FF       		.byte	-1
+ 1797              		.global	col
+ 1798              		.type	col, %object
+ 1799              		.size	col, 1
+ 1800              	col:
+ 1801 0005 FF       		.byte	-1
+ 1802              		.section	.text.refresh,"ax",%progbits
+ 1803              		.align	2
+ 1804              		.global	refresh
+ 1805              		.thumb
+ 1806              		.thumb_func
+ 1807              		.type	refresh, %function
+ 1808              	refresh:
+ 1809              	.LFB36:
+ 375:.\main.c      **** 
+ 376:.\main.c      **** 
+ 377:.\main.c      **** 
+ 378:.\main.c      **** 
+ 379:.\main.c      **** uint8 row = -1, col = -1;
+ 380:.\main.c      **** CY_ISR (refresh) {
+ 1810              		.loc 1 380 0
+ 1811              		.cfi_startproc
+ 1812              		@ args = 0, pretend = 0, frame = 8
+ 1813              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1814 0000 80B5     		push	{r7, lr}
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 40
+
+
+ 1815              	.LCFI20:
+ 1816              		.cfi_def_cfa_offset 8
+ 1817 0002 82B0     		sub	sp, sp, #8
+ 1818              	.LCFI21:
+ 1819              		.cfi_def_cfa_offset 16
+ 1820 0004 00AF     		add	r7, sp, #0
+ 1821              		.cfi_offset 14, -4
+ 1822              		.cfi_offset 7, -8
+ 1823              	.LCFI22:
+ 1824              		.cfi_def_cfa_register 7
+ 1825              	.LBB12:
+ 381:.\main.c      ****     if (false) {//if (SERIAL) {
+ 382:.\main.c      ****         matrix_deluminate();
+ 383:.\main.c      ****         if (++col > MATRIX_ROWS) col = 0;
+ 384:.\main.c      ****         for (row=0; row < MATRIX_COLS ;++row) {
+ 385:.\main.c      ****             if (player1[row][col]) matrix_illuminate(row,col,player1_color);
+ 386:.\main.c      ****             if (player2[row][col]) matrix_illuminate(row,col,player2_color);
+ 387:.\main.c      ****         }
+ 388:.\main.c      ****     }
+ 389:.\main.c      ****     else {
+ 390:.\main.c      ****         uint16 cells = MATRIX_ROWS*MATRIX_COLS;
+ 1826              		.loc 1 390 0
+ 1827 0006 4FF04003 		mov	r3, #64
+ 1828 000a FB80     		strh	r3, [r7, #6]	@ movhi
+ 391:.\main.c      ****         while (cells-- > 0) {
+ 1829              		.loc 1 391 0
+ 1830 000c 95E0     		b	.L107
+ 1831              	.L111:
+ 392:.\main.c      ****             if (++col > MATRIX_COLS) {
+ 1832              		.loc 1 392 0
+ 1833 000e 40F20003 		movw	r3, #:lower16:col
+ 1834 0012 C0F20003 		movt	r3, #:upper16:col
+ 1835 0016 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 1836 0018 03F10103 		add	r3, r3, #1
+ 1837 001c DAB2     		uxtb	r2, r3
+ 1838 001e 40F20003 		movw	r3, #:lower16:col
+ 1839 0022 C0F20003 		movt	r3, #:upper16:col
+ 1840 0026 1A70     		strb	r2, [r3, #0]
+ 1841 0028 40F20003 		movw	r3, #:lower16:col
+ 1842 002c C0F20003 		movt	r3, #:upper16:col
+ 1843 0030 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 1844 0032 082B     		cmp	r3, #8
+ 1845 0034 21D9     		bls	.L108
+ 393:.\main.c      ****                 col = 0;
+ 1846              		.loc 1 393 0
+ 1847 0036 40F20003 		movw	r3, #:lower16:col
+ 1848 003a C0F20003 		movt	r3, #:upper16:col
+ 1849 003e 4FF00002 		mov	r2, #0
+ 1850 0042 1A70     		strb	r2, [r3, #0]
+ 394:.\main.c      ****                 if (++row > MATRIX_ROWS) row = 0;
+ 1851              		.loc 1 394 0
+ 1852 0044 40F20003 		movw	r3, #:lower16:row
+ 1853 0048 C0F20003 		movt	r3, #:upper16:row
+ 1854 004c 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 1855 004e 03F10103 		add	r3, r3, #1
+ 1856 0052 DAB2     		uxtb	r2, r3
+ 1857 0054 40F20003 		movw	r3, #:lower16:row
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 41
+
+
+ 1858 0058 C0F20003 		movt	r3, #:upper16:row
+ 1859 005c 1A70     		strb	r2, [r3, #0]
+ 1860 005e 40F20003 		movw	r3, #:lower16:row
+ 1861 0062 C0F20003 		movt	r3, #:upper16:row
+ 1862 0066 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 1863 0068 082B     		cmp	r3, #8
+ 1864 006a 06D9     		bls	.L108
+ 1865 006c 40F20003 		movw	r3, #:lower16:row
+ 1866 0070 C0F20003 		movt	r3, #:upper16:row
+ 1867 0074 4FF00002 		mov	r2, #0
+ 1868 0078 1A70     		strb	r2, [r3, #0]
+ 1869              	.L108:
+ 395:.\main.c      ****             }
+ 396:.\main.c      ****             if (player1[row][col]) {
+ 1870              		.loc 1 396 0
+ 1871 007a 40F20003 		movw	r3, #:lower16:row
+ 1872 007e C0F20003 		movt	r3, #:upper16:row
+ 1873 0082 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 1874 0084 1946     		mov	r1, r3
+ 1875 0086 40F20003 		movw	r3, #:lower16:col
+ 1876 008a C0F20003 		movt	r3, #:upper16:col
+ 1877 008e 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 1878 0090 1A46     		mov	r2, r3
+ 1879 0092 40F20003 		movw	r3, #:lower16:player1
+ 1880 0096 C0F20003 		movt	r3, #:upper16:player1
+ 1881 009a 4FEAC101 		lsl	r1, r1, #3
+ 1882 009e 0A44     		add	r2, r1, r2
+ 1883 00a0 1344     		add	r3, r2, r3
+ 1884 00a2 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 1885 00a4 002B     		cmp	r3, #0
+ 1886 00a6 18D0     		beq	.L109
+ 397:.\main.c      ****                 matrix_deluminate();
+ 1887              		.loc 1 397 0
+ 1888 00a8 FFF7FEFF 		bl	matrix_deluminate
+ 398:.\main.c      ****                 matrix_illuminate(row,col,player1_color);
+ 1889              		.loc 1 398 0
+ 1890 00ac 40F20003 		movw	r3, #:lower16:row
+ 1891 00b0 C0F20003 		movt	r3, #:upper16:row
+ 1892 00b4 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 1893 00b6 1946     		mov	r1, r3
+ 1894 00b8 40F20003 		movw	r3, #:lower16:col
+ 1895 00bc C0F20003 		movt	r3, #:upper16:col
+ 1896 00c0 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 1897 00c2 1A46     		mov	r2, r3
+ 1898 00c4 40F20003 		movw	r3, #:lower16:player1_color
+ 1899 00c8 C0F20003 		movt	r3, #:upper16:player1_color
+ 1900 00cc 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 1901 00ce 0846     		mov	r0, r1
+ 1902 00d0 1146     		mov	r1, r2
+ 1903 00d2 1A46     		mov	r2, r3
+ 1904 00d4 FFF7FEFF 		bl	matrix_illuminate
+ 399:.\main.c      ****                 break;
+ 1905              		.loc 1 399 0
+ 1906 00d8 3CE0     		b	.L112
+ 1907              	.L109:
+ 400:.\main.c      ****             }
+ 401:.\main.c      ****             if (player2[row][col]) {
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 42
+
+
+ 1908              		.loc 1 401 0
+ 1909 00da 40F20003 		movw	r3, #:lower16:row
+ 1910 00de C0F20003 		movt	r3, #:upper16:row
+ 1911 00e2 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 1912 00e4 1946     		mov	r1, r3
+ 1913 00e6 40F20003 		movw	r3, #:lower16:col
+ 1914 00ea C0F20003 		movt	r3, #:upper16:col
+ 1915 00ee 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 1916 00f0 1A46     		mov	r2, r3
+ 1917 00f2 40F20003 		movw	r3, #:lower16:player2
+ 1918 00f6 C0F20003 		movt	r3, #:upper16:player2
+ 1919 00fa 4FEAC101 		lsl	r1, r1, #3
+ 1920 00fe 0A44     		add	r2, r1, r2
+ 1921 0100 1344     		add	r3, r2, r3
+ 1922 0102 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 1923 0104 002B     		cmp	r3, #0
+ 1924 0106 18D0     		beq	.L107
+ 402:.\main.c      ****                 matrix_deluminate();
+ 1925              		.loc 1 402 0
+ 1926 0108 FFF7FEFF 		bl	matrix_deluminate
+ 403:.\main.c      ****                 matrix_illuminate(row,col,player2_color);
+ 1927              		.loc 1 403 0
+ 1928 010c 40F20003 		movw	r3, #:lower16:row
+ 1929 0110 C0F20003 		movt	r3, #:upper16:row
+ 1930 0114 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 1931 0116 1946     		mov	r1, r3
+ 1932 0118 40F20003 		movw	r3, #:lower16:col
+ 1933 011c C0F20003 		movt	r3, #:upper16:col
+ 1934 0120 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 1935 0122 1A46     		mov	r2, r3
+ 1936 0124 40F20003 		movw	r3, #:lower16:player2_color
+ 1937 0128 C0F20003 		movt	r3, #:upper16:player2_color
+ 1938 012c 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 1939 012e 0846     		mov	r0, r1
+ 1940 0130 1146     		mov	r1, r2
+ 1941 0132 1A46     		mov	r2, r3
+ 1942 0134 FFF7FEFF 		bl	matrix_illuminate
+ 404:.\main.c      ****                 break;
+ 1943              		.loc 1 404 0
+ 1944 0138 0CE0     		b	.L112
+ 1945              	.L107:
+ 1946              		.loc 1 391 0
+ 1947 013a FB88     		ldrh	r3, [r7, #6]
+ 1948 013c 002B     		cmp	r3, #0
+ 1949 013e 0CBF     		ite	eq
+ 1950 0140 0023     		moveq	r3, #0
+ 1951 0142 0123     		movne	r3, #1
+ 1952 0144 DBB2     		uxtb	r3, r3
+ 1953 0146 FA88     		ldrh	r2, [r7, #6]	@ movhi
+ 1954 0148 02F1FF32 		add	r2, r2, #-1
+ 1955 014c FA80     		strh	r2, [r7, #6]	@ movhi
+ 1956 014e 002B     		cmp	r3, #0
+ 1957 0150 7FF45DAF 		bne	.L111
+ 1958              	.L112:
+ 1959              	.LBE12:
+ 405:.\main.c      ****             }
+ 406:.\main.c      ****         }
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 43
+
+
+ 407:.\main.c      ****     }
+ 408:.\main.c      **** }
+ 1960              		.loc 1 408 0
+ 1961 0154 07F10807 		add	r7, r7, #8
+ 1962 0158 BD46     		mov	sp, r7
+ 1963 015a 80BD     		pop	{r7, pc}
+ 1964              		.cfi_endproc
+ 1965              	.LFE36:
+ 1966              		.size	refresh, .-refresh
+ 1967              		.section	.rodata
+ 1968 00b5 000000   		.align	2
+ 1969              	.LC21:
+ 1970 00b8 696E6974 		.ascii	"initializing...\000"
+ 1970      69616C69 
+ 1970      7A696E67 
+ 1970      2E2E2E00 
+ 1971              		.align	2
+ 1972              	.LC22:
+ 1973 00c8 626F6172 		.ascii	"board\000"
+ 1973      6400
+ 1974 00ce 0000     		.align	2
+ 1975              	.LC23:
+ 1976 00d0 6D617472 		.ascii	"matrix\000"
+ 1976      697800
+ 1977 00d7 00       		.align	2
+ 1978              	.LC24:
+ 1979 00d8 696E7465 		.ascii	"interrupts\000"
+ 1979      72727570 
+ 1979      747300
+ 1980 00e3 00       		.align	2
+ 1981              	.LC25:
+ 1982 00e4 74696D65 		.ascii	"timer\000"
+ 1982      7200
+ 1983 00ea 0000     		.align	2
+ 1984              	.LC26:
+ 1985 00ec 63617073 		.ascii	"capsense\000"
+ 1985      656E7365 
+ 1985      00
+ 1986 00f5 000000   		.align	2
+ 1987              	.LC27:
+ 1988 00f8 6C6F6361 		.ascii	"locate opponent\000"
+ 1988      7465206F 
+ 1988      70706F6E 
+ 1988      656E7400 
+ 1989              		.align	2
+ 1990              	.LC28:
+ 1991 0108 6C6F6361 		.ascii	"local\000"
+ 1991      6C00
+ 1992 010e 0000     		.align	2
+ 1993              	.LC29:
+ 1994 0110 72656D6F 		.ascii	"remote\000"
+ 1994      746500
+ 1995 0117 00       		.align	2
+ 1996              	.LC30:
+ 1997 0118 55415254 		.ascii	"UART\000"
+ 1997      00
+ 1998 011d 000000   		.align	2
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 44
+
+
+ 1999              	.LC31:
+ 2000 0120 58426565 		.ascii	"XBee\000"
+ 2000      00
+ 2001 0125 000000   		.align	2
+ 2002              	.LC32:
+ 2003 0128 436F6E6E 		.ascii	"Connect 4\000"
+ 2003      65637420 
+ 2003      3400
+ 2004 0132 0000     		.align	2
+ 2005              	.LC33:
+ 2006 0134 506C6179 		.ascii	"Player 1\000"
+ 2006      65722031 
+ 2006      00
+ 2007 013d 000000   		.align	2
+ 2008              	.LC34:
+ 2009 0140 506C6179 		.ascii	"Player 2\000"
+ 2009      65722032 
+ 2009      00
+ 2010 0149 000000   		.align	2
+ 2011              	.LC35:
+ 2012 014c 506C6163 		.ascii	"Place a disc!\000"
+ 2012      65206120 
+ 2012      64697363 
+ 2012      2100
+ 2013 015a 0000     		.align	2
+ 2014              	.LC36:
+ 2015 015c 47616D65 		.ascii	"Game Over\000"
+ 2015      204F7665 
+ 2015      7200
+ 2016 0166 0000     		.align	2
+ 2017              	.LC37:
+ 2018 0168 426F6172 		.ascii	"Board Full\000"
+ 2018      64204675 
+ 2018      6C6C00
+ 2019 0173 00       		.align	2
+ 2020              	.LC38:
+ 2021 0174 436F6C75 		.ascii	"Column Full\000"
+ 2021      6D6E2046 
+ 2021      756C6C00 
+ 2022              		.align	2
+ 2023              	.LC39:
+ 2024 0180 77616974 		.ascii	"waiting...\000"
+ 2024      696E672E 
+ 2024      2E2E00
+ 2025 018b 00       		.section	.text.main,"ax",%progbits
+ 2026              		.align	2
+ 2027              		.global	main
+ 2028              		.thumb
+ 2029              		.thumb_func
+ 2030              		.type	main, %function
+ 2031              	main:
+ 2032              	.LFB37:
+ 409:.\main.c      **** 
+ 410:.\main.c      **** 
+ 411:.\main.c      **** 
+ 412:.\main.c      **** 
+ 413:.\main.c      **** void main () {
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 45
+
+
+ 2033              		.loc 1 413 0
+ 2034              		.cfi_startproc
+ 2035              		@ args = 0, pretend = 0, frame = 40
+ 2036              		@ frame_needed = 1, uses_anonymous_args = 0
+ 2037 0000 80B5     		push	{r7, lr}
+ 2038              	.LCFI23:
+ 2039              		.cfi_def_cfa_offset 8
+ 2040 0002 8AB0     		sub	sp, sp, #40
+ 2041              	.LCFI24:
+ 2042              		.cfi_def_cfa_offset 48
+ 2043 0004 00AF     		add	r7, sp, #0
+ 2044              		.cfi_offset 14, -4
+ 2045              		.cfi_offset 7, -8
+ 2046              	.LCFI25:
+ 2047              		.cfi_def_cfa_register 7
+ 414:.\main.c      ****     LCD_Start();
+ 2048              		.loc 1 414 0
+ 2049 0006 FFF7FEFF 		bl	LCD_Start
+ 415:.\main.c      ****     LCD_UpdateStatus("initializing...");
+ 2050              		.loc 1 415 0
+ 2051 000a 40F20000 		movw	r0, #:lower16:.LC21
+ 2052 000e C0F20000 		movt	r0, #:upper16:.LC21
+ 2053 0012 FFF7FEFF 		bl	LCD_UpdateStatus
+ 416:.\main.c      ****     LCD_UpdateMessage("board");
+ 2054              		.loc 1 416 0
+ 2055 0016 40F20000 		movw	r0, #:lower16:.LC22
+ 2056 001a C0F20000 		movt	r0, #:upper16:.LC22
+ 2057 001e FFF7FEFF 		bl	LCD_UpdateMessage
+ 417:.\main.c      ****     clear_board();
+ 2058              		.loc 1 417 0
+ 2059 0022 FFF7FEFF 		bl	clear_board
+ 418:.\main.c      ****     LCD_UpdateMessage("matrix");
+ 2060              		.loc 1 418 0
+ 2061 0026 40F20000 		movw	r0, #:lower16:.LC23
+ 2062 002a C0F20000 		movt	r0, #:upper16:.LC23
+ 2063 002e FFF7FEFF 		bl	LCD_UpdateMessage
+ 419:.\main.c      ****     matrix_test(true,false);
+ 2064              		.loc 1 419 0
+ 2065 0032 4FF00100 		mov	r0, #1
+ 2066 0036 4FF00001 		mov	r1, #0
+ 2067 003a FFF7FEFF 		bl	matrix_test
+ 420:.\main.c      ****     matrix_deluminate();
+ 2068              		.loc 1 420 0
+ 2069 003e FFF7FEFF 		bl	matrix_deluminate
+ 421:.\main.c      ****     LCD_UpdateMessage("interrupts");
+ 2070              		.loc 1 421 0
+ 2071 0042 40F20000 		movw	r0, #:lower16:.LC24
+ 2072 0046 C0F20000 		movt	r0, #:upper16:.LC24
+ 2073 004a FFF7FEFF 		bl	LCD_UpdateMessage
+ 422:.\main.c      ****     CyGlobalIntEnable;
+ 2074              		.loc 1 422 0
+ 2075              	@ 422 ".\main.c" 1
+ 2076 004e 62B6     		CPSIE   i
+ 2077              	@ 0 "" 2
+ 423:.\main.c      ****     LCD_UpdateMessage("timer");
+ 2078              		.loc 1 423 0
+ 2079              		.thumb
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 46
+
+
+ 2080 0050 40F20000 		movw	r0, #:lower16:.LC25
+ 2081 0054 C0F20000 		movt	r0, #:upper16:.LC25
+ 2082 0058 FFF7FEFF 		bl	LCD_UpdateMessage
+ 424:.\main.c      ****     Timer_Start();
+ 2083              		.loc 1 424 0
+ 2084 005c FFF7FEFF 		bl	Timer_Start
+ 425:.\main.c      ****     Timer_WritePeriod(BUS_CLK_FREQ/REFRESH_RATE);
+ 2085              		.loc 1 425 0
+ 2086 0060 4FF41650 		mov	r0, #9600
+ 2087 0064 FFF7FEFF 		bl	Timer_WritePeriod
+ 426:.\main.c      ****     LCD_UpdateMessage("capsense");
+ 2088              		.loc 1 426 0
+ 2089 0068 40F20000 		movw	r0, #:lower16:.LC26
+ 2090 006c C0F20000 		movt	r0, #:upper16:.LC26
+ 2091 0070 FFF7FEFF 		bl	LCD_UpdateMessage
+ 427:.\main.c      ****     CapSense_Start();
+ 2092              		.loc 1 427 0
+ 2093 0074 FFF7FEFF 		bl	CapSense_Start
+ 428:.\main.c      ****     CapSense_InitializeAllBaselines();
+ 2094              		.loc 1 428 0
+ 2095 0078 FFF7FEFF 		bl	CapSense_InitializeAllBaselines
+ 429:.\main.c      ****     
+ 430:.\main.c      ****     LCD_UpdateStatus("locate opponent");
+ 2096              		.loc 1 430 0
+ 2097 007c 40F20000 		movw	r0, #:lower16:.LC27
+ 2098 0080 C0F20000 		movt	r0, #:upper16:.LC27
+ 2099 0084 FFF7FEFF 		bl	LCD_UpdateStatus
+ 431:.\main.c      ****     ISR_StartEx(toggle);
+ 2100              		.loc 1 431 0
+ 2101 0088 40F20000 		movw	r0, #:lower16:toggle
+ 2102 008c C0F20000 		movt	r0, #:upper16:toggle
+ 2103 0090 FFF7FEFF 		bl	ISR_StartEx
+ 432:.\main.c      ****     locating = true;
+ 2104              		.loc 1 432 0
+ 2105 0094 40F20003 		movw	r3, #:lower16:locating
+ 2106 0098 C0F20003 		movt	r3, #:upper16:locating
+ 2107 009c 4FF00102 		mov	r2, #1
+ 2108 00a0 1A70     		strb	r2, [r3, #0]
+ 433:.\main.c      ****     uint8 t;
+ 434:.\main.c      ****     for (t=5; t > 0 ;--t) {
+ 2109              		.loc 1 434 0
+ 2110 00a2 4FF00503 		mov	r3, #5
+ 2111 00a6 BB77     		strb	r3, [r7, #30]
+ 2112 00a8 28E0     		b	.L114
+ 2113              	.L117:
+ 435:.\main.c      ****         LCD_UpdateMessage((player2_local) ? "local" : "remote");
+ 2114              		.loc 1 435 0
+ 2115 00aa 40F20003 		movw	r3, #:lower16:player2_local
+ 2116 00ae C0F20003 		movt	r3, #:upper16:player2_local
+ 2117 00b2 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 2118 00b4 002B     		cmp	r3, #0
+ 2119 00b6 04D0     		beq	.L115
+ 2120 00b8 40F20003 		movw	r3, #:lower16:.LC28
+ 2121 00bc C0F20003 		movt	r3, #:upper16:.LC28
+ 2122 00c0 03E0     		b	.L116
+ 2123              	.L115:
+ 2124 00c2 40F20003 		movw	r3, #:lower16:.LC29
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 47
+
+
+ 2125 00c6 C0F20003 		movt	r3, #:upper16:.LC29
+ 2126              	.L116:
+ 2127 00ca 1846     		mov	r0, r3
+ 2128 00cc FFF7FEFF 		bl	LCD_UpdateMessage
+ 436:.\main.c      ****         CyDelay(500);
+ 2129              		.loc 1 436 0
+ 2130 00d0 4FF4FA70 		mov	r0, #500
+ 2131 00d4 FFF7FEFF 		bl	CyDelay
+ 437:.\main.c      ****         LCD_Position(1,15);
+ 2132              		.loc 1 437 0
+ 2133 00d8 4FF00100 		mov	r0, #1
+ 2134 00dc 4FF00F01 		mov	r1, #15
+ 2135 00e0 FFF7FEFF 		bl	LCD_Position
+ 438:.\main.c      ****         LCD_PrintNumber(t);
+ 2136              		.loc 1 438 0
+ 2137 00e4 BB7F     		ldrb	r3, [r7, #30]	@ zero_extendqisi2
+ 2138 00e6 1846     		mov	r0, r3
+ 2139 00e8 FFF7FEFF 		bl	LCD_PrintNumber
+ 439:.\main.c      ****         CyDelay(500);
+ 2140              		.loc 1 439 0
+ 2141 00ec 4FF4FA70 		mov	r0, #500
+ 2142 00f0 FFF7FEFF 		bl	CyDelay
+ 2143              		.loc 1 434 0
+ 2144 00f4 BB7F     		ldrb	r3, [r7, #30]
+ 2145 00f6 03F1FF33 		add	r3, r3, #-1
+ 2146 00fa BB77     		strb	r3, [r7, #30]
+ 2147              	.L114:
+ 2148 00fc BB7F     		ldrb	r3, [r7, #30]	@ zero_extendqisi2
+ 2149 00fe 002B     		cmp	r3, #0
+ 2150 0100 D3D1     		bne	.L117
+ 440:.\main.c      ****     }
+ 441:.\main.c      ****     locating = false;
+ 2151              		.loc 1 441 0
+ 2152 0102 40F20003 		movw	r3, #:lower16:locating
+ 2153 0106 C0F20003 		movt	r3, #:upper16:locating
+ 2154 010a 4FF00002 		mov	r2, #0
+ 2155 010e 1A70     		strb	r2, [r3, #0]
+ 442:.\main.c      ****     ISR_Stop();
+ 2156              		.loc 1 442 0
+ 2157 0110 FFF7FEFF 		bl	ISR_Stop
+ 443:.\main.c      ****     if (!player2_local) {
+ 2158              		.loc 1 443 0
+ 2159 0114 40F20003 		movw	r3, #:lower16:player2_local
+ 2160 0118 C0F20003 		movt	r3, #:upper16:player2_local
+ 2161 011c 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 2162 011e 83F00103 		eor	r3, r3, #1
+ 2163 0122 DBB2     		uxtb	r3, r3
+ 2164 0124 002B     		cmp	r3, #0
+ 2165 0126 19D0     		beq	.L118
+ 444:.\main.c      ****         LCD_UpdateStatus("initializing...");
+ 2166              		.loc 1 444 0
+ 2167 0128 40F20000 		movw	r0, #:lower16:.LC21
+ 2168 012c C0F20000 		movt	r0, #:upper16:.LC21
+ 2169 0130 FFF7FEFF 		bl	LCD_UpdateStatus
+ 445:.\main.c      ****         LCD_UpdateMessage("UART");
+ 2170              		.loc 1 445 0
+ 2171 0134 40F20000 		movw	r0, #:lower16:.LC30
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 48
+
+
+ 2172 0138 C0F20000 		movt	r0, #:upper16:.LC30
+ 2173 013c FFF7FEFF 		bl	LCD_UpdateMessage
+ 446:.\main.c      ****         UART_Start();
+ 2174              		.loc 1 446 0
+ 2175 0140 FFF7FEFF 		bl	UART_Start
+ 447:.\main.c      ****         UART_ClearTxBuffer();
+ 2176              		.loc 1 447 0
+ 2177 0144 FFF7FEFF 		bl	UART_ClearTxBuffer
+ 448:.\main.c      ****         UART_ClearRxBuffer();
+ 2178              		.loc 1 448 0
+ 2179 0148 FFF7FEFF 		bl	UART_ClearRxBuffer
+ 449:.\main.c      ****         LCD_UpdateMessage("XBee");
+ 2180              		.loc 1 449 0
+ 2181 014c 40F20000 		movw	r0, #:lower16:.LC31
+ 2182 0150 C0F20000 		movt	r0, #:upper16:.LC31
+ 2183 0154 FFF7FEFF 		bl	LCD_UpdateMessage
+ 450:.\main.c      ****         configure_XBee();
+ 2184              		.loc 1 450 0
+ 2185 0158 FFF7FEFF 		bl	configure_XBee
+ 2186              	.L118:
+ 451:.\main.c      ****     }
+ 452:.\main.c      ****     
+ 453:.\main.c      ****     
+ 454:.\main.c      ****     LCD_UpdateStatus("Connect 4");
+ 2187              		.loc 1 454 0
+ 2188 015c 40F20000 		movw	r0, #:lower16:.LC32
+ 2189 0160 C0F20000 		movt	r0, #:upper16:.LC32
+ 2190 0164 FFF7FEFF 		bl	LCD_UpdateStatus
+ 455:.\main.c      ****     Beam_StartEx(refresh);
+ 2191              		.loc 1 455 0
+ 2192 0168 40F20000 		movw	r0, #:lower16:refresh
+ 2193 016c C0F20000 		movt	r0, #:upper16:refresh
+ 2194 0170 FFF7FEFF 		bl	Beam_StartEx
+ 2195              	.L150:
+ 456:.\main.c      ****     while (true) {
+ 457:.\main.c      ****         if (player1_turn || player2_local) {
+ 2196              		.loc 1 457 0
+ 2197 0174 40F20003 		movw	r3, #:lower16:player1_turn
+ 2198 0178 C0F20003 		movt	r3, #:upper16:player1_turn
+ 2199 017c 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 2200 017e 002B     		cmp	r3, #0
+ 2201 0180 07D1     		bne	.L119
+ 2202 0182 40F20003 		movw	r3, #:lower16:player2_local
+ 2203 0186 C0F20003 		movt	r3, #:upper16:player2_local
+ 2204 018a 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 2205 018c 002B     		cmp	r3, #0
+ 2206 018e 00F00382 		beq	.L120
+ 2207              	.L119:
+ 2208              	.LBB13:
+ 458:.\main.c      ****             LCD_UpdateStatus((player1_turn) ? "Player 1" : "Player 2");
+ 2209              		.loc 1 458 0
+ 2210 0192 40F20003 		movw	r3, #:lower16:player1_turn
+ 2211 0196 C0F20003 		movt	r3, #:upper16:player1_turn
+ 2212 019a 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 2213 019c 002B     		cmp	r3, #0
+ 2214 019e 04D0     		beq	.L121
+ 2215 01a0 40F20003 		movw	r3, #:lower16:.LC33
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 49
+
+
+ 2216 01a4 C0F20003 		movt	r3, #:upper16:.LC33
+ 2217 01a8 03E0     		b	.L122
+ 2218              	.L121:
+ 2219 01aa 40F20003 		movw	r3, #:lower16:.LC34
+ 2220 01ae C0F20003 		movt	r3, #:upper16:.LC34
+ 2221              	.L122:
+ 2222 01b2 1846     		mov	r0, r3
+ 2223 01b4 FFF7FEFF 		bl	LCD_UpdateStatus
+ 459:.\main.c      ****             LCD_UpdateMessage("Place a disc!");
+ 2224              		.loc 1 459 0
+ 2225 01b8 40F20000 		movw	r0, #:lower16:.LC35
+ 2226 01bc C0F20000 		movt	r0, #:upper16:.LC35
+ 2227 01c0 FFF7FEFF 		bl	LCD_UpdateMessage
+ 460:.\main.c      ****             uint8 disc = 0;
+ 2228              		.loc 1 460 0
+ 2229 01c4 4FF00003 		mov	r3, #0
+ 2230 01c8 FB77     		strb	r3, [r7, #31]
+ 461:.\main.c      ****             while (player1[1][disc] || player2[1][disc]) {
+ 2231              		.loc 1 461 0
+ 2232 01ca 13E0     		b	.L123
+ 2233              	.L125:
+ 462:.\main.c      ****                 if (++disc >= MATRIX_COLS) {
+ 2234              		.loc 1 462 0
+ 2235 01cc FB7F     		ldrb	r3, [r7, #31]
+ 2236 01ce 03F10103 		add	r3, r3, #1
+ 2237 01d2 FB77     		strb	r3, [r7, #31]
+ 2238 01d4 FB7F     		ldrb	r3, [r7, #31]	@ zero_extendqisi2
+ 2239 01d6 072B     		cmp	r3, #7
+ 2240 01d8 0CD9     		bls	.L123
+ 463:.\main.c      ****                     LCD_UpdateStatus("Game Over");
+ 2241              		.loc 1 463 0
+ 2242 01da 40F20000 		movw	r0, #:lower16:.LC36
+ 2243 01de C0F20000 		movt	r0, #:upper16:.LC36
+ 2244 01e2 FFF7FEFF 		bl	LCD_UpdateStatus
+ 464:.\main.c      ****                     LCD_UpdateMessage("Board Full");
+ 2245              		.loc 1 464 0
+ 2246 01e6 40F20000 		movw	r0, #:lower16:.LC37
+ 2247 01ea C0F20000 		movt	r0, #:upper16:.LC37
+ 2248 01ee FFF7FEFF 		bl	LCD_UpdateMessage
+ 2249              	.L124:
+ 465:.\main.c      ****                     while (true);
+ 2250              		.loc 1 465 0
+ 2251 01f2 FEE7     		b	.L124
+ 2252              	.L123:
+ 2253              		.loc 1 461 0
+ 2254 01f4 FA7F     		ldrb	r2, [r7, #31]	@ zero_extendqisi2
+ 2255 01f6 40F20003 		movw	r3, #:lower16:player1
+ 2256 01fa C0F20003 		movt	r3, #:upper16:player1
+ 2257 01fe 1344     		add	r3, r2, r3
+ 2258 0200 1B7A     		ldrb	r3, [r3, #8]	@ zero_extendqisi2
+ 2259 0202 002B     		cmp	r3, #0
+ 2260 0204 E2D1     		bne	.L125
+ 2261 0206 FA7F     		ldrb	r2, [r7, #31]	@ zero_extendqisi2
+ 2262 0208 40F20003 		movw	r3, #:lower16:player2
+ 2263 020c C0F20003 		movt	r3, #:upper16:player2
+ 2264 0210 1344     		add	r3, r2, r3
+ 2265 0212 1B7A     		ldrb	r3, [r3, #8]	@ zero_extendqisi2
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 50
+
+
+ 2266 0214 002B     		cmp	r3, #0
+ 2267 0216 D9D1     		bne	.L125
+ 466:.\main.c      ****                 }
+ 467:.\main.c      ****             }
+ 468:.\main.c      ****             bool dropped = false;
+ 2268              		.loc 1 468 0
+ 2269 0218 4FF00003 		mov	r3, #0
+ 2270 021c 87F82030 		strb	r3, [r7, #32]
+ 2271              	.L140:
+ 469:.\main.c      ****             do {
+ 470:.\main.c      ****                 CapSense_UpdateEnabledBaselines();
+ 2272              		.loc 1 470 0
+ 2273 0220 FFF7FEFF 		bl	CapSense_UpdateEnabledBaselines
+ 471:.\main.c      ****                 CapSense_UpdateEnabledBaselines(); //Helps avoid auto-dropping for some reason.
+ 2274              		.loc 1 471 0
+ 2275 0224 FFF7FEFF 		bl	CapSense_UpdateEnabledBaselines
+ 472:.\main.c      ****                 CapSense_ScanEnabledWidgets();
+ 2276              		.loc 1 472 0
+ 2277 0228 FFF7FEFF 		bl	CapSense_ScanEnabledWidgets
+ 2278              	.L126:
+ 473:.\main.c      ****                 while (CapSense_IsBusy());
+ 2279              		.loc 1 473 0
+ 2280 022c FFF7FEFF 		bl	CapSense_IsBusy
+ 2281 0230 0346     		mov	r3, r0
+ 2282 0232 002B     		cmp	r3, #0
+ 2283 0234 FAD1     		bne	.L126
+ 474:.\main.c      ****                 if ((player1_turn && CapSense_CheckIsWidgetActive(CapSense_BUTTON0__BTN))
+ 2284              		.loc 1 474 0
+ 2285 0236 40F20003 		movw	r3, #:lower16:player1_turn
+ 2286 023a C0F20003 		movt	r3, #:upper16:player1_turn
+ 2287 023e 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 2288 0240 002B     		cmp	r3, #0
+ 2289 0242 06D0     		beq	.L127
+ 2290 0244 4FF00100 		mov	r0, #1
+ 2291 0248 FFF7FEFF 		bl	CapSense_CheckIsWidgetActive
+ 2292 024c 0346     		mov	r3, r0
+ 2293 024e 002B     		cmp	r3, #0
+ 2294 0250 10D1     		bne	.L128
+ 2295              	.L127:
+ 2296 0252 40F20003 		movw	r3, #:lower16:player1_turn
+ 2297 0256 C0F20003 		movt	r3, #:upper16:player1_turn
+ 2298 025a 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 2299 025c 83F00103 		eor	r3, r3, #1
+ 2300 0260 DBB2     		uxtb	r3, r3
+ 2301 0262 002B     		cmp	r3, #0
+ 2302 0264 25D0     		beq	.L129
+ 475:.\main.c      ****                 || (!player1_turn && CapSense_CheckIsWidgetActive(CapSense_BUTTON1__BTN))) { //Help
+ 2303              		.loc 1 475 0
+ 2304 0266 4FF00200 		mov	r0, #2
+ 2305 026a FFF7FEFF 		bl	CapSense_CheckIsWidgetActive
+ 2306 026e 0346     		mov	r3, r0
+ 2307              		.loc 1 474 0
+ 2308 0270 002B     		cmp	r3, #0
+ 2309 0272 1ED0     		beq	.L129
+ 2310              	.L128:
+ 476:.\main.c      ****                     if (player1[1][disc] || player2[1][disc]) LCD_UpdateMessage("Column Full");
+ 2311              		.loc 1 476 0
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 51
+
+
+ 2312 0274 FA7F     		ldrb	r2, [r7, #31]	@ zero_extendqisi2
+ 2313 0276 40F20003 		movw	r3, #:lower16:player1
+ 2314 027a C0F20003 		movt	r3, #:upper16:player1
+ 2315 027e 1344     		add	r3, r2, r3
+ 2316 0280 1B7A     		ldrb	r3, [r3, #8]	@ zero_extendqisi2
+ 2317 0282 002B     		cmp	r3, #0
+ 2318 0284 08D1     		bne	.L130
+ 2319 0286 FA7F     		ldrb	r2, [r7, #31]	@ zero_extendqisi2
+ 2320 0288 40F20003 		movw	r3, #:lower16:player2
+ 2321 028c C0F20003 		movt	r3, #:upper16:player2
+ 2322 0290 1344     		add	r3, r2, r3
+ 2323 0292 1B7A     		ldrb	r3, [r3, #8]	@ zero_extendqisi2
+ 2324 0294 002B     		cmp	r3, #0
+ 2325 0296 07D0     		beq	.L131
+ 2326              	.L130:
+ 2327 0298 40F20000 		movw	r0, #:lower16:.LC38
+ 2328 029c C0F20000 		movt	r0, #:upper16:.LC38
+ 2329 02a0 FFF7FEFF 		bl	LCD_UpdateMessage
+ 2330 02a4 00BF     		nop
+ 2331              		.loc 1 474 0
+ 2332 02a6 77E0     		b	.L133
+ 2333              	.L131:
+ 477:.\main.c      ****                     else dropped = true;
+ 2334              		.loc 1 477 0
+ 2335 02a8 4FF00103 		mov	r3, #1
+ 2336 02ac 87F82030 		strb	r3, [r7, #32]
+ 2337              		.loc 1 474 0
+ 2338 02b0 72E0     		b	.L133
+ 2339              	.L129:
+ 2340              	.LBB14:
+ 478:.\main.c      ****                 }
+ 479:.\main.c      ****                 else {
+ 480:.\main.c      ****                     player1[0][disc] = player2[0][disc] = false;
+ 2341              		.loc 1 480 0
+ 2342 02b2 F97F     		ldrb	r1, [r7, #31]	@ zero_extendqisi2
+ 2343 02b4 FA7F     		ldrb	r2, [r7, #31]	@ zero_extendqisi2
+ 2344 02b6 40F20003 		movw	r3, #:lower16:player2
+ 2345 02ba C0F20003 		movt	r3, #:upper16:player2
+ 2346 02be 4FF00000 		mov	r0, #0
+ 2347 02c2 9854     		strb	r0, [r3, r2]
+ 2348 02c4 40F20003 		movw	r3, #:lower16:player2
+ 2349 02c8 C0F20003 		movt	r3, #:upper16:player2
+ 2350 02cc 9A5C     		ldrb	r2, [r3, r2]	@ zero_extendqisi2
+ 2351 02ce 40F20003 		movw	r3, #:lower16:player1
+ 2352 02d2 C0F20003 		movt	r3, #:upper16:player1
+ 2353 02d6 5A54     		strb	r2, [r3, r1]
+ 481:.\main.c      ****                     uint16 reading = (CapSense_GetCentroidPos(CapSense_LINEARSLIDER0__LS)*(MATRIX_C
+ 2354              		.loc 1 481 0
+ 2355 02d8 4FF00000 		mov	r0, #0
+ 2356 02dc FFF7FEFF 		bl	CapSense_GetCentroidPos
+ 2357 02e0 0346     		mov	r3, r0
+ 2358 02e2 1A46     		mov	r2, r3
+ 2359 02e4 1346     		mov	r3, r2
+ 2360 02e6 4FEAC303 		lsl	r3, r3, #3
+ 2361 02ea C2EB0302 		rsb	r2, r2, r3
+ 2362 02ee 40F2EB73 		movw	r3, #:lower16:354224107
+ 2363 02f2 C1F21D53 		movt	r3, #:upper16:354224107
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 52
+
+
+ 2364 02f6 83FB0213 		smull	r1, r3, r3, r2
+ 2365 02fa 4FEAE301 		asr	r1, r3, #3
+ 2366 02fe 4FEAE273 		asr	r3, r2, #31
+ 2367 0302 C3EB0103 		rsb	r3, r3, r1
+ 2368 0306 7B84     		strh	r3, [r7, #34]	@ movhi
+ 482:.\main.c      ****                     if (reading < 8) disc = reading;
+ 2369              		.loc 1 482 0
+ 2370 0308 7B8C     		ldrh	r3, [r7, #34]
+ 2371 030a 072B     		cmp	r3, #7
+ 2372 030c 01D8     		bhi	.L134
+ 2373 030e 7B8C     		ldrh	r3, [r7, #34]	@ movhi
+ 2374 0310 FB77     		strb	r3, [r7, #31]
+ 2375              	.L134:
+ 483:.\main.c      ****                     
+ 484:.\main.c      ****                     //guide the disc
+ 485:.\main.c      ****                     int dir = 1;
+ 2376              		.loc 1 485 0
+ 2377 0312 4FF00103 		mov	r3, #1
+ 2378 0316 7B62     		str	r3, [r7, #36]
+ 486:.\main.c      ****                     while (player1[1][disc] || player2[1][disc]) {
+ 2379              		.loc 1 486 0
+ 2380 0318 14E0     		b	.L135
+ 2381              	.L138:
+ 487:.\main.c      ****                         if (disc >= MATRIX_COLS-1)  dir = -1;
+ 2382              		.loc 1 487 0
+ 2383 031a FB7F     		ldrb	r3, [r7, #31]	@ zero_extendqisi2
+ 2384 031c 062B     		cmp	r3, #6
+ 2385 031e 02D9     		bls	.L136
+ 2386 0320 4FF0FF33 		mov	r3, #-1
+ 2387 0324 7B62     		str	r3, [r7, #36]
+ 2388              	.L136:
+ 488:.\main.c      ****                         if (disc == 0 && dir == -1) dir =  1; // There may be redundancy here.
+ 2389              		.loc 1 488 0
+ 2390 0326 FB7F     		ldrb	r3, [r7, #31]	@ zero_extendqisi2
+ 2391 0328 002B     		cmp	r3, #0
+ 2392 032a 06D1     		bne	.L137
+ 2393 032c 7B6A     		ldr	r3, [r7, #36]
+ 2394 032e B3F1FF3F 		cmp	r3, #-1
+ 2395 0332 02D1     		bne	.L137
+ 2396 0334 4FF00103 		mov	r3, #1
+ 2397 0338 7B62     		str	r3, [r7, #36]
+ 2398              	.L137:
+ 489:.\main.c      ****                         disc += dir;
+ 2399              		.loc 1 489 0
+ 2400 033a 7B6A     		ldr	r3, [r7, #36]
+ 2401 033c DAB2     		uxtb	r2, r3
+ 2402 033e FB7F     		ldrb	r3, [r7, #31]
+ 2403 0340 1344     		add	r3, r2, r3
+ 2404 0342 FB77     		strb	r3, [r7, #31]
+ 2405              	.L135:
+ 2406              		.loc 1 486 0
+ 2407 0344 FA7F     		ldrb	r2, [r7, #31]	@ zero_extendqisi2
+ 2408 0346 40F20003 		movw	r3, #:lower16:player1
+ 2409 034a C0F20003 		movt	r3, #:upper16:player1
+ 2410 034e 1344     		add	r3, r2, r3
+ 2411 0350 1B7A     		ldrb	r3, [r3, #8]	@ zero_extendqisi2
+ 2412 0352 002B     		cmp	r3, #0
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 53
+
+
+ 2413 0354 E1D1     		bne	.L138
+ 2414 0356 FA7F     		ldrb	r2, [r7, #31]	@ zero_extendqisi2
+ 2415 0358 40F20003 		movw	r3, #:lower16:player2
+ 2416 035c C0F20003 		movt	r3, #:upper16:player2
+ 2417 0360 1344     		add	r3, r2, r3
+ 2418 0362 1B7A     		ldrb	r3, [r3, #8]	@ zero_extendqisi2
+ 2419 0364 002B     		cmp	r3, #0
+ 2420 0366 D8D1     		bne	.L138
+ 490:.\main.c      ****                     }
+ 491:.\main.c      ****                     if (player1_turn) player1[0][disc] = true;
+ 2421              		.loc 1 491 0
+ 2422 0368 40F20003 		movw	r3, #:lower16:player1_turn
+ 2423 036c C0F20003 		movt	r3, #:upper16:player1_turn
+ 2424 0370 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 2425 0372 002B     		cmp	r3, #0
+ 2426 0374 08D0     		beq	.L139
+ 2427 0376 FA7F     		ldrb	r2, [r7, #31]	@ zero_extendqisi2
+ 2428 0378 40F20003 		movw	r3, #:lower16:player1
+ 2429 037c C0F20003 		movt	r3, #:upper16:player1
+ 2430 0380 4FF00101 		mov	r1, #1
+ 2431 0384 9954     		strb	r1, [r3, r2]
+ 2432 0386 07E0     		b	.L133
+ 2433              	.L139:
+ 492:.\main.c      ****                     else              player2[0][disc] = true;
+ 2434              		.loc 1 492 0
+ 2435 0388 FA7F     		ldrb	r2, [r7, #31]	@ zero_extendqisi2
+ 2436 038a 40F20003 		movw	r3, #:lower16:player2
+ 2437 038e C0F20003 		movt	r3, #:upper16:player2
+ 2438 0392 4FF00101 		mov	r1, #1
+ 2439 0396 9954     		strb	r1, [r3, r2]
+ 2440              	.L133:
+ 2441              	.LBE14:
+ 493:.\main.c      ****                 }
+ 494:.\main.c      ****             } while (!dropped);
+ 2442              		.loc 1 494 0
+ 2443 0398 97F82030 		ldrb	r3, [r7, #32]
+ 2444 039c 83F00103 		eor	r3, r3, #1
+ 2445 03a0 DBB2     		uxtb	r3, r3
+ 2446 03a2 002B     		cmp	r3, #0
+ 2447 03a4 7FF43CAF 		bne	.L140
+ 495:.\main.c      ****             
+ 496:.\main.c      ****             //animate drop
+ 497:.\main.c      ****             player1[0][disc] = player2[0][disc] = false;
+ 2448              		.loc 1 497 0
+ 2449 03a8 F97F     		ldrb	r1, [r7, #31]	@ zero_extendqisi2
+ 2450 03aa FA7F     		ldrb	r2, [r7, #31]	@ zero_extendqisi2
+ 2451 03ac 40F20003 		movw	r3, #:lower16:player2
+ 2452 03b0 C0F20003 		movt	r3, #:upper16:player2
+ 2453 03b4 4FF00000 		mov	r0, #0
+ 2454 03b8 9854     		strb	r0, [r3, r2]
+ 2455 03ba 40F20003 		movw	r3, #:lower16:player2
+ 2456 03be C0F20003 		movt	r3, #:upper16:player2
+ 2457 03c2 9A5C     		ldrb	r2, [r3, r2]	@ zero_extendqisi2
+ 2458 03c4 40F20003 		movw	r3, #:lower16:player1
+ 2459 03c8 C0F20003 		movt	r3, #:upper16:player1
+ 2460 03cc 5A54     		strb	r2, [r3, r1]
+ 498:.\main.c      ****             uint8 r;
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 54
+
+
+ 499:.\main.c      ****             for (r=1; r < MATRIX_ROWS ;++r) {
+ 2461              		.loc 1 499 0
+ 2462 03ce 4FF00103 		mov	r3, #1
+ 2463 03d2 87F82130 		strb	r3, [r7, #33]
+ 2464 03d6 75E0     		b	.L141
+ 2465              	.L147:
+ 500:.\main.c      ****                 if (player1_turn) player1[r][disc] = true;
+ 2466              		.loc 1 500 0
+ 2467 03d8 40F20003 		movw	r3, #:lower16:player1_turn
+ 2468 03dc C0F20003 		movt	r3, #:upper16:player1_turn
+ 2469 03e0 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 2470 03e2 002B     		cmp	r3, #0
+ 2471 03e4 0ED0     		beq	.L142
+ 2472 03e6 97F82110 		ldrb	r1, [r7, #33]	@ zero_extendqisi2
+ 2473 03ea FA7F     		ldrb	r2, [r7, #31]	@ zero_extendqisi2
+ 2474 03ec 40F20003 		movw	r3, #:lower16:player1
+ 2475 03f0 C0F20003 		movt	r3, #:upper16:player1
+ 2476 03f4 4FEAC101 		lsl	r1, r1, #3
+ 2477 03f8 0A44     		add	r2, r1, r2
+ 2478 03fa 1344     		add	r3, r2, r3
+ 2479 03fc 4FF00102 		mov	r2, #1
+ 2480 0400 1A70     		strb	r2, [r3, #0]
+ 2481 0402 0DE0     		b	.L143
+ 2482              	.L142:
+ 501:.\main.c      ****                 else              player2[r][disc] = true;
+ 2483              		.loc 1 501 0
+ 2484 0404 97F82110 		ldrb	r1, [r7, #33]	@ zero_extendqisi2
+ 2485 0408 FA7F     		ldrb	r2, [r7, #31]	@ zero_extendqisi2
+ 2486 040a 40F20003 		movw	r3, #:lower16:player2
+ 2487 040e C0F20003 		movt	r3, #:upper16:player2
+ 2488 0412 4FEAC101 		lsl	r1, r1, #3
+ 2489 0416 0A44     		add	r2, r1, r2
+ 2490 0418 1344     		add	r3, r2, r3
+ 2491 041a 4FF00102 		mov	r2, #1
+ 2492 041e 1A70     		strb	r2, [r3, #0]
+ 2493              	.L143:
+ 502:.\main.c      ****                 if (player1[r+1][disc] || player2[r+1][disc] || r+1 == MATRIX_ROWS) break;
+ 2494              		.loc 1 502 0
+ 2495 0420 97F82130 		ldrb	r3, [r7, #33]	@ zero_extendqisi2
+ 2496 0424 03F10101 		add	r1, r3, #1
+ 2497 0428 FA7F     		ldrb	r2, [r7, #31]	@ zero_extendqisi2
+ 2498 042a 40F20003 		movw	r3, #:lower16:player1
+ 2499 042e C0F20003 		movt	r3, #:upper16:player1
+ 2500 0432 4FEAC101 		lsl	r1, r1, #3
+ 2501 0436 0A44     		add	r2, r1, r2
+ 2502 0438 1344     		add	r3, r2, r3
+ 2503 043a 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 2504 043c 002B     		cmp	r3, #0
+ 2505 043e 45D1     		bne	.L144
+ 2506 0440 97F82130 		ldrb	r3, [r7, #33]	@ zero_extendqisi2
+ 2507 0444 03F10101 		add	r1, r3, #1
+ 2508 0448 FA7F     		ldrb	r2, [r7, #31]	@ zero_extendqisi2
+ 2509 044a 40F20003 		movw	r3, #:lower16:player2
+ 2510 044e C0F20003 		movt	r3, #:upper16:player2
+ 2511 0452 4FEAC101 		lsl	r1, r1, #3
+ 2512 0456 0A44     		add	r2, r1, r2
+ 2513 0458 1344     		add	r3, r2, r3
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 55
+
+
+ 2514 045a 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 2515 045c 002B     		cmp	r3, #0
+ 2516 045e 35D1     		bne	.L144
+ 2517 0460 97F82130 		ldrb	r3, [r7, #33]	@ zero_extendqisi2
+ 2518 0464 072B     		cmp	r3, #7
+ 2519 0466 31D0     		beq	.L144
+ 503:.\main.c      ****                 else CyDelay(10);
+ 2520              		.loc 1 503 0
+ 2521 0468 4FF00A00 		mov	r0, #10
+ 2522 046c FFF7FEFF 		bl	CyDelay
+ 504:.\main.c      ****                 if (player1_turn) player1[r][disc] = false;
+ 2523              		.loc 1 504 0
+ 2524 0470 40F20003 		movw	r3, #:lower16:player1_turn
+ 2525 0474 C0F20003 		movt	r3, #:upper16:player1_turn
+ 2526 0478 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 2527 047a 002B     		cmp	r3, #0
+ 2528 047c 0ED0     		beq	.L145
+ 2529 047e 97F82110 		ldrb	r1, [r7, #33]	@ zero_extendqisi2
+ 2530 0482 FA7F     		ldrb	r2, [r7, #31]	@ zero_extendqisi2
+ 2531 0484 40F20003 		movw	r3, #:lower16:player1
+ 2532 0488 C0F20003 		movt	r3, #:upper16:player1
+ 2533 048c 4FEAC101 		lsl	r1, r1, #3
+ 2534 0490 0A44     		add	r2, r1, r2
+ 2535 0492 1344     		add	r3, r2, r3
+ 2536 0494 4FF00002 		mov	r2, #0
+ 2537 0498 1A70     		strb	r2, [r3, #0]
+ 2538 049a 0DE0     		b	.L146
+ 2539              	.L145:
+ 505:.\main.c      ****                 else              player2[r][disc] = false;
+ 2540              		.loc 1 505 0
+ 2541 049c 97F82110 		ldrb	r1, [r7, #33]	@ zero_extendqisi2
+ 2542 04a0 FA7F     		ldrb	r2, [r7, #31]	@ zero_extendqisi2
+ 2543 04a2 40F20003 		movw	r3, #:lower16:player2
+ 2544 04a6 C0F20003 		movt	r3, #:upper16:player2
+ 2545 04aa 4FEAC101 		lsl	r1, r1, #3
+ 2546 04ae 0A44     		add	r2, r1, r2
+ 2547 04b0 1344     		add	r3, r2, r3
+ 2548 04b2 4FF00002 		mov	r2, #0
+ 2549 04b6 1A70     		strb	r2, [r3, #0]
+ 2550              	.L146:
+ 2551              		.loc 1 499 0
+ 2552 04b8 97F82130 		ldrb	r3, [r7, #33]
+ 2553 04bc 03F10103 		add	r3, r3, #1
+ 2554 04c0 87F82130 		strb	r3, [r7, #33]
+ 2555              	.L141:
+ 2556 04c4 97F82130 		ldrb	r3, [r7, #33]	@ zero_extendqisi2
+ 2557 04c8 072B     		cmp	r3, #7
+ 2558 04ca 85D9     		bls	.L147
+ 2559              	.L144:
+ 506:.\main.c      ****             }
+ 507:.\main.c      ****             if (!player2_local) {
+ 2560              		.loc 1 507 0
+ 2561 04cc 40F20003 		movw	r3, #:lower16:player2_local
+ 2562 04d0 C0F20003 		movt	r3, #:upper16:player2_local
+ 2563 04d4 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 2564 04d6 83F00103 		eor	r3, r3, #1
+ 2565 04da DBB2     		uxtb	r3, r3
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 56
+
+
+ 2566 04dc 002B     		cmp	r3, #0
+ 2567 04de 49D0     		beq	.L148
+ 2568              	.LBB15:
+ 508:.\main.c      ****                 packet_t move;
+ 509:.\main.c      ****                 move.delimiter   = '~';
+ 2569              		.loc 1 509 0
+ 2570 04e0 4FF07E03 		mov	r3, #126
+ 2571 04e4 3B74     		strb	r3, [r7, #16]
+ 510:.\main.c      ****                 move.length      = 0x0009;/*sizeof(move) - (sizeof(move.delimiter) +
+ 2572              		.loc 1 510 0
+ 2573 04e6 4FF00903 		mov	r3, #9
+ 2574 04ea 7B82     		strh	r3, [r7, #18]	@ movhi
+ 511:.\main.c      ****                                                    sizeof(move.length) +
+ 512:.\main.c      ****                                                    sizeof(move.checksum));*/
+ 513:.\main.c      ****                 move.api_id      = 0x01;
+ 2575              		.loc 1 513 0
+ 2576 04ec 4FF00103 		mov	r3, #1
+ 2577 04f0 3B75     		strb	r3, [r7, #20]
+ 514:.\main.c      ****                 move.frame_id    = 0x00;
+ 2578              		.loc 1 514 0
+ 2579 04f2 4FF00003 		mov	r3, #0
+ 2580 04f6 7B75     		strb	r3, [r7, #21]
+ 515:.\main.c      ****                 move.destination = 0xFFFF;
+ 2581              		.loc 1 515 0
+ 2582 04f8 4FF6FF73 		movw	r3, #65535
+ 2583 04fc FB82     		strh	r3, [r7, #22]	@ movhi
+ 516:.\main.c      ****                 move.disable_ack = 0x01;
+ 2584              		.loc 1 516 0
+ 2585 04fe 4FF00103 		mov	r3, #1
+ 2586 0502 3B76     		strb	r3, [r7, #24]
+ 517:.\main.c      ****                 move.player_id   = PLAYER1_ID;
+ 2587              		.loc 1 517 0
+ 2588 0504 6FF02503 		mvn	r3, #37
+ 2589 0508 7B76     		strb	r3, [r7, #25]
+ 518:.\main.c      ****                 move.packet_type = 0x00;
+ 2590              		.loc 1 518 0
+ 2591 050a 4FF00003 		mov	r3, #0
+ 2592 050e BB76     		strb	r3, [r7, #26]
+ 519:.\main.c      ****                 move.row         = MATRIX_ROWS-r;
+ 2593              		.loc 1 519 0
+ 2594 0510 97F82130 		ldrb	r3, [r7, #33]
+ 2595 0514 C3F10803 		rsb	r3, r3, #8
+ 2596 0518 DBB2     		uxtb	r3, r3
+ 2597 051a FB76     		strb	r3, [r7, #27]
+ 520:.\main.c      ****                 move.col         = disc+1;
+ 2598              		.loc 1 520 0
+ 2599 051c FB7F     		ldrb	r3, [r7, #31]
+ 2600 051e 03F10103 		add	r3, r3, #1
+ 2601 0522 DBB2     		uxtb	r3, r3
+ 2602 0524 3B77     		strb	r3, [r7, #28]
+ 521:.\main.c      ****                 move.checksum    = 0xFF - (uint8) (move.api_id +
+ 2603              		.loc 1 521 0
+ 2604 0526 3A7D     		ldrb	r2, [r7, #20]	@ zero_extendqisi2
+ 2605 0528 7B7D     		ldrb	r3, [r7, #21]	@ zero_extendqisi2
+ 2606 052a 1344     		add	r3, r2, r3
+ 2607 052c DAB2     		uxtb	r2, r3
+ 2608 052e FB8A     		ldrh	r3, [r7, #22]
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 57
+
+
+ 2609 0530 4FEA1323 		lsr	r3, r3, #8
+ 2610 0534 9BB2     		uxth	r3, r3
+ 2611 0536 DBB2     		uxtb	r3, r3
+ 2612 0538 1344     		add	r3, r2, r3
+ 2613 053a DAB2     		uxtb	r2, r3
+ 522:.\main.c      ****                                                    move.frame_id +
+ 523:.\main.c      ****                                                   (move.destination >> 8) +
+ 524:.\main.c      ****                                                   ((uint8) move.destination) +
+ 2614              		.loc 1 524 0
+ 2615 053c FB8A     		ldrh	r3, [r7, #22]
+ 2616 053e DBB2     		uxtb	r3, r3
+ 2617              		.loc 1 521 0
+ 2618 0540 1344     		add	r3, r2, r3
+ 2619 0542 DAB2     		uxtb	r2, r3
+ 2620 0544 3B7E     		ldrb	r3, [r7, #24]	@ zero_extendqisi2
+ 2621 0546 1344     		add	r3, r2, r3
+ 2622 0548 DAB2     		uxtb	r2, r3
+ 2623 054a 7B7E     		ldrb	r3, [r7, #25]	@ zero_extendqisi2
+ 2624 054c 1344     		add	r3, r2, r3
+ 2625 054e DAB2     		uxtb	r2, r3
+ 2626 0550 BB7E     		ldrb	r3, [r7, #26]	@ zero_extendqisi2
+ 2627 0552 1344     		add	r3, r2, r3
+ 2628 0554 DAB2     		uxtb	r2, r3
+ 2629 0556 FB7E     		ldrb	r3, [r7, #27]	@ zero_extendqisi2
+ 2630 0558 1344     		add	r3, r2, r3
+ 2631 055a DAB2     		uxtb	r2, r3
+ 2632 055c 3B7F     		ldrb	r3, [r7, #28]	@ zero_extendqisi2
+ 2633 055e 1344     		add	r3, r2, r3
+ 2634 0560 DBB2     		uxtb	r3, r3
+ 2635 0562 6FEA0303 		mvn	r3, r3
+ 2636 0566 DBB2     		uxtb	r3, r3
+ 2637 0568 7B77     		strb	r3, [r7, #29]
+ 525:.\main.c      ****                                                    move.disable_ack +
+ 526:.\main.c      ****                                                    move.player_id +
+ 527:.\main.c      ****                                                    move.packet_type +
+ 528:.\main.c      ****                                                    move.row +
+ 529:.\main.c      ****                                                    move.col);
+ 530:.\main.c      ****                 send_packet(&move);
+ 2638              		.loc 1 530 0
+ 2639 056a 07F11003 		add	r3, r7, #16
+ 2640 056e 1846     		mov	r0, r3
+ 2641 0570 FFF7FEFF 		bl	send_packet
+ 2642              	.L148:
+ 2643              	.LBE15:
+ 531:.\main.c      ****             }
+ 532:.\main.c      ****             
+ 533:.\main.c      ****             winner_check();
+ 2644              		.loc 1 533 0
+ 2645 0574 FFF7FEFF 		bl	winner_check
+ 534:.\main.c      ****             player1_turn = !player1_turn;
+ 2646              		.loc 1 534 0
+ 2647 0578 40F20003 		movw	r3, #:lower16:player1_turn
+ 2648 057c C0F20003 		movt	r3, #:upper16:player1_turn
+ 2649 0580 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 2650 0582 83F00103 		eor	r3, r3, #1
+ 2651 0586 DBB2     		uxtb	r3, r3
+ 2652 0588 DAB2     		uxtb	r2, r3
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 58
+
+
+ 2653 058a 40F20003 		movw	r3, #:lower16:player1_turn
+ 2654 058e C0F20003 		movt	r3, #:upper16:player1_turn
+ 2655 0592 1A70     		strb	r2, [r3, #0]
+ 2656              	.LBE13:
+ 2657              		.loc 1 457 0
+ 2658 0594 00BF     		nop
+ 535:.\main.c      ****         }
+ 536:.\main.c      ****         else {
+ 537:.\main.c      ****             LCD_UpdateStatus("Player 2");
+ 538:.\main.c      ****             LCD_UpdateMessage("waiting...");
+ 539:.\main.c      ****             packet_t move;
+ 540:.\main.c      ****             receive_packet(&move);
+ 541:.\main.c      ****             player2[MATRIX_ROWS-move.row][move.col-1] = true;
+ 542:.\main.c      ****             winner_check();
+ 543:.\main.c      ****             player1_turn = true;
+ 544:.\main.c      ****         }
+ 545:.\main.c      ****     }
+ 2659              		.loc 1 545 0
+ 2660 0596 EDE5     		b	.L150
+ 2661              	.L120:
+ 2662              	.LBB16:
+ 2663              		.loc 1 537 0
+ 2664 0598 40F20000 		movw	r0, #:lower16:.LC34
+ 2665 059c C0F20000 		movt	r0, #:upper16:.LC34
+ 2666 05a0 FFF7FEFF 		bl	LCD_UpdateStatus
+ 2667              		.loc 1 538 0
+ 2668 05a4 40F20000 		movw	r0, #:lower16:.LC39
+ 2669 05a8 C0F20000 		movt	r0, #:upper16:.LC39
+ 2670 05ac FFF7FEFF 		bl	LCD_UpdateMessage
+ 2671              		.loc 1 540 0
+ 2672 05b0 3B46     		mov	r3, r7
+ 2673 05b2 1846     		mov	r0, r3
+ 2674 05b4 FFF7FEFF 		bl	receive_packet
+ 2675              		.loc 1 541 0
+ 2676 05b8 FB7A     		ldrb	r3, [r7, #11]	@ zero_extendqisi2
+ 2677 05ba C3F10801 		rsb	r1, r3, #8
+ 2678 05be 3B7B     		ldrb	r3, [r7, #12]	@ zero_extendqisi2
+ 2679 05c0 03F1FF32 		add	r2, r3, #-1
+ 2680 05c4 40F20003 		movw	r3, #:lower16:player2
+ 2681 05c8 C0F20003 		movt	r3, #:upper16:player2
+ 2682 05cc 4FEAC101 		lsl	r1, r1, #3
+ 2683 05d0 0A44     		add	r2, r1, r2
+ 2684 05d2 1344     		add	r3, r2, r3
+ 2685 05d4 4FF00102 		mov	r2, #1
+ 2686 05d8 1A70     		strb	r2, [r3, #0]
+ 2687              		.loc 1 542 0
+ 2688 05da FFF7FEFF 		bl	winner_check
+ 2689              		.loc 1 543 0
+ 2690 05de 40F20003 		movw	r3, #:lower16:player1_turn
+ 2691 05e2 C0F20003 		movt	r3, #:upper16:player1_turn
+ 2692 05e6 4FF00102 		mov	r2, #1
+ 2693 05ea 1A70     		strb	r2, [r3, #0]
+ 2694              	.LBE16:
+ 2695              		.loc 1 545 0
+ 2696 05ec C2E5     		b	.L150
+ 2697              		.cfi_endproc
+ 2698              	.LFE37:
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 59
+
+
+ 2699              		.size	main, .-main
+ 2700 05ee 00BF     		.text
+ 2701              	.Letext0:
+ 2702              		.section	.debug_loc,"",%progbits
+ 2703              	.Ldebug_loc0:
+ 2704              	.LLST0:
+ 2705 0000 00000000 		.4byte	.LFB29
+ 2706 0004 02000000 		.4byte	.LCFI0
+ 2707 0008 0100     		.2byte	0x1
+ 2708 000a 5D       		.byte	0x5d
+ 2709 000b 02000000 		.4byte	.LCFI0
+ 2710 000f 04000000 		.4byte	.LCFI1
+ 2711 0013 0200     		.2byte	0x2
+ 2712 0015 7D       		.byte	0x7d
+ 2713 0016 04       		.sleb128 4
+ 2714 0017 04000000 		.4byte	.LCFI1
+ 2715 001b 34000000 		.4byte	.LFE29
+ 2716 001f 0200     		.2byte	0x2
+ 2717 0021 77       		.byte	0x77
+ 2718 0022 04       		.sleb128 4
+ 2719 0023 00000000 		.4byte	0x0
+ 2720 0027 00000000 		.4byte	0x0
+ 2721              	.LLST1:
+ 2722 002b 00000000 		.4byte	.LFB30
+ 2723 002f 02000000 		.4byte	.LCFI2
+ 2724 0033 0100     		.2byte	0x1
+ 2725 0035 5D       		.byte	0x5d
+ 2726 0036 02000000 		.4byte	.LCFI2
+ 2727 003a 04000000 		.4byte	.LCFI3
+ 2728 003e 0200     		.2byte	0x2
+ 2729 0040 7D       		.byte	0x7d
+ 2730 0041 08       		.sleb128 8
+ 2731 0042 04000000 		.4byte	.LCFI3
+ 2732 0046 06000000 		.4byte	.LCFI4
+ 2733 004a 0200     		.2byte	0x2
+ 2734 004c 7D       		.byte	0x7d
+ 2735 004d 10       		.sleb128 16
+ 2736 004e 06000000 		.4byte	.LCFI4
+ 2737 0052 78010000 		.4byte	.LFE30
+ 2738 0056 0200     		.2byte	0x2
+ 2739 0058 77       		.byte	0x77
+ 2740 0059 10       		.sleb128 16
+ 2741 005a 00000000 		.4byte	0x0
+ 2742 005e 00000000 		.4byte	0x0
+ 2743              	.LLST2:
+ 2744 0062 00000000 		.4byte	.LFB31
+ 2745 0066 02000000 		.4byte	.LCFI5
+ 2746 006a 0100     		.2byte	0x1
+ 2747 006c 5D       		.byte	0x5d
+ 2748 006d 02000000 		.4byte	.LCFI5
+ 2749 0071 04000000 		.4byte	.LCFI6
+ 2750 0075 0200     		.2byte	0x2
+ 2751 0077 7D       		.byte	0x7d
+ 2752 0078 08       		.sleb128 8
+ 2753 0079 04000000 		.4byte	.LCFI6
+ 2754 007d 06000000 		.4byte	.LCFI7
+ 2755 0081 0200     		.2byte	0x2
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 60
+
+
+ 2756 0083 7D       		.byte	0x7d
+ 2757 0084 18       		.sleb128 24
+ 2758 0085 06000000 		.4byte	.LCFI7
+ 2759 0089 A6020000 		.4byte	.LFE31
+ 2760 008d 0200     		.2byte	0x2
+ 2761 008f 77       		.byte	0x77
+ 2762 0090 18       		.sleb128 24
+ 2763 0091 00000000 		.4byte	0x0
+ 2764 0095 00000000 		.4byte	0x0
+ 2765              	.LLST3:
+ 2766 0099 00000000 		.4byte	.LFB32
+ 2767 009d 02000000 		.4byte	.LCFI8
+ 2768 00a1 0100     		.2byte	0x1
+ 2769 00a3 5D       		.byte	0x5d
+ 2770 00a4 02000000 		.4byte	.LCFI8
+ 2771 00a8 04000000 		.4byte	.LCFI9
+ 2772 00ac 0200     		.2byte	0x2
+ 2773 00ae 7D       		.byte	0x7d
+ 2774 00af 08       		.sleb128 8
+ 2775 00b0 04000000 		.4byte	.LCFI9
+ 2776 00b4 06000000 		.4byte	.LCFI10
+ 2777 00b8 0200     		.2byte	0x2
+ 2778 00ba 7D       		.byte	0x7d
+ 2779 00bb 10       		.sleb128 16
+ 2780 00bc 06000000 		.4byte	.LCFI10
+ 2781 00c0 AA000000 		.4byte	.LFE32
+ 2782 00c4 0200     		.2byte	0x2
+ 2783 00c6 77       		.byte	0x77
+ 2784 00c7 10       		.sleb128 16
+ 2785 00c8 00000000 		.4byte	0x0
+ 2786 00cc 00000000 		.4byte	0x0
+ 2787              	.LLST4:
+ 2788 00d0 00000000 		.4byte	.LFB33
+ 2789 00d4 02000000 		.4byte	.LCFI11
+ 2790 00d8 0100     		.2byte	0x1
+ 2791 00da 5D       		.byte	0x5d
+ 2792 00db 02000000 		.4byte	.LCFI11
+ 2793 00df 04000000 		.4byte	.LCFI12
+ 2794 00e3 0200     		.2byte	0x2
+ 2795 00e5 7D       		.byte	0x7d
+ 2796 00e6 0C       		.sleb128 12
+ 2797 00e7 04000000 		.4byte	.LCFI12
+ 2798 00eb 06000000 		.4byte	.LCFI13
+ 2799 00ef 0200     		.2byte	0x2
+ 2800 00f1 7D       		.byte	0x7d
+ 2801 00f2 20       		.sleb128 32
+ 2802 00f3 06000000 		.4byte	.LCFI13
+ 2803 00f7 38020000 		.4byte	.LFE33
+ 2804 00fb 0200     		.2byte	0x2
+ 2805 00fd 77       		.byte	0x77
+ 2806 00fe 20       		.sleb128 32
+ 2807 00ff 00000000 		.4byte	0x0
+ 2808 0103 00000000 		.4byte	0x0
+ 2809              	.LLST5:
+ 2810 0107 00000000 		.4byte	.LFB34
+ 2811 010b 02000000 		.4byte	.LCFI14
+ 2812 010f 0100     		.2byte	0x1
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 61
+
+
+ 2813 0111 5D       		.byte	0x5d
+ 2814 0112 02000000 		.4byte	.LCFI14
+ 2815 0116 04000000 		.4byte	.LCFI15
+ 2816 011a 0200     		.2byte	0x2
+ 2817 011c 7D       		.byte	0x7d
+ 2818 011d 04       		.sleb128 4
+ 2819 011e 04000000 		.4byte	.LCFI15
+ 2820 0122 06000000 		.4byte	.LCFI16
+ 2821 0126 0200     		.2byte	0x2
+ 2822 0128 7D       		.byte	0x7d
+ 2823 0129 10       		.sleb128 16
+ 2824 012a 06000000 		.4byte	.LCFI16
+ 2825 012e 70000000 		.4byte	.LFE34
+ 2826 0132 0200     		.2byte	0x2
+ 2827 0134 77       		.byte	0x77
+ 2828 0135 10       		.sleb128 16
+ 2829 0136 00000000 		.4byte	0x0
+ 2830 013a 00000000 		.4byte	0x0
+ 2831              	.LLST6:
+ 2832 013e 00000000 		.4byte	.LFB35
+ 2833 0142 02000000 		.4byte	.LCFI17
+ 2834 0146 0100     		.2byte	0x1
+ 2835 0148 5D       		.byte	0x5d
+ 2836 0149 02000000 		.4byte	.LCFI17
+ 2837 014d 04000000 		.4byte	.LCFI18
+ 2838 0151 0200     		.2byte	0x2
+ 2839 0153 7D       		.byte	0x7d
+ 2840 0154 08       		.sleb128 8
+ 2841 0155 04000000 		.4byte	.LCFI18
+ 2842 0159 06000000 		.4byte	.LCFI19
+ 2843 015d 0200     		.2byte	0x2
+ 2844 015f 7D       		.byte	0x7d
+ 2845 0160 20       		.sleb128 32
+ 2846 0161 06000000 		.4byte	.LCFI19
+ 2847 0165 0E050000 		.4byte	.LFE35
+ 2848 0169 0200     		.2byte	0x2
+ 2849 016b 77       		.byte	0x77
+ 2850 016c 20       		.sleb128 32
+ 2851 016d 00000000 		.4byte	0x0
+ 2852 0171 00000000 		.4byte	0x0
+ 2853              	.LLST7:
+ 2854 0175 00000000 		.4byte	.LFB36
+ 2855 0179 02000000 		.4byte	.LCFI20
+ 2856 017d 0100     		.2byte	0x1
+ 2857 017f 5D       		.byte	0x5d
+ 2858 0180 02000000 		.4byte	.LCFI20
+ 2859 0184 04000000 		.4byte	.LCFI21
+ 2860 0188 0200     		.2byte	0x2
+ 2861 018a 7D       		.byte	0x7d
+ 2862 018b 08       		.sleb128 8
+ 2863 018c 04000000 		.4byte	.LCFI21
+ 2864 0190 06000000 		.4byte	.LCFI22
+ 2865 0194 0200     		.2byte	0x2
+ 2866 0196 7D       		.byte	0x7d
+ 2867 0197 10       		.sleb128 16
+ 2868 0198 06000000 		.4byte	.LCFI22
+ 2869 019c 5C010000 		.4byte	.LFE36
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 62
+
+
+ 2870 01a0 0200     		.2byte	0x2
+ 2871 01a2 77       		.byte	0x77
+ 2872 01a3 10       		.sleb128 16
+ 2873 01a4 00000000 		.4byte	0x0
+ 2874 01a8 00000000 		.4byte	0x0
+ 2875              	.LLST8:
+ 2876 01ac 00000000 		.4byte	.LFB37
+ 2877 01b0 02000000 		.4byte	.LCFI23
+ 2878 01b4 0100     		.2byte	0x1
+ 2879 01b6 5D       		.byte	0x5d
+ 2880 01b7 02000000 		.4byte	.LCFI23
+ 2881 01bb 04000000 		.4byte	.LCFI24
+ 2882 01bf 0200     		.2byte	0x2
+ 2883 01c1 7D       		.byte	0x7d
+ 2884 01c2 08       		.sleb128 8
+ 2885 01c3 04000000 		.4byte	.LCFI24
+ 2886 01c7 06000000 		.4byte	.LCFI25
+ 2887 01cb 0200     		.2byte	0x2
+ 2888 01cd 7D       		.byte	0x7d
+ 2889 01ce 30       		.sleb128 48
+ 2890 01cf 06000000 		.4byte	.LCFI25
+ 2891 01d3 EE050000 		.4byte	.LFE37
+ 2892 01d7 0200     		.2byte	0x2
+ 2893 01d9 77       		.byte	0x77
+ 2894 01da 30       		.sleb128 48
+ 2895 01db 00000000 		.4byte	0x0
+ 2896 01df 00000000 		.4byte	0x0
+ 2897              		.file 2 "./Generated_Source/PSoC5/cytypes.h"
+ 2898              		.file 3 "./Generated_Source/PSoC5/core_cm3.h"
+ 2899              		.section	.debug_info
+ 2900 0000 61050000 		.4byte	0x561
+ 2901 0004 0200     		.2byte	0x2
+ 2902 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 2903 000a 04       		.byte	0x4
+ 2904 000b 01       		.uleb128 0x1
+ 2905 000c 17020000 		.4byte	.LASF50
+ 2906 0010 01       		.byte	0x1
+ 2907 0011 EA010000 		.4byte	.LASF51
+ 2908 0015 90000000 		.4byte	.LASF52
+ 2909 0019 00000000 		.4byte	0x0
+ 2910 001d 00000000 		.4byte	0x0
+ 2911 0021 00000000 		.4byte	.Ldebug_ranges0+0x0
+ 2912 0025 00000000 		.4byte	.Ldebug_line0
+ 2913 0029 02       		.uleb128 0x2
+ 2914 002a 01       		.byte	0x1
+ 2915 002b 06       		.byte	0x6
+ 2916 002c 32010000 		.4byte	.LASF0
+ 2917 0030 02       		.uleb128 0x2
+ 2918 0031 01       		.byte	0x1
+ 2919 0032 08       		.byte	0x8
+ 2920 0033 24010000 		.4byte	.LASF1
+ 2921 0037 02       		.uleb128 0x2
+ 2922 0038 02       		.byte	0x2
+ 2923 0039 05       		.byte	0x5
+ 2924 003a 30000000 		.4byte	.LASF2
+ 2925 003e 02       		.uleb128 0x2
+ 2926 003f 02       		.byte	0x2
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 63
+
+
+ 2927 0040 07       		.byte	0x7
+ 2928 0041 77010000 		.4byte	.LASF3
+ 2929 0045 02       		.uleb128 0x2
+ 2930 0046 04       		.byte	0x4
+ 2931 0047 05       		.byte	0x5
+ 2932 0048 EA000000 		.4byte	.LASF4
+ 2933 004c 02       		.uleb128 0x2
+ 2934 004d 04       		.byte	0x4
+ 2935 004e 07       		.byte	0x7
+ 2936 004f C3010000 		.4byte	.LASF5
+ 2937 0053 02       		.uleb128 0x2
+ 2938 0054 08       		.byte	0x8
+ 2939 0055 05       		.byte	0x5
+ 2940 0056 D0000000 		.4byte	.LASF6
+ 2941 005a 02       		.uleb128 0x2
+ 2942 005b 08       		.byte	0x8
+ 2943 005c 07       		.byte	0x7
+ 2944 005d 43010000 		.4byte	.LASF7
+ 2945 0061 03       		.uleb128 0x3
+ 2946 0062 04       		.byte	0x4
+ 2947 0063 05       		.byte	0x5
+ 2948 0064 696E7400 		.ascii	"int\000"
+ 2949 0068 02       		.uleb128 0x2
+ 2950 0069 04       		.byte	0x4
+ 2951 006a 07       		.byte	0x7
+ 2952 006b 63010000 		.4byte	.LASF8
+ 2953 006f 04       		.uleb128 0x4
+ 2954 0070 74000000 		.4byte	.LASF9
+ 2955 0074 02       		.byte	0x2
+ 2956 0075 4C       		.byte	0x4c
+ 2957 0076 30000000 		.4byte	0x30
+ 2958 007a 04       		.uleb128 0x4
+ 2959 007b 58000000 		.4byte	.LASF10
+ 2960 007f 02       		.byte	0x2
+ 2961 0080 4D       		.byte	0x4d
+ 2962 0081 3E000000 		.4byte	0x3e
+ 2963 0085 02       		.uleb128 0x2
+ 2964 0086 04       		.byte	0x4
+ 2965 0087 04       		.byte	0x4
+ 2966 0088 CA000000 		.4byte	.LASF11
+ 2967 008c 02       		.uleb128 0x2
+ 2968 008d 08       		.byte	0x8
+ 2969 008e 04       		.byte	0x4
+ 2970 008f E3010000 		.4byte	.LASF12
+ 2971 0093 02       		.uleb128 0x2
+ 2972 0094 01       		.byte	0x1
+ 2973 0095 08       		.byte	0x8
+ 2974 0096 8A010000 		.4byte	.LASF13
+ 2975 009a 05       		.uleb128 0x5
+ 2976 009b 04       		.byte	0x4
+ 2977 009c 07       		.byte	0x7
+ 2978 009d 06       		.uleb128 0x6
+ 2979 009e 7A000000 		.4byte	.LASF53
+ 2980 00a2 0E       		.byte	0xe
+ 2981 00a3 01       		.byte	0x1
+ 2982 00a4 15       		.byte	0x15
+ 2983 00a5 44010000 		.4byte	0x144
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 64
+
+
+ 2984 00a9 07       		.uleb128 0x7
+ 2985 00aa 3F000000 		.4byte	.LASF14
+ 2986 00ae 01       		.byte	0x1
+ 2987 00af 16       		.byte	0x16
+ 2988 00b0 93000000 		.4byte	0x93
+ 2989 00b4 02       		.byte	0x2
+ 2990 00b5 23       		.byte	0x23
+ 2991 00b6 00       		.uleb128 0x0
+ 2992 00b7 07       		.uleb128 0x7
+ 2993 00b8 1D010000 		.4byte	.LASF15
+ 2994 00bc 01       		.byte	0x1
+ 2995 00bd 17       		.byte	0x17
+ 2996 00be 7A000000 		.4byte	0x7a
+ 2997 00c2 02       		.byte	0x2
+ 2998 00c3 23       		.byte	0x23
+ 2999 00c4 02       		.uleb128 0x2
+ 3000 00c5 07       		.uleb128 0x7
+ 3001 00c6 70010000 		.4byte	.LASF16
+ 3002 00ca 01       		.byte	0x1
+ 3003 00cb 18       		.byte	0x18
+ 3004 00cc 6F000000 		.4byte	0x6f
+ 3005 00d0 02       		.byte	0x2
+ 3006 00d1 23       		.byte	0x23
+ 3007 00d2 04       		.uleb128 0x4
+ 3008 00d3 07       		.uleb128 0x7
+ 3009 00d4 BA010000 		.4byte	.LASF17
+ 3010 00d8 01       		.byte	0x1
+ 3011 00d9 19       		.byte	0x19
+ 3012 00da 6F000000 		.4byte	0x6f
+ 3013 00de 02       		.byte	0x2
+ 3014 00df 23       		.byte	0x23
+ 3015 00e0 05       		.uleb128 0x5
+ 3016 00e1 07       		.uleb128 0x7
+ 3017 00e2 0B020000 		.4byte	.LASF18
+ 3018 00e6 01       		.byte	0x1
+ 3019 00e7 1A       		.byte	0x1a
+ 3020 00e8 7A000000 		.4byte	0x7a
+ 3021 00ec 02       		.byte	0x2
+ 3022 00ed 23       		.byte	0x23
+ 3023 00ee 06       		.uleb128 0x6
+ 3024 00ef 07       		.uleb128 0x7
+ 3025 00f0 5F000000 		.4byte	.LASF19
+ 3026 00f4 01       		.byte	0x1
+ 3027 00f5 1B       		.byte	0x1b
+ 3028 00f6 6F000000 		.4byte	0x6f
+ 3029 00fa 02       		.byte	0x2
+ 3030 00fb 23       		.byte	0x23
+ 3031 00fc 08       		.uleb128 0x8
+ 3032 00fd 07       		.uleb128 0x7
+ 3033 00fe 13010000 		.4byte	.LASF20
+ 3034 0102 01       		.byte	0x1
+ 3035 0103 1C       		.byte	0x1c
+ 3036 0104 6F000000 		.4byte	0x6f
+ 3037 0108 02       		.byte	0x2
+ 3038 0109 23       		.byte	0x23
+ 3039 010a 09       		.uleb128 0x9
+ 3040 010b 07       		.uleb128 0x7
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 65
+
+
+ 3041 010c B8000000 		.4byte	.LASF21
+ 3042 0110 01       		.byte	0x1
+ 3043 0111 1D       		.byte	0x1d
+ 3044 0112 6F000000 		.4byte	0x6f
+ 3045 0116 02       		.byte	0x2
+ 3046 0117 23       		.byte	0x23
+ 3047 0118 0A       		.uleb128 0xa
+ 3048 0119 08       		.uleb128 0x8
+ 3049 011a 726F7700 		.ascii	"row\000"
+ 3050 011e 01       		.byte	0x1
+ 3051 011f 1E       		.byte	0x1e
+ 3052 0120 6F000000 		.4byte	0x6f
+ 3053 0124 02       		.byte	0x2
+ 3054 0125 23       		.byte	0x23
+ 3055 0126 0B       		.uleb128 0xb
+ 3056 0127 08       		.uleb128 0x8
+ 3057 0128 636F6C00 		.ascii	"col\000"
+ 3058 012c 01       		.byte	0x1
+ 3059 012d 1F       		.byte	0x1f
+ 3060 012e 6F000000 		.4byte	0x6f
+ 3061 0132 02       		.byte	0x2
+ 3062 0133 23       		.byte	0x23
+ 3063 0134 0C       		.uleb128 0xc
+ 3064 0135 07       		.uleb128 0x7
+ 3065 0136 6B000000 		.4byte	.LASF22
+ 3066 013a 01       		.byte	0x1
+ 3067 013b 20       		.byte	0x20
+ 3068 013c 6F000000 		.4byte	0x6f
+ 3069 0140 02       		.byte	0x2
+ 3070 0141 23       		.byte	0x23
+ 3071 0142 0D       		.uleb128 0xd
+ 3072 0143 00       		.byte	0x0
+ 3073 0144 04       		.uleb128 0x4
+ 3074 0145 95010000 		.4byte	.LASF23
+ 3075 0149 01       		.byte	0x1
+ 3076 014a 21       		.byte	0x21
+ 3077 014b 9D000000 		.4byte	0x9d
+ 3078 014f 09       		.uleb128 0x9
+ 3079 0150 01       		.byte	0x1
+ 3080 0151 30020000 		.4byte	.LASF54
+ 3081 0155 01       		.byte	0x1
+ 3082 0156 27       		.byte	0x27
+ 3083 0157 01       		.byte	0x1
+ 3084 0158 00000000 		.4byte	.LFB29
+ 3085 015c 34000000 		.4byte	.LFE29
+ 3086 0160 00000000 		.4byte	.LLST0
+ 3087 0164 0A       		.uleb128 0xa
+ 3088 0165 01       		.byte	0x1
+ 3089 0166 81000000 		.4byte	.LASF30
+ 3090 016a 01       		.byte	0x1
+ 3091 016b 2C       		.byte	0x2c
+ 3092 016c 00000000 		.4byte	.LFB30
+ 3093 0170 78010000 		.4byte	.LFE30
+ 3094 0174 2B000000 		.4byte	.LLST1
+ 3095 0178 97010000 		.4byte	0x197
+ 3096 017c 0B       		.uleb128 0xb
+ 3097 017d 6400     		.ascii	"d\000"
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 66
+
+
+ 3098 017f 01       		.byte	0x1
+ 3099 0180 31       		.byte	0x31
+ 3100 0181 6F000000 		.4byte	0x6f
+ 3101 0185 02       		.byte	0x2
+ 3102 0186 91       		.byte	0x91
+ 3103 0187 76       		.sleb128 -10
+ 3104 0188 0C       		.uleb128 0xc
+ 3105 0189 00000000 		.4byte	.LASF24
+ 3106 018d 01       		.byte	0x1
+ 3107 018e 31       		.byte	0x31
+ 3108 018f 6F000000 		.4byte	0x6f
+ 3109 0193 02       		.byte	0x2
+ 3110 0194 91       		.byte	0x91
+ 3111 0195 77       		.sleb128 -9
+ 3112 0196 00       		.byte	0x0
+ 3113 0197 0D       		.uleb128 0xd
+ 3114 0198 01       		.byte	0x1
+ 3115 0199 3C020000 		.4byte	.LASF26
+ 3116 019d 01       		.byte	0x1
+ 3117 019e 51       		.byte	0x51
+ 3118 019f 01       		.byte	0x1
+ 3119 01a0 00000000 		.4byte	.LFB31
+ 3120 01a4 A6020000 		.4byte	.LFE31
+ 3121 01a8 62000000 		.4byte	.LLST2
+ 3122 01ac CD010000 		.4byte	0x1cd
+ 3123 01b0 0E       		.uleb128 0xe
+ 3124 01b1 37020000 		.4byte	.LASF28
+ 3125 01b5 01       		.byte	0x1
+ 3126 01b6 51       		.byte	0x51
+ 3127 01b7 CD010000 		.4byte	0x1cd
+ 3128 01bb 02       		.byte	0x2
+ 3129 01bc 91       		.byte	0x91
+ 3130 01bd 6C       		.sleb128 -20
+ 3131 01be 0C       		.uleb128 0xc
+ 3132 01bf C4000000 		.4byte	.LASF25
+ 3133 01c3 01       		.byte	0x1
+ 3134 01c4 52       		.byte	0x52
+ 3135 01c5 7A000000 		.4byte	0x7a
+ 3136 01c9 02       		.byte	0x2
+ 3137 01ca 91       		.byte	0x91
+ 3138 01cb 76       		.sleb128 -10
+ 3139 01cc 00       		.byte	0x0
+ 3140 01cd 0F       		.uleb128 0xf
+ 3141 01ce 04       		.byte	0x4
+ 3142 01cf 44010000 		.4byte	0x144
+ 3143 01d3 0D       		.uleb128 0xd
+ 3144 01d4 01       		.byte	0x1
+ 3145 01d5 FA000000 		.4byte	.LASF27
+ 3146 01d9 01       		.byte	0x1
+ 3147 01da A3       		.byte	0xa3
+ 3148 01db 01       		.byte	0x1
+ 3149 01dc 00000000 		.4byte	.LFB32
+ 3150 01e0 AA000000 		.4byte	.LFE32
+ 3151 01e4 99000000 		.4byte	.LLST3
+ 3152 01e8 FB010000 		.4byte	0x1fb
+ 3153 01ec 0E       		.uleb128 0xe
+ 3154 01ed 37020000 		.4byte	.LASF28
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 67
+
+
+ 3155 01f1 01       		.byte	0x1
+ 3156 01f2 A3       		.byte	0xa3
+ 3157 01f3 CD010000 		.4byte	0x1cd
+ 3158 01f7 02       		.byte	0x2
+ 3159 01f8 91       		.byte	0x91
+ 3160 01f9 74       		.sleb128 -12
+ 3161 01fa 00       		.byte	0x0
+ 3162 01fb 0D       		.uleb128 0xd
+ 3163 01fc 01       		.byte	0x1
+ 3164 01fd 49000000 		.4byte	.LASF29
+ 3165 0201 01       		.byte	0x1
+ 3166 0202 B7       		.byte	0xb7
+ 3167 0203 01       		.byte	0x1
+ 3168 0204 00000000 		.4byte	.LFB33
+ 3169 0208 38020000 		.4byte	.LFE33
+ 3170 020c D0000000 		.4byte	.LLST4
+ 3171 0210 49020000 		.4byte	0x249
+ 3172 0214 0E       		.uleb128 0xe
+ 3173 0215 37020000 		.4byte	.LASF28
+ 3174 0219 01       		.byte	0x1
+ 3175 021a B7       		.byte	0xb7
+ 3176 021b CD010000 		.4byte	0x1cd
+ 3177 021f 02       		.byte	0x2
+ 3178 0220 91       		.byte	0x91
+ 3179 0221 64       		.sleb128 -28
+ 3180 0222 10       		.uleb128 0x10
+ 3181 0223 08000000 		.4byte	.LBB2
+ 3182 0227 2A020000 		.4byte	.LBE2
+ 3183 022b 0B       		.uleb128 0xb
+ 3184 022c 74737400 		.ascii	"tst\000"
+ 3185 0230 01       		.byte	0x1
+ 3186 0231 C0       		.byte	0xc0
+ 3187 0232 7A000000 		.4byte	0x7a
+ 3188 0236 02       		.byte	0x2
+ 3189 0237 91       		.byte	0x91
+ 3190 0238 6C       		.sleb128 -20
+ 3191 0239 0B       		.uleb128 0xb
+ 3192 023a 746D7000 		.ascii	"tmp\000"
+ 3193 023e 01       		.byte	0x1
+ 3194 023f C5       		.byte	0xc5
+ 3195 0240 7A000000 		.4byte	0x7a
+ 3196 0244 02       		.byte	0x2
+ 3197 0245 91       		.byte	0x91
+ 3198 0246 6E       		.sleb128 -18
+ 3199 0247 00       		.byte	0x0
+ 3200 0248 00       		.byte	0x0
+ 3201 0249 11       		.uleb128 0x11
+ 3202 024a 01       		.byte	0x1
+ 3203 024b DE000000 		.4byte	.LASF31
+ 3204 024f 01       		.byte	0x1
+ 3205 0250 0E01     		.2byte	0x10e
+ 3206 0252 00000000 		.4byte	.LFB34
+ 3207 0256 70000000 		.4byte	.LFE34
+ 3208 025a 07010000 		.4byte	.LLST5
+ 3209 025e 7D020000 		.4byte	0x27d
+ 3210 0262 12       		.uleb128 0x12
+ 3211 0263 7200     		.ascii	"r\000"
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 68
+
+
+ 3212 0265 01       		.byte	0x1
+ 3213 0266 0F01     		.2byte	0x10f
+ 3214 0268 6F000000 		.4byte	0x6f
+ 3215 026c 02       		.byte	0x2
+ 3216 026d 91       		.byte	0x91
+ 3217 026e 76       		.sleb128 -10
+ 3218 026f 12       		.uleb128 0x12
+ 3219 0270 6300     		.ascii	"c\000"
+ 3220 0272 01       		.byte	0x1
+ 3221 0273 0F01     		.2byte	0x10f
+ 3222 0275 6F000000 		.4byte	0x6f
+ 3223 0279 02       		.byte	0x2
+ 3224 027a 91       		.byte	0x91
+ 3225 027b 77       		.sleb128 -9
+ 3226 027c 00       		.byte	0x0
+ 3227 027d 11       		.uleb128 0x11
+ 3228 027e 01       		.byte	0x1
+ 3229 027f 23000000 		.4byte	.LASF32
+ 3230 0283 01       		.byte	0x1
+ 3231 0284 1B01     		.2byte	0x11b
+ 3232 0286 00000000 		.4byte	.LFB35
+ 3233 028a 0E050000 		.4byte	.LFE35
+ 3234 028e 3E010000 		.4byte	.LLST6
+ 3235 0292 9E030000 		.4byte	0x39e
+ 3236 0296 12       		.uleb128 0x12
+ 3237 0297 7200     		.ascii	"r\000"
+ 3238 0299 01       		.byte	0x1
+ 3239 029a 1C01     		.2byte	0x11c
+ 3240 029c 61000000 		.4byte	0x61
+ 3241 02a0 02       		.byte	0x2
+ 3242 02a1 91       		.byte	0x91
+ 3243 02a2 64       		.sleb128 -28
+ 3244 02a3 12       		.uleb128 0x12
+ 3245 02a4 6300     		.ascii	"c\000"
+ 3246 02a6 01       		.byte	0x1
+ 3247 02a7 1C01     		.2byte	0x11c
+ 3248 02a9 61000000 		.4byte	0x61
+ 3249 02ad 02       		.byte	0x2
+ 3250 02ae 91       		.byte	0x91
+ 3251 02af 68       		.sleb128 -24
+ 3252 02b0 10       		.uleb128 0x10
+ 3253 02b1 16000000 		.4byte	.LBB3
+ 3254 02b5 E6040000 		.4byte	.LBE3
+ 3255 02b9 13       		.uleb128 0x13
+ 3256 02ba F3000000 		.4byte	.LASF33
+ 3257 02be 01       		.byte	0x1
+ 3258 02bf 1F01     		.2byte	0x11f
+ 3259 02c1 61000000 		.4byte	0x61
+ 3260 02c5 02       		.byte	0x2
+ 3261 02c6 91       		.byte	0x91
+ 3262 02c7 6C       		.sleb128 -20
+ 3263 02c8 14       		.uleb128 0x14
+ 3264 02c9 1E000000 		.4byte	.LBB4
+ 3265 02cd 40010000 		.4byte	.LBE4
+ 3266 02d1 FE020000 		.4byte	0x2fe
+ 3267 02d5 12       		.uleb128 0x12
+ 3268 02d6 77696E00 		.ascii	"win\000"
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 69
+
+
+ 3269 02da 01       		.byte	0x1
+ 3270 02db 2301     		.2byte	0x123
+ 3271 02dd 9E030000 		.4byte	0x39e
+ 3272 02e1 02       		.byte	0x2
+ 3273 02e2 91       		.byte	0x91
+ 3274 02e3 70       		.sleb128 -16
+ 3275 02e4 10       		.uleb128 0x10
+ 3276 02e5 B2000000 		.4byte	.LBB5
+ 3277 02e9 40010000 		.4byte	.LBE5
+ 3278 02ed 13       		.uleb128 0x13
+ 3279 02ee 0F000000 		.4byte	.LASF34
+ 3280 02f2 01       		.byte	0x1
+ 3281 02f3 2A01     		.2byte	0x12a
+ 3282 02f5 9E030000 		.4byte	0x39e
+ 3283 02f9 02       		.byte	0x2
+ 3284 02fa 91       		.byte	0x91
+ 3285 02fb 71       		.sleb128 -15
+ 3286 02fc 00       		.byte	0x0
+ 3287 02fd 00       		.byte	0x0
+ 3288 02fe 14       		.uleb128 0x14
+ 3289 02ff 48010000 		.4byte	.LBB6
+ 3290 0303 62020000 		.4byte	.LBE6
+ 3291 0307 34030000 		.4byte	0x334
+ 3292 030b 12       		.uleb128 0x12
+ 3293 030c 77696E00 		.ascii	"win\000"
+ 3294 0310 01       		.byte	0x1
+ 3295 0311 3801     		.2byte	0x138
+ 3296 0313 9E030000 		.4byte	0x39e
+ 3297 0317 02       		.byte	0x2
+ 3298 0318 91       		.byte	0x91
+ 3299 0319 72       		.sleb128 -14
+ 3300 031a 10       		.uleb128 0x10
+ 3301 031b D8010000 		.4byte	.LBB7
+ 3302 031f 62020000 		.4byte	.LBE7
+ 3303 0323 13       		.uleb128 0x13
+ 3304 0324 0F000000 		.4byte	.LASF34
+ 3305 0328 01       		.byte	0x1
+ 3306 0329 3F01     		.2byte	0x13f
+ 3307 032b 9E030000 		.4byte	0x39e
+ 3308 032f 02       		.byte	0x2
+ 3309 0330 91       		.byte	0x91
+ 3310 0331 73       		.sleb128 -13
+ 3311 0332 00       		.byte	0x0
+ 3312 0333 00       		.byte	0x0
+ 3313 0334 14       		.uleb128 0x14
+ 3314 0335 72020000 		.4byte	.LBB8
+ 3315 0339 A4030000 		.4byte	.LBE8
+ 3316 033d 6A030000 		.4byte	0x36a
+ 3317 0341 12       		.uleb128 0x12
+ 3318 0342 77696E00 		.ascii	"win\000"
+ 3319 0346 01       		.byte	0x1
+ 3320 0347 4D01     		.2byte	0x14d
+ 3321 0349 9E030000 		.4byte	0x39e
+ 3322 034d 02       		.byte	0x2
+ 3323 034e 91       		.byte	0x91
+ 3324 034f 74       		.sleb128 -12
+ 3325 0350 10       		.uleb128 0x10
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 70
+
+
+ 3326 0351 0E030000 		.4byte	.LBB9
+ 3327 0355 A4030000 		.4byte	.LBE9
+ 3328 0359 13       		.uleb128 0x13
+ 3329 035a 0F000000 		.4byte	.LASF34
+ 3330 035e 01       		.byte	0x1
+ 3331 035f 5401     		.2byte	0x154
+ 3332 0361 9E030000 		.4byte	0x39e
+ 3333 0365 02       		.byte	0x2
+ 3334 0366 91       		.byte	0x91
+ 3335 0367 75       		.sleb128 -11
+ 3336 0368 00       		.byte	0x0
+ 3337 0369 00       		.byte	0x0
+ 3338 036a 10       		.uleb128 0x10
+ 3339 036b B4030000 		.4byte	.LBB10
+ 3340 036f E6040000 		.4byte	.LBE10
+ 3341 0373 12       		.uleb128 0x12
+ 3342 0374 77696E00 		.ascii	"win\000"
+ 3343 0378 01       		.byte	0x1
+ 3344 0379 6201     		.2byte	0x162
+ 3345 037b 9E030000 		.4byte	0x39e
+ 3346 037f 02       		.byte	0x2
+ 3347 0380 91       		.byte	0x91
+ 3348 0381 76       		.sleb128 -10
+ 3349 0382 10       		.uleb128 0x10
+ 3350 0383 50040000 		.4byte	.LBB11
+ 3351 0387 E6040000 		.4byte	.LBE11
+ 3352 038b 13       		.uleb128 0x13
+ 3353 038c 0F000000 		.4byte	.LASF34
+ 3354 0390 01       		.byte	0x1
+ 3355 0391 6901     		.2byte	0x169
+ 3356 0393 9E030000 		.4byte	0x39e
+ 3357 0397 02       		.byte	0x2
+ 3358 0398 91       		.byte	0x91
+ 3359 0399 77       		.sleb128 -9
+ 3360 039a 00       		.byte	0x0
+ 3361 039b 00       		.byte	0x0
+ 3362 039c 00       		.byte	0x0
+ 3363 039d 00       		.byte	0x0
+ 3364 039e 02       		.uleb128 0x2
+ 3365 039f 01       		.byte	0x1
+ 3366 03a0 02       		.byte	0x2
+ 3367 03a1 8F010000 		.4byte	.LASF35
+ 3368 03a5 15       		.uleb128 0x15
+ 3369 03a6 01       		.byte	0x1
+ 3370 03a7 07000000 		.4byte	.LASF36
+ 3371 03ab 01       		.byte	0x1
+ 3372 03ac 7C01     		.2byte	0x17c
+ 3373 03ae 01       		.byte	0x1
+ 3374 03af 00000000 		.4byte	.LFB36
+ 3375 03b3 5C010000 		.4byte	.LFE36
+ 3376 03b7 75010000 		.4byte	.LLST7
+ 3377 03bb D9030000 		.4byte	0x3d9
+ 3378 03bf 10       		.uleb128 0x10
+ 3379 03c0 06000000 		.4byte	.LBB12
+ 3380 03c4 54010000 		.4byte	.LBE12
+ 3381 03c8 13       		.uleb128 0x13
+ 3382 03c9 9E010000 		.4byte	.LASF37
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 71
+
+
+ 3383 03cd 01       		.byte	0x1
+ 3384 03ce 8601     		.2byte	0x186
+ 3385 03d0 7A000000 		.4byte	0x7a
+ 3386 03d4 02       		.byte	0x2
+ 3387 03d5 91       		.byte	0x91
+ 3388 03d6 76       		.sleb128 -10
+ 3389 03d7 00       		.byte	0x0
+ 3390 03d8 00       		.byte	0x0
+ 3391 03d9 11       		.uleb128 0x11
+ 3392 03da 01       		.byte	0x1
+ 3393 03db 3A000000 		.4byte	.LASF38
+ 3394 03df 01       		.byte	0x1
+ 3395 03e0 9D01     		.2byte	0x19d
+ 3396 03e2 00000000 		.4byte	.LFB37
+ 3397 03e6 EE050000 		.4byte	.LFE37
+ 3398 03ea AC010000 		.4byte	.LLST8
+ 3399 03ee 97040000 		.4byte	0x497
+ 3400 03f2 12       		.uleb128 0x12
+ 3401 03f3 7400     		.ascii	"t\000"
+ 3402 03f5 01       		.byte	0x1
+ 3403 03f6 B101     		.2byte	0x1b1
+ 3404 03f8 6F000000 		.4byte	0x6f
+ 3405 03fc 02       		.byte	0x2
+ 3406 03fd 91       		.byte	0x91
+ 3407 03fe 6E       		.sleb128 -18
+ 3408 03ff 14       		.uleb128 0x14
+ 3409 0400 92010000 		.4byte	.LBB13
+ 3410 0404 94050000 		.4byte	.LBE13
+ 3411 0408 7D040000 		.4byte	0x47d
+ 3412 040c 13       		.uleb128 0x13
+ 3413 040d 3E010000 		.4byte	.LASF39
+ 3414 0411 01       		.byte	0x1
+ 3415 0412 CC01     		.2byte	0x1cc
+ 3416 0414 6F000000 		.4byte	0x6f
+ 3417 0418 02       		.byte	0x2
+ 3418 0419 91       		.byte	0x91
+ 3419 041a 6F       		.sleb128 -17
+ 3420 041b 13       		.uleb128 0x13
+ 3421 041c F3010000 		.4byte	.LASF40
+ 3422 0420 01       		.byte	0x1
+ 3423 0421 D401     		.2byte	0x1d4
+ 3424 0423 9E030000 		.4byte	0x39e
+ 3425 0427 02       		.byte	0x2
+ 3426 0428 91       		.byte	0x91
+ 3427 0429 70       		.sleb128 -16
+ 3428 042a 12       		.uleb128 0x12
+ 3429 042b 7200     		.ascii	"r\000"
+ 3430 042d 01       		.byte	0x1
+ 3431 042e F201     		.2byte	0x1f2
+ 3432 0430 6F000000 		.4byte	0x6f
+ 3433 0434 02       		.byte	0x2
+ 3434 0435 91       		.byte	0x91
+ 3435 0436 71       		.sleb128 -15
+ 3436 0437 14       		.uleb128 0x14
+ 3437 0438 B2020000 		.4byte	.LBB14
+ 3438 043c 98030000 		.4byte	.LBE14
+ 3439 0440 63040000 		.4byte	0x463
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 72
+
+
+ 3440 0444 13       		.uleb128 0x13
+ 3441 0445 A4010000 		.4byte	.LASF41
+ 3442 0449 01       		.byte	0x1
+ 3443 044a E101     		.2byte	0x1e1
+ 3444 044c 7A000000 		.4byte	0x7a
+ 3445 0450 02       		.byte	0x2
+ 3446 0451 91       		.byte	0x91
+ 3447 0452 72       		.sleb128 -14
+ 3448 0453 12       		.uleb128 0x12
+ 3449 0454 64697200 		.ascii	"dir\000"
+ 3450 0458 01       		.byte	0x1
+ 3451 0459 E501     		.2byte	0x1e5
+ 3452 045b 61000000 		.4byte	0x61
+ 3453 045f 02       		.byte	0x2
+ 3454 0460 91       		.byte	0x91
+ 3455 0461 74       		.sleb128 -12
+ 3456 0462 00       		.byte	0x0
+ 3457 0463 10       		.uleb128 0x10
+ 3458 0464 E0040000 		.4byte	.LBB15
+ 3459 0468 74050000 		.4byte	.LBE15
+ 3460 046c 13       		.uleb128 0x13
+ 3461 046d 37020000 		.4byte	.LASF28
+ 3462 0471 01       		.byte	0x1
+ 3463 0472 FC01     		.2byte	0x1fc
+ 3464 0474 44010000 		.4byte	0x144
+ 3465 0478 02       		.byte	0x2
+ 3466 0479 91       		.byte	0x91
+ 3467 047a 60       		.sleb128 -32
+ 3468 047b 00       		.byte	0x0
+ 3469 047c 00       		.byte	0x0
+ 3470 047d 10       		.uleb128 0x10
+ 3471 047e 98050000 		.4byte	.LBB16
+ 3472 0482 EC050000 		.4byte	.LBE16
+ 3473 0486 13       		.uleb128 0x13
+ 3474 0487 37020000 		.4byte	.LASF28
+ 3475 048b 01       		.byte	0x1
+ 3476 048c 1B02     		.2byte	0x21b
+ 3477 048e 44010000 		.4byte	0x144
+ 3478 0492 02       		.byte	0x2
+ 3479 0493 91       		.byte	0x91
+ 3480 0494 50       		.sleb128 -48
+ 3481 0495 00       		.byte	0x0
+ 3482 0496 00       		.byte	0x0
+ 3483 0497 16       		.uleb128 0x16
+ 3484 0498 23020000 		.4byte	.LASF42
+ 3485 049c 03       		.byte	0x3
+ 3486 049d CE06     		.2byte	0x6ce
+ 3487 049f A5040000 		.4byte	0x4a5
+ 3488 04a3 01       		.byte	0x1
+ 3489 04a4 01       		.byte	0x1
+ 3490 04a5 17       		.uleb128 0x17
+ 3491 04a6 61000000 		.4byte	0x61
+ 3492 04aa 18       		.uleb128 0x18
+ 3493 04ab 9E030000 		.4byte	0x39e
+ 3494 04af C0040000 		.4byte	0x4c0
+ 3495 04b3 19       		.uleb128 0x19
+ 3496 04b4 9A000000 		.4byte	0x9a
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 73
+
+
+ 3497 04b8 07       		.byte	0x7
+ 3498 04b9 19       		.uleb128 0x19
+ 3499 04ba 9A000000 		.4byte	0x9a
+ 3500 04be 07       		.byte	0x7
+ 3501 04bf 00       		.byte	0x0
+ 3502 04c0 1A       		.uleb128 0x1a
+ 3503 04c1 FB010000 		.4byte	.LASF43
+ 3504 04c5 01       		.byte	0x1
+ 3505 04c6 0D       		.byte	0xd
+ 3506 04c7 AA040000 		.4byte	0x4aa
+ 3507 04cb 01       		.byte	0x1
+ 3508 04cc 05       		.byte	0x5
+ 3509 04cd 03       		.byte	0x3
+ 3510 04ce 00000000 		.4byte	player1
+ 3511 04d2 1A       		.uleb128 0x1a
+ 3512 04d3 03020000 		.4byte	.LASF44
+ 3513 04d7 01       		.byte	0x1
+ 3514 04d8 0E       		.byte	0xe
+ 3515 04d9 AA040000 		.4byte	0x4aa
+ 3516 04dd 01       		.byte	0x1
+ 3517 04de 05       		.byte	0x5
+ 3518 04df 03       		.byte	0x3
+ 3519 04e0 00000000 		.4byte	player2
+ 3520 04e4 1A       		.uleb128 0x1a
+ 3521 04e5 D5010000 		.4byte	.LASF45
+ 3522 04e9 01       		.byte	0x1
+ 3523 04ea 0F       		.byte	0xf
+ 3524 04eb 6F000000 		.4byte	0x6f
+ 3525 04ef 01       		.byte	0x1
+ 3526 04f0 05       		.byte	0x5
+ 3527 04f1 03       		.byte	0x3
+ 3528 04f2 00000000 		.4byte	player1_color
+ 3529 04f6 1A       		.uleb128 0x1a
+ 3530 04f7 15000000 		.4byte	.LASF46
+ 3531 04fb 01       		.byte	0x1
+ 3532 04fc 10       		.byte	0x10
+ 3533 04fd 6F000000 		.4byte	0x6f
+ 3534 0501 01       		.byte	0x1
+ 3535 0502 05       		.byte	0x5
+ 3536 0503 03       		.byte	0x3
+ 3537 0504 00000000 		.4byte	player2_color
+ 3538 0508 1A       		.uleb128 0x1a
+ 3539 0509 06010000 		.4byte	.LASF47
+ 3540 050d 01       		.byte	0x1
+ 3541 050e 11       		.byte	0x11
+ 3542 050f 9E030000 		.4byte	0x39e
+ 3543 0513 01       		.byte	0x1
+ 3544 0514 05       		.byte	0x5
+ 3545 0515 03       		.byte	0x3
+ 3546 0516 00000000 		.4byte	player1_turn
+ 3547 051a 1A       		.uleb128 0x1a
+ 3548 051b AC010000 		.4byte	.LASF48
+ 3549 051f 01       		.byte	0x1
+ 3550 0520 12       		.byte	0x12
+ 3551 0521 9E030000 		.4byte	0x39e
+ 3552 0525 01       		.byte	0x1
+ 3553 0526 05       		.byte	0x5
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 74
+
+
+ 3554 0527 03       		.byte	0x3
+ 3555 0528 00000000 		.4byte	player2_local
+ 3556 052c 1A       		.uleb128 0x1a
+ 3557 052d 5A010000 		.4byte	.LASF49
+ 3558 0531 01       		.byte	0x1
+ 3559 0532 26       		.byte	0x26
+ 3560 0533 9E030000 		.4byte	0x39e
+ 3561 0537 01       		.byte	0x1
+ 3562 0538 05       		.byte	0x5
+ 3563 0539 03       		.byte	0x3
+ 3564 053a 00000000 		.4byte	locating
+ 3565 053e 1B       		.uleb128 0x1b
+ 3566 053f 726F7700 		.ascii	"row\000"
+ 3567 0543 01       		.byte	0x1
+ 3568 0544 7B01     		.2byte	0x17b
+ 3569 0546 6F000000 		.4byte	0x6f
+ 3570 054a 01       		.byte	0x1
+ 3571 054b 05       		.byte	0x5
+ 3572 054c 03       		.byte	0x3
+ 3573 054d 00000000 		.4byte	row
+ 3574 0551 1B       		.uleb128 0x1b
+ 3575 0552 636F6C00 		.ascii	"col\000"
+ 3576 0556 01       		.byte	0x1
+ 3577 0557 7B01     		.2byte	0x17b
+ 3578 0559 6F000000 		.4byte	0x6f
+ 3579 055d 01       		.byte	0x1
+ 3580 055e 05       		.byte	0x5
+ 3581 055f 03       		.byte	0x3
+ 3582 0560 00000000 		.4byte	col
+ 3583 0564 00       		.byte	0x0
+ 3584              		.section	.debug_abbrev
+ 3585 0000 01       		.uleb128 0x1
+ 3586 0001 11       		.uleb128 0x11
+ 3587 0002 01       		.byte	0x1
+ 3588 0003 25       		.uleb128 0x25
+ 3589 0004 0E       		.uleb128 0xe
+ 3590 0005 13       		.uleb128 0x13
+ 3591 0006 0B       		.uleb128 0xb
+ 3592 0007 03       		.uleb128 0x3
+ 3593 0008 0E       		.uleb128 0xe
+ 3594 0009 1B       		.uleb128 0x1b
+ 3595 000a 0E       		.uleb128 0xe
+ 3596 000b 11       		.uleb128 0x11
+ 3597 000c 01       		.uleb128 0x1
+ 3598 000d 52       		.uleb128 0x52
+ 3599 000e 01       		.uleb128 0x1
+ 3600 000f 55       		.uleb128 0x55
+ 3601 0010 06       		.uleb128 0x6
+ 3602 0011 10       		.uleb128 0x10
+ 3603 0012 06       		.uleb128 0x6
+ 3604 0013 00       		.byte	0x0
+ 3605 0014 00       		.byte	0x0
+ 3606 0015 02       		.uleb128 0x2
+ 3607 0016 24       		.uleb128 0x24
+ 3608 0017 00       		.byte	0x0
+ 3609 0018 0B       		.uleb128 0xb
+ 3610 0019 0B       		.uleb128 0xb
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 75
+
+
+ 3611 001a 3E       		.uleb128 0x3e
+ 3612 001b 0B       		.uleb128 0xb
+ 3613 001c 03       		.uleb128 0x3
+ 3614 001d 0E       		.uleb128 0xe
+ 3615 001e 00       		.byte	0x0
+ 3616 001f 00       		.byte	0x0
+ 3617 0020 03       		.uleb128 0x3
+ 3618 0021 24       		.uleb128 0x24
+ 3619 0022 00       		.byte	0x0
+ 3620 0023 0B       		.uleb128 0xb
+ 3621 0024 0B       		.uleb128 0xb
+ 3622 0025 3E       		.uleb128 0x3e
+ 3623 0026 0B       		.uleb128 0xb
+ 3624 0027 03       		.uleb128 0x3
+ 3625 0028 08       		.uleb128 0x8
+ 3626 0029 00       		.byte	0x0
+ 3627 002a 00       		.byte	0x0
+ 3628 002b 04       		.uleb128 0x4
+ 3629 002c 16       		.uleb128 0x16
+ 3630 002d 00       		.byte	0x0
+ 3631 002e 03       		.uleb128 0x3
+ 3632 002f 0E       		.uleb128 0xe
+ 3633 0030 3A       		.uleb128 0x3a
+ 3634 0031 0B       		.uleb128 0xb
+ 3635 0032 3B       		.uleb128 0x3b
+ 3636 0033 0B       		.uleb128 0xb
+ 3637 0034 49       		.uleb128 0x49
+ 3638 0035 13       		.uleb128 0x13
+ 3639 0036 00       		.byte	0x0
+ 3640 0037 00       		.byte	0x0
+ 3641 0038 05       		.uleb128 0x5
+ 3642 0039 24       		.uleb128 0x24
+ 3643 003a 00       		.byte	0x0
+ 3644 003b 0B       		.uleb128 0xb
+ 3645 003c 0B       		.uleb128 0xb
+ 3646 003d 3E       		.uleb128 0x3e
+ 3647 003e 0B       		.uleb128 0xb
+ 3648 003f 00       		.byte	0x0
+ 3649 0040 00       		.byte	0x0
+ 3650 0041 06       		.uleb128 0x6
+ 3651 0042 13       		.uleb128 0x13
+ 3652 0043 01       		.byte	0x1
+ 3653 0044 03       		.uleb128 0x3
+ 3654 0045 0E       		.uleb128 0xe
+ 3655 0046 0B       		.uleb128 0xb
+ 3656 0047 0B       		.uleb128 0xb
+ 3657 0048 3A       		.uleb128 0x3a
+ 3658 0049 0B       		.uleb128 0xb
+ 3659 004a 3B       		.uleb128 0x3b
+ 3660 004b 0B       		.uleb128 0xb
+ 3661 004c 01       		.uleb128 0x1
+ 3662 004d 13       		.uleb128 0x13
+ 3663 004e 00       		.byte	0x0
+ 3664 004f 00       		.byte	0x0
+ 3665 0050 07       		.uleb128 0x7
+ 3666 0051 0D       		.uleb128 0xd
+ 3667 0052 00       		.byte	0x0
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 76
+
+
+ 3668 0053 03       		.uleb128 0x3
+ 3669 0054 0E       		.uleb128 0xe
+ 3670 0055 3A       		.uleb128 0x3a
+ 3671 0056 0B       		.uleb128 0xb
+ 3672 0057 3B       		.uleb128 0x3b
+ 3673 0058 0B       		.uleb128 0xb
+ 3674 0059 49       		.uleb128 0x49
+ 3675 005a 13       		.uleb128 0x13
+ 3676 005b 38       		.uleb128 0x38
+ 3677 005c 0A       		.uleb128 0xa
+ 3678 005d 00       		.byte	0x0
+ 3679 005e 00       		.byte	0x0
+ 3680 005f 08       		.uleb128 0x8
+ 3681 0060 0D       		.uleb128 0xd
+ 3682 0061 00       		.byte	0x0
+ 3683 0062 03       		.uleb128 0x3
+ 3684 0063 08       		.uleb128 0x8
+ 3685 0064 3A       		.uleb128 0x3a
+ 3686 0065 0B       		.uleb128 0xb
+ 3687 0066 3B       		.uleb128 0x3b
+ 3688 0067 0B       		.uleb128 0xb
+ 3689 0068 49       		.uleb128 0x49
+ 3690 0069 13       		.uleb128 0x13
+ 3691 006a 38       		.uleb128 0x38
+ 3692 006b 0A       		.uleb128 0xa
+ 3693 006c 00       		.byte	0x0
+ 3694 006d 00       		.byte	0x0
+ 3695 006e 09       		.uleb128 0x9
+ 3696 006f 2E       		.uleb128 0x2e
+ 3697 0070 00       		.byte	0x0
+ 3698 0071 3F       		.uleb128 0x3f
+ 3699 0072 0C       		.uleb128 0xc
+ 3700 0073 03       		.uleb128 0x3
+ 3701 0074 0E       		.uleb128 0xe
+ 3702 0075 3A       		.uleb128 0x3a
+ 3703 0076 0B       		.uleb128 0xb
+ 3704 0077 3B       		.uleb128 0x3b
+ 3705 0078 0B       		.uleb128 0xb
+ 3706 0079 27       		.uleb128 0x27
+ 3707 007a 0C       		.uleb128 0xc
+ 3708 007b 11       		.uleb128 0x11
+ 3709 007c 01       		.uleb128 0x1
+ 3710 007d 12       		.uleb128 0x12
+ 3711 007e 01       		.uleb128 0x1
+ 3712 007f 40       		.uleb128 0x40
+ 3713 0080 06       		.uleb128 0x6
+ 3714 0081 00       		.byte	0x0
+ 3715 0082 00       		.byte	0x0
+ 3716 0083 0A       		.uleb128 0xa
+ 3717 0084 2E       		.uleb128 0x2e
+ 3718 0085 01       		.byte	0x1
+ 3719 0086 3F       		.uleb128 0x3f
+ 3720 0087 0C       		.uleb128 0xc
+ 3721 0088 03       		.uleb128 0x3
+ 3722 0089 0E       		.uleb128 0xe
+ 3723 008a 3A       		.uleb128 0x3a
+ 3724 008b 0B       		.uleb128 0xb
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 77
+
+
+ 3725 008c 3B       		.uleb128 0x3b
+ 3726 008d 0B       		.uleb128 0xb
+ 3727 008e 11       		.uleb128 0x11
+ 3728 008f 01       		.uleb128 0x1
+ 3729 0090 12       		.uleb128 0x12
+ 3730 0091 01       		.uleb128 0x1
+ 3731 0092 40       		.uleb128 0x40
+ 3732 0093 06       		.uleb128 0x6
+ 3733 0094 01       		.uleb128 0x1
+ 3734 0095 13       		.uleb128 0x13
+ 3735 0096 00       		.byte	0x0
+ 3736 0097 00       		.byte	0x0
+ 3737 0098 0B       		.uleb128 0xb
+ 3738 0099 34       		.uleb128 0x34
+ 3739 009a 00       		.byte	0x0
+ 3740 009b 03       		.uleb128 0x3
+ 3741 009c 08       		.uleb128 0x8
+ 3742 009d 3A       		.uleb128 0x3a
+ 3743 009e 0B       		.uleb128 0xb
+ 3744 009f 3B       		.uleb128 0x3b
+ 3745 00a0 0B       		.uleb128 0xb
+ 3746 00a1 49       		.uleb128 0x49
+ 3747 00a2 13       		.uleb128 0x13
+ 3748 00a3 02       		.uleb128 0x2
+ 3749 00a4 0A       		.uleb128 0xa
+ 3750 00a5 00       		.byte	0x0
+ 3751 00a6 00       		.byte	0x0
+ 3752 00a7 0C       		.uleb128 0xc
+ 3753 00a8 34       		.uleb128 0x34
+ 3754 00a9 00       		.byte	0x0
+ 3755 00aa 03       		.uleb128 0x3
+ 3756 00ab 0E       		.uleb128 0xe
+ 3757 00ac 3A       		.uleb128 0x3a
+ 3758 00ad 0B       		.uleb128 0xb
+ 3759 00ae 3B       		.uleb128 0x3b
+ 3760 00af 0B       		.uleb128 0xb
+ 3761 00b0 49       		.uleb128 0x49
+ 3762 00b1 13       		.uleb128 0x13
+ 3763 00b2 02       		.uleb128 0x2
+ 3764 00b3 0A       		.uleb128 0xa
+ 3765 00b4 00       		.byte	0x0
+ 3766 00b5 00       		.byte	0x0
+ 3767 00b6 0D       		.uleb128 0xd
+ 3768 00b7 2E       		.uleb128 0x2e
+ 3769 00b8 01       		.byte	0x1
+ 3770 00b9 3F       		.uleb128 0x3f
+ 3771 00ba 0C       		.uleb128 0xc
+ 3772 00bb 03       		.uleb128 0x3
+ 3773 00bc 0E       		.uleb128 0xe
+ 3774 00bd 3A       		.uleb128 0x3a
+ 3775 00be 0B       		.uleb128 0xb
+ 3776 00bf 3B       		.uleb128 0x3b
+ 3777 00c0 0B       		.uleb128 0xb
+ 3778 00c1 27       		.uleb128 0x27
+ 3779 00c2 0C       		.uleb128 0xc
+ 3780 00c3 11       		.uleb128 0x11
+ 3781 00c4 01       		.uleb128 0x1
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 78
+
+
+ 3782 00c5 12       		.uleb128 0x12
+ 3783 00c6 01       		.uleb128 0x1
+ 3784 00c7 40       		.uleb128 0x40
+ 3785 00c8 06       		.uleb128 0x6
+ 3786 00c9 01       		.uleb128 0x1
+ 3787 00ca 13       		.uleb128 0x13
+ 3788 00cb 00       		.byte	0x0
+ 3789 00cc 00       		.byte	0x0
+ 3790 00cd 0E       		.uleb128 0xe
+ 3791 00ce 05       		.uleb128 0x5
+ 3792 00cf 00       		.byte	0x0
+ 3793 00d0 03       		.uleb128 0x3
+ 3794 00d1 0E       		.uleb128 0xe
+ 3795 00d2 3A       		.uleb128 0x3a
+ 3796 00d3 0B       		.uleb128 0xb
+ 3797 00d4 3B       		.uleb128 0x3b
+ 3798 00d5 0B       		.uleb128 0xb
+ 3799 00d6 49       		.uleb128 0x49
+ 3800 00d7 13       		.uleb128 0x13
+ 3801 00d8 02       		.uleb128 0x2
+ 3802 00d9 0A       		.uleb128 0xa
+ 3803 00da 00       		.byte	0x0
+ 3804 00db 00       		.byte	0x0
+ 3805 00dc 0F       		.uleb128 0xf
+ 3806 00dd 0F       		.uleb128 0xf
+ 3807 00de 00       		.byte	0x0
+ 3808 00df 0B       		.uleb128 0xb
+ 3809 00e0 0B       		.uleb128 0xb
+ 3810 00e1 49       		.uleb128 0x49
+ 3811 00e2 13       		.uleb128 0x13
+ 3812 00e3 00       		.byte	0x0
+ 3813 00e4 00       		.byte	0x0
+ 3814 00e5 10       		.uleb128 0x10
+ 3815 00e6 0B       		.uleb128 0xb
+ 3816 00e7 01       		.byte	0x1
+ 3817 00e8 11       		.uleb128 0x11
+ 3818 00e9 01       		.uleb128 0x1
+ 3819 00ea 12       		.uleb128 0x12
+ 3820 00eb 01       		.uleb128 0x1
+ 3821 00ec 00       		.byte	0x0
+ 3822 00ed 00       		.byte	0x0
+ 3823 00ee 11       		.uleb128 0x11
+ 3824 00ef 2E       		.uleb128 0x2e
+ 3825 00f0 01       		.byte	0x1
+ 3826 00f1 3F       		.uleb128 0x3f
+ 3827 00f2 0C       		.uleb128 0xc
+ 3828 00f3 03       		.uleb128 0x3
+ 3829 00f4 0E       		.uleb128 0xe
+ 3830 00f5 3A       		.uleb128 0x3a
+ 3831 00f6 0B       		.uleb128 0xb
+ 3832 00f7 3B       		.uleb128 0x3b
+ 3833 00f8 05       		.uleb128 0x5
+ 3834 00f9 11       		.uleb128 0x11
+ 3835 00fa 01       		.uleb128 0x1
+ 3836 00fb 12       		.uleb128 0x12
+ 3837 00fc 01       		.uleb128 0x1
+ 3838 00fd 40       		.uleb128 0x40
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 79
+
+
+ 3839 00fe 06       		.uleb128 0x6
+ 3840 00ff 01       		.uleb128 0x1
+ 3841 0100 13       		.uleb128 0x13
+ 3842 0101 00       		.byte	0x0
+ 3843 0102 00       		.byte	0x0
+ 3844 0103 12       		.uleb128 0x12
+ 3845 0104 34       		.uleb128 0x34
+ 3846 0105 00       		.byte	0x0
+ 3847 0106 03       		.uleb128 0x3
+ 3848 0107 08       		.uleb128 0x8
+ 3849 0108 3A       		.uleb128 0x3a
+ 3850 0109 0B       		.uleb128 0xb
+ 3851 010a 3B       		.uleb128 0x3b
+ 3852 010b 05       		.uleb128 0x5
+ 3853 010c 49       		.uleb128 0x49
+ 3854 010d 13       		.uleb128 0x13
+ 3855 010e 02       		.uleb128 0x2
+ 3856 010f 0A       		.uleb128 0xa
+ 3857 0110 00       		.byte	0x0
+ 3858 0111 00       		.byte	0x0
+ 3859 0112 13       		.uleb128 0x13
+ 3860 0113 34       		.uleb128 0x34
+ 3861 0114 00       		.byte	0x0
+ 3862 0115 03       		.uleb128 0x3
+ 3863 0116 0E       		.uleb128 0xe
+ 3864 0117 3A       		.uleb128 0x3a
+ 3865 0118 0B       		.uleb128 0xb
+ 3866 0119 3B       		.uleb128 0x3b
+ 3867 011a 05       		.uleb128 0x5
+ 3868 011b 49       		.uleb128 0x49
+ 3869 011c 13       		.uleb128 0x13
+ 3870 011d 02       		.uleb128 0x2
+ 3871 011e 0A       		.uleb128 0xa
+ 3872 011f 00       		.byte	0x0
+ 3873 0120 00       		.byte	0x0
+ 3874 0121 14       		.uleb128 0x14
+ 3875 0122 0B       		.uleb128 0xb
+ 3876 0123 01       		.byte	0x1
+ 3877 0124 11       		.uleb128 0x11
+ 3878 0125 01       		.uleb128 0x1
+ 3879 0126 12       		.uleb128 0x12
+ 3880 0127 01       		.uleb128 0x1
+ 3881 0128 01       		.uleb128 0x1
+ 3882 0129 13       		.uleb128 0x13
+ 3883 012a 00       		.byte	0x0
+ 3884 012b 00       		.byte	0x0
+ 3885 012c 15       		.uleb128 0x15
+ 3886 012d 2E       		.uleb128 0x2e
+ 3887 012e 01       		.byte	0x1
+ 3888 012f 3F       		.uleb128 0x3f
+ 3889 0130 0C       		.uleb128 0xc
+ 3890 0131 03       		.uleb128 0x3
+ 3891 0132 0E       		.uleb128 0xe
+ 3892 0133 3A       		.uleb128 0x3a
+ 3893 0134 0B       		.uleb128 0xb
+ 3894 0135 3B       		.uleb128 0x3b
+ 3895 0136 05       		.uleb128 0x5
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 80
+
+
+ 3896 0137 27       		.uleb128 0x27
+ 3897 0138 0C       		.uleb128 0xc
+ 3898 0139 11       		.uleb128 0x11
+ 3899 013a 01       		.uleb128 0x1
+ 3900 013b 12       		.uleb128 0x12
+ 3901 013c 01       		.uleb128 0x1
+ 3902 013d 40       		.uleb128 0x40
+ 3903 013e 06       		.uleb128 0x6
+ 3904 013f 01       		.uleb128 0x1
+ 3905 0140 13       		.uleb128 0x13
+ 3906 0141 00       		.byte	0x0
+ 3907 0142 00       		.byte	0x0
+ 3908 0143 16       		.uleb128 0x16
+ 3909 0144 34       		.uleb128 0x34
+ 3910 0145 00       		.byte	0x0
+ 3911 0146 03       		.uleb128 0x3
+ 3912 0147 0E       		.uleb128 0xe
+ 3913 0148 3A       		.uleb128 0x3a
+ 3914 0149 0B       		.uleb128 0xb
+ 3915 014a 3B       		.uleb128 0x3b
+ 3916 014b 05       		.uleb128 0x5
+ 3917 014c 49       		.uleb128 0x49
+ 3918 014d 13       		.uleb128 0x13
+ 3919 014e 3F       		.uleb128 0x3f
+ 3920 014f 0C       		.uleb128 0xc
+ 3921 0150 3C       		.uleb128 0x3c
+ 3922 0151 0C       		.uleb128 0xc
+ 3923 0152 00       		.byte	0x0
+ 3924 0153 00       		.byte	0x0
+ 3925 0154 17       		.uleb128 0x17
+ 3926 0155 35       		.uleb128 0x35
+ 3927 0156 00       		.byte	0x0
+ 3928 0157 49       		.uleb128 0x49
+ 3929 0158 13       		.uleb128 0x13
+ 3930 0159 00       		.byte	0x0
+ 3931 015a 00       		.byte	0x0
+ 3932 015b 18       		.uleb128 0x18
+ 3933 015c 01       		.uleb128 0x1
+ 3934 015d 01       		.byte	0x1
+ 3935 015e 49       		.uleb128 0x49
+ 3936 015f 13       		.uleb128 0x13
+ 3937 0160 01       		.uleb128 0x1
+ 3938 0161 13       		.uleb128 0x13
+ 3939 0162 00       		.byte	0x0
+ 3940 0163 00       		.byte	0x0
+ 3941 0164 19       		.uleb128 0x19
+ 3942 0165 21       		.uleb128 0x21
+ 3943 0166 00       		.byte	0x0
+ 3944 0167 49       		.uleb128 0x49
+ 3945 0168 13       		.uleb128 0x13
+ 3946 0169 2F       		.uleb128 0x2f
+ 3947 016a 0B       		.uleb128 0xb
+ 3948 016b 00       		.byte	0x0
+ 3949 016c 00       		.byte	0x0
+ 3950 016d 1A       		.uleb128 0x1a
+ 3951 016e 34       		.uleb128 0x34
+ 3952 016f 00       		.byte	0x0
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 81
+
+
+ 3953 0170 03       		.uleb128 0x3
+ 3954 0171 0E       		.uleb128 0xe
+ 3955 0172 3A       		.uleb128 0x3a
+ 3956 0173 0B       		.uleb128 0xb
+ 3957 0174 3B       		.uleb128 0x3b
+ 3958 0175 0B       		.uleb128 0xb
+ 3959 0176 49       		.uleb128 0x49
+ 3960 0177 13       		.uleb128 0x13
+ 3961 0178 3F       		.uleb128 0x3f
+ 3962 0179 0C       		.uleb128 0xc
+ 3963 017a 02       		.uleb128 0x2
+ 3964 017b 0A       		.uleb128 0xa
+ 3965 017c 00       		.byte	0x0
+ 3966 017d 00       		.byte	0x0
+ 3967 017e 1B       		.uleb128 0x1b
+ 3968 017f 34       		.uleb128 0x34
+ 3969 0180 00       		.byte	0x0
+ 3970 0181 03       		.uleb128 0x3
+ 3971 0182 08       		.uleb128 0x8
+ 3972 0183 3A       		.uleb128 0x3a
+ 3973 0184 0B       		.uleb128 0xb
+ 3974 0185 3B       		.uleb128 0x3b
+ 3975 0186 05       		.uleb128 0x5
+ 3976 0187 49       		.uleb128 0x49
+ 3977 0188 13       		.uleb128 0x13
+ 3978 0189 3F       		.uleb128 0x3f
+ 3979 018a 0C       		.uleb128 0xc
+ 3980 018b 02       		.uleb128 0x2
+ 3981 018c 0A       		.uleb128 0xa
+ 3982 018d 00       		.byte	0x0
+ 3983 018e 00       		.byte	0x0
+ 3984 018f 00       		.byte	0x0
+ 3985              		.section	.debug_pubnames,"",%progbits
+ 3986 0000 11010000 		.4byte	0x111
+ 3987 0004 0200     		.2byte	0x2
+ 3988 0006 00000000 		.4byte	.Ldebug_info0
+ 3989 000a 65050000 		.4byte	0x565
+ 3990 000e 4F010000 		.4byte	0x14f
+ 3991 0012 746F6767 		.ascii	"toggle\000"
+ 3991      6C6500
+ 3992 0019 64010000 		.4byte	0x164
+ 3993 001d 636F6E66 		.ascii	"configure_XBee\000"
+ 3993      69677572 
+ 3993      655F5842 
+ 3993      656500
+ 3994 002c 97010000 		.4byte	0x197
+ 3995 0030 73686F77 		.ascii	"show_packet\000"
+ 3995      5F706163 
+ 3995      6B657400 
+ 3996 003c D3010000 		.4byte	0x1d3
+ 3997 0040 73656E64 		.ascii	"send_packet\000"
+ 3997      5F706163 
+ 3997      6B657400 
+ 3998 004c FB010000 		.4byte	0x1fb
+ 3999 0050 72656365 		.ascii	"receive_packet\000"
+ 3999      6976655F 
+ 3999      7061636B 
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 82
+
+
+ 3999      657400
+ 4000 005f 49020000 		.4byte	0x249
+ 4001 0063 636C6561 		.ascii	"clear_board\000"
+ 4001      725F626F 
+ 4001      61726400 
+ 4002 006f 7D020000 		.4byte	0x27d
+ 4003 0073 77696E6E 		.ascii	"winner_check\000"
+ 4003      65725F63 
+ 4003      6865636B 
+ 4003      00
+ 4004 0080 A5030000 		.4byte	0x3a5
+ 4005 0084 72656672 		.ascii	"refresh\000"
+ 4005      65736800 
+ 4006 008c D9030000 		.4byte	0x3d9
+ 4007 0090 6D61696E 		.ascii	"main\000"
+ 4007      00
+ 4008 0095 C0040000 		.4byte	0x4c0
+ 4009 0099 706C6179 		.ascii	"player1\000"
+ 4009      65723100 
+ 4010 00a1 D2040000 		.4byte	0x4d2
+ 4011 00a5 706C6179 		.ascii	"player2\000"
+ 4011      65723200 
+ 4012 00ad E4040000 		.4byte	0x4e4
+ 4013 00b1 706C6179 		.ascii	"player1_color\000"
+ 4013      6572315F 
+ 4013      636F6C6F 
+ 4013      7200
+ 4014 00bf F6040000 		.4byte	0x4f6
+ 4015 00c3 706C6179 		.ascii	"player2_color\000"
+ 4015      6572325F 
+ 4015      636F6C6F 
+ 4015      7200
+ 4016 00d1 08050000 		.4byte	0x508
+ 4017 00d5 706C6179 		.ascii	"player1_turn\000"
+ 4017      6572315F 
+ 4017      7475726E 
+ 4017      00
+ 4018 00e2 1A050000 		.4byte	0x51a
+ 4019 00e6 706C6179 		.ascii	"player2_local\000"
+ 4019      6572325F 
+ 4019      6C6F6361 
+ 4019      6C00
+ 4020 00f4 2C050000 		.4byte	0x52c
+ 4021 00f8 6C6F6361 		.ascii	"locating\000"
+ 4021      74696E67 
+ 4021      00
+ 4022 0101 3E050000 		.4byte	0x53e
+ 4023 0105 726F7700 		.ascii	"row\000"
+ 4024 0109 51050000 		.4byte	0x551
+ 4025 010d 636F6C00 		.ascii	"col\000"
+ 4026 0111 00000000 		.4byte	0x0
+ 4027              		.section	.debug_aranges,"",%progbits
+ 4028 0000 5C000000 		.4byte	0x5c
+ 4029 0004 0200     		.2byte	0x2
+ 4030 0006 00000000 		.4byte	.Ldebug_info0
+ 4031 000a 04       		.byte	0x4
+ 4032 000b 00       		.byte	0x0
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 83
+
+
+ 4033 000c 0000     		.2byte	0x0
+ 4034 000e 0000     		.2byte	0x0
+ 4035 0010 00000000 		.4byte	.LFB29
+ 4036 0014 34000000 		.4byte	.LFE29-.LFB29
+ 4037 0018 00000000 		.4byte	.LFB30
+ 4038 001c 78010000 		.4byte	.LFE30-.LFB30
+ 4039 0020 00000000 		.4byte	.LFB31
+ 4040 0024 A6020000 		.4byte	.LFE31-.LFB31
+ 4041 0028 00000000 		.4byte	.LFB32
+ 4042 002c AA000000 		.4byte	.LFE32-.LFB32
+ 4043 0030 00000000 		.4byte	.LFB33
+ 4044 0034 38020000 		.4byte	.LFE33-.LFB33
+ 4045 0038 00000000 		.4byte	.LFB34
+ 4046 003c 70000000 		.4byte	.LFE34-.LFB34
+ 4047 0040 00000000 		.4byte	.LFB35
+ 4048 0044 0E050000 		.4byte	.LFE35-.LFB35
+ 4049 0048 00000000 		.4byte	.LFB36
+ 4050 004c 5C010000 		.4byte	.LFE36-.LFB36
+ 4051 0050 00000000 		.4byte	.LFB37
+ 4052 0054 EE050000 		.4byte	.LFE37-.LFB37
+ 4053 0058 00000000 		.4byte	0x0
+ 4054 005c 00000000 		.4byte	0x0
+ 4055              		.section	.debug_ranges,"",%progbits
+ 4056              	.Ldebug_ranges0:
+ 4057 0000 00000000 		.4byte	.Ltext0
+ 4058 0004 00000000 		.4byte	.Letext0
+ 4059 0008 00000000 		.4byte	.LFB29
+ 4060 000c 34000000 		.4byte	.LFE29
+ 4061 0010 00000000 		.4byte	.LFB30
+ 4062 0014 78010000 		.4byte	.LFE30
+ 4063 0018 00000000 		.4byte	.LFB31
+ 4064 001c A6020000 		.4byte	.LFE31
+ 4065 0020 00000000 		.4byte	.LFB32
+ 4066 0024 AA000000 		.4byte	.LFE32
+ 4067 0028 00000000 		.4byte	.LFB33
+ 4068 002c 38020000 		.4byte	.LFE33
+ 4069 0030 00000000 		.4byte	.LFB34
+ 4070 0034 70000000 		.4byte	.LFE34
+ 4071 0038 00000000 		.4byte	.LFB35
+ 4072 003c 0E050000 		.4byte	.LFE35
+ 4073 0040 00000000 		.4byte	.LFB36
+ 4074 0044 5C010000 		.4byte	.LFE36
+ 4075 0048 00000000 		.4byte	.LFB37
+ 4076 004c EE050000 		.4byte	.LFE37
+ 4077 0050 00000000 		.4byte	0x0
+ 4078 0054 00000000 		.4byte	0x0
+ 4079              		.section	.debug_str,"MS",%progbits,1
+ 4080              	.LASF24:
+ 4081 0000 72657375 		.ascii	"result\000"
+ 4081      6C7400
+ 4082              	.LASF36:
+ 4083 0007 72656672 		.ascii	"refresh\000"
+ 4083      65736800 
+ 4084              	.LASF34:
+ 4085 000f 626C696E 		.ascii	"blink\000"
+ 4085      6B00
+ 4086              	.LASF46:
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 84
+
+
+ 4087 0015 706C6179 		.ascii	"player2_color\000"
+ 4087      6572325F 
+ 4087      636F6C6F 
+ 4087      7200
+ 4088              	.LASF32:
+ 4089 0023 77696E6E 		.ascii	"winner_check\000"
+ 4089      65725F63 
+ 4089      6865636B 
+ 4089      00
+ 4090              	.LASF2:
+ 4091 0030 73686F72 		.ascii	"short int\000"
+ 4091      7420696E 
+ 4091      7400
+ 4092              	.LASF38:
+ 4093 003a 6D61696E 		.ascii	"main\000"
+ 4093      00
+ 4094              	.LASF14:
+ 4095 003f 64656C69 		.ascii	"delimiter\000"
+ 4095      6D697465 
+ 4095      7200
+ 4096              	.LASF29:
+ 4097 0049 72656365 		.ascii	"receive_packet\000"
+ 4097      6976655F 
+ 4097      7061636B 
+ 4097      657400
+ 4098              	.LASF10:
+ 4099 0058 75696E74 		.ascii	"uint16\000"
+ 4099      313600
+ 4100              	.LASF19:
+ 4101 005f 64697361 		.ascii	"disable_ack\000"
+ 4101      626C655F 
+ 4101      61636B00 
+ 4102              	.LASF22:
+ 4103 006b 63686563 		.ascii	"checksum\000"
+ 4103      6B73756D 
+ 4103      00
+ 4104              	.LASF9:
+ 4105 0074 75696E74 		.ascii	"uint8\000"
+ 4105      3800
+ 4106              	.LASF53:
+ 4107 007a 7061636B 		.ascii	"packet\000"
+ 4107      657400
+ 4108              	.LASF30:
+ 4109 0081 636F6E66 		.ascii	"configure_XBee\000"
+ 4109      69677572 
+ 4109      655F5842 
+ 4109      656500
+ 4110              	.LASF52:
+ 4111 0090 453A5C50 		.ascii	"E:\\PSoC Creator\\connect4\\connect4.cydsn\000"
+ 4111      536F4320 
+ 4111      43726561 
+ 4111      746F725C 
+ 4111      636F6E6E 
+ 4112              	.LASF21:
+ 4113 00b8 7061636B 		.ascii	"packet_type\000"
+ 4113      65745F74 
+ 4113      79706500 
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 85
+
+
+ 4114              	.LASF25:
+ 4115 00c4 64656C61 		.ascii	"delay\000"
+ 4115      7900
+ 4116              	.LASF11:
+ 4117 00ca 666C6F61 		.ascii	"float\000"
+ 4117      7400
+ 4118              	.LASF6:
+ 4119 00d0 6C6F6E67 		.ascii	"long long int\000"
+ 4119      206C6F6E 
+ 4119      6720696E 
+ 4119      7400
+ 4120              	.LASF31:
+ 4121 00de 636C6561 		.ascii	"clear_board\000"
+ 4121      725F626F 
+ 4121      61726400 
+ 4122              	.LASF4:
+ 4123 00ea 6C6F6E67 		.ascii	"long int\000"
+ 4123      20696E74 
+ 4123      00
+ 4124              	.LASF33:
+ 4125 00f3 6F666673 		.ascii	"offset\000"
+ 4125      657400
+ 4126              	.LASF27:
+ 4127 00fa 73656E64 		.ascii	"send_packet\000"
+ 4127      5F706163 
+ 4127      6B657400 
+ 4128              	.LASF47:
+ 4129 0106 706C6179 		.ascii	"player1_turn\000"
+ 4129      6572315F 
+ 4129      7475726E 
+ 4129      00
+ 4130              	.LASF20:
+ 4131 0113 706C6179 		.ascii	"player_id\000"
+ 4131      65725F69 
+ 4131      6400
+ 4132              	.LASF15:
+ 4133 011d 6C656E67 		.ascii	"length\000"
+ 4133      746800
+ 4134              	.LASF1:
+ 4135 0124 756E7369 		.ascii	"unsigned char\000"
+ 4135      676E6564 
+ 4135      20636861 
+ 4135      7200
+ 4136              	.LASF0:
+ 4137 0132 7369676E 		.ascii	"signed char\000"
+ 4137      65642063 
+ 4137      68617200 
+ 4138              	.LASF39:
+ 4139 013e 64697363 		.ascii	"disc\000"
+ 4139      00
+ 4140              	.LASF7:
+ 4141 0143 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 4141      206C6F6E 
+ 4141      6720756E 
+ 4141      7369676E 
+ 4141      65642069 
+ 4142              	.LASF49:
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 86
+
+
+ 4143 015a 6C6F6361 		.ascii	"locating\000"
+ 4143      74696E67 
+ 4143      00
+ 4144              	.LASF8:
+ 4145 0163 756E7369 		.ascii	"unsigned int\000"
+ 4145      676E6564 
+ 4145      20696E74 
+ 4145      00
+ 4146              	.LASF16:
+ 4147 0170 6170695F 		.ascii	"api_id\000"
+ 4147      696400
+ 4148              	.LASF3:
+ 4149 0177 73686F72 		.ascii	"short unsigned int\000"
+ 4149      7420756E 
+ 4149      7369676E 
+ 4149      65642069 
+ 4149      6E7400
+ 4150              	.LASF13:
+ 4151 018a 63686172 		.ascii	"char\000"
+ 4151      00
+ 4152              	.LASF35:
+ 4153 018f 5F426F6F 		.ascii	"_Bool\000"
+ 4153      6C00
+ 4154              	.LASF23:
+ 4155 0195 7061636B 		.ascii	"packet_t\000"
+ 4155      65745F74 
+ 4155      00
+ 4156              	.LASF37:
+ 4157 019e 63656C6C 		.ascii	"cells\000"
+ 4157      7300
+ 4158              	.LASF41:
+ 4159 01a4 72656164 		.ascii	"reading\000"
+ 4159      696E6700 
+ 4160              	.LASF48:
+ 4161 01ac 706C6179 		.ascii	"player2_local\000"
+ 4161      6572325F 
+ 4161      6C6F6361 
+ 4161      6C00
+ 4162              	.LASF17:
+ 4163 01ba 6672616D 		.ascii	"frame_id\000"
+ 4163      655F6964 
+ 4163      00
+ 4164              	.LASF5:
+ 4165 01c3 6C6F6E67 		.ascii	"long unsigned int\000"
+ 4165      20756E73 
+ 4165      69676E65 
+ 4165      6420696E 
+ 4165      7400
+ 4166              	.LASF45:
+ 4167 01d5 706C6179 		.ascii	"player1_color\000"
+ 4167      6572315F 
+ 4167      636F6C6F 
+ 4167      7200
+ 4168              	.LASF12:
+ 4169 01e3 646F7562 		.ascii	"double\000"
+ 4169      6C6500
+ 4170              	.LASF51:
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccBzJ6gP.s 			page 87
+
+
+ 4171 01ea 2E5C6D61 		.ascii	".\\main.c\000"
+ 4171      696E2E63 
+ 4171      00
+ 4172              	.LASF40:
+ 4173 01f3 64726F70 		.ascii	"dropped\000"
+ 4173      70656400 
+ 4174              	.LASF43:
+ 4175 01fb 706C6179 		.ascii	"player1\000"
+ 4175      65723100 
+ 4176              	.LASF44:
+ 4177 0203 706C6179 		.ascii	"player2\000"
+ 4177      65723200 
+ 4178              	.LASF18:
+ 4179 020b 64657374 		.ascii	"destination\000"
+ 4179      696E6174 
+ 4179      696F6E00 
+ 4180              	.LASF50:
+ 4181 0217 474E5520 		.ascii	"GNU C 4.4.1\000"
+ 4181      4320342E 
+ 4181      342E3100 
+ 4182              	.LASF42:
+ 4183 0223 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 4183      52784275 
+ 4183      66666572 
+ 4183      00
+ 4184              	.LASF54:
+ 4185 0230 746F6767 		.ascii	"toggle\000"
+ 4185      6C6500
+ 4186              	.LASF28:
+ 4187 0237 6D6F7665 		.ascii	"move\000"
+ 4187      00
+ 4188              	.LASF26:
+ 4189 023c 73686F77 		.ascii	"show_packet\000"
+ 4189      5F706163 
+ 4189      6B657400 
+ 4190              		.ident	"GCC: (Sourcery G++ Lite 2010q1-188) 4.4.1"

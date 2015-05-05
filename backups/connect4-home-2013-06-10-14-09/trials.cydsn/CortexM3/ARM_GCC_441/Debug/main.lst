@@ -1,0 +1,870 @@
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccrHY1Dz.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 18, 4
+  12              		.thumb
+  13              		.file	"main.c"
+  14              		.section	.debug_abbrev,"",%progbits
+  15              	.Ldebug_abbrev0:
+  16              		.section	.debug_info,"",%progbits
+  17              	.Ldebug_info0:
+  18              		.section	.debug_line,"",%progbits
+  19              	.Ldebug_line0:
+  20 0000 9F000000 		.text
+  20      02005300 
+  20      00000201 
+  20      FB0E0D00 
+  20      01010101 
+  21              	.Ltext0:
+  22              		.cfi_sections	.debug_frame
+  23              		.global	count
+  24              		.bss
+  25              		.align	1
+  26              		.type	count, %object
+  27              		.size	count, 2
+  28              	count:
+  29 0000 0000     		.space	2
+  30              		.global	testing
+  31              		.type	testing, %object
+  32              		.size	testing, 1
+  33              	testing:
+  34 0002 00       		.space	1
+  35 0003 00       		.section	.text.test,"ax",%progbits
+  36              		.align	2
+  37              		.global	test
+  38              		.thumb
+  39              		.thumb_func
+  40              		.type	test, %function
+  41              	test:
+  42              	.LFB29:
+  43              		.file 1 ".\\main.c"
+   1:.\main.c      **** #include <device.h>
+   2:.\main.c      **** #include <stdbool.h>
+   3:.\main.c      **** 
+   4:.\main.c      **** #define BUS_CLK_FREQ    24000000 // Hz
+   5:.\main.c      **** #define REFRESH_RATE    350      // Hz
+   6:.\main.c      **** 
+   7:.\main.c      **** uint16 count = 0;
+   8:.\main.c      **** bool testing = false;
+   9:.\main.c      **** CY_ISR (test) {
+  44              		.loc 1 9 0
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccrHY1Dz.s 			page 2
+
+
+  45              		.cfi_startproc
+  46              		@ args = 0, pretend = 0, frame = 0
+  47              		@ frame_needed = 1, uses_anonymous_args = 0
+  48              		@ link register save eliminated.
+  49 0000 80B4     		push	{r7}
+  50              	.LCFI0:
+  51              		.cfi_def_cfa_offset 4
+  52 0002 00AF     		add	r7, sp, #0
+  53              		.cfi_offset 7, -4
+  54              	.LCFI1:
+  55              		.cfi_def_cfa_register 7
+  10:.\main.c      ****     if (testing) ++count;
+  56              		.loc 1 10 0
+  57 0004 40F20003 		movw	r3, #:lower16:testing
+  58 0008 C0F20003 		movt	r3, #:upper16:testing
+  59 000c 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+  60 000e 002B     		cmp	r3, #0
+  61 0010 0CD0     		beq	.L3
+  62 0012 40F20003 		movw	r3, #:lower16:count
+  63 0016 C0F20003 		movt	r3, #:upper16:count
+  64 001a 1B88     		ldrh	r3, [r3, #0]
+  65 001c 03F10103 		add	r3, r3, #1
+  66 0020 9AB2     		uxth	r2, r3
+  67 0022 40F20003 		movw	r3, #:lower16:count
+  68 0026 C0F20003 		movt	r3, #:upper16:count
+  69 002a 1A80     		strh	r2, [r3, #0]	@ movhi
+  70              	.L3:
+  11:.\main.c      **** }
+  71              		.loc 1 11 0
+  72 002c BD46     		mov	sp, r7
+  73 002e 80BC     		pop	{r7}
+  74 0030 7047     		bx	lr
+  75              		.cfi_endproc
+  76              	.LFE29:
+  77              		.size	test, .-test
+  78 0032 00BF     		.section	.text.check,"ax",%progbits
+  79              		.align	2
+  80              		.global	check
+  81              		.thumb
+  82              		.thumb_func
+  83              		.type	check, %function
+  84              	check:
+  85              	.LFB30:
+  12:.\main.c      **** 
+  13:.\main.c      **** void check () {
+  86              		.loc 1 13 0
+  87              		.cfi_startproc
+  88              		@ args = 0, pretend = 0, frame = 8
+  89              		@ frame_needed = 1, uses_anonymous_args = 0
+  90 0000 80B5     		push	{r7, lr}
+  91              	.LCFI2:
+  92              		.cfi_def_cfa_offset 8
+  93 0002 82B0     		sub	sp, sp, #8
+  94              	.LCFI3:
+  95              		.cfi_def_cfa_offset 16
+  96 0004 00AF     		add	r7, sp, #0
+  97              		.cfi_offset 14, -4
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccrHY1Dz.s 			page 3
+
+
+  98              		.cfi_offset 7, -8
+  99              	.LCFI4:
+ 100              		.cfi_def_cfa_register 7
+  14:.\main.c      ****     uint8 t;
+  15:.\main.c      ****     for (t=5; t > 0 ;--t) {
+ 101              		.loc 1 15 0
+ 102 0006 4FF00503 		mov	r3, #5
+ 103 000a FB71     		strb	r3, [r7, #7]
+ 104 000c 11E0     		b	.L5
+ 105              	.L6:
+  16:.\main.c      ****         LCD_Position(1,0);
+ 106              		.loc 1 16 0
+ 107 000e 4FF00100 		mov	r0, #1
+ 108 0012 4FF00001 		mov	r1, #0
+ 109 0016 FFF7FEFF 		bl	LCD_Position
+  17:.\main.c      ****         LCD_PrintNumber(t);
+ 110              		.loc 1 17 0
+ 111 001a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 112 001c 1846     		mov	r0, r3
+ 113 001e FFF7FEFF 		bl	LCD_PrintNumber
+  18:.\main.c      ****         CyDelay(1000);
+ 114              		.loc 1 18 0
+ 115 0022 4FF47A70 		mov	r0, #1000
+ 116 0026 FFF7FEFF 		bl	CyDelay
+ 117              		.loc 1 15 0
+ 118 002a FB79     		ldrb	r3, [r7, #7]
+ 119 002c 03F1FF33 		add	r3, r3, #-1
+ 120 0030 FB71     		strb	r3, [r7, #7]
+ 121              	.L5:
+ 122 0032 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 123 0034 002B     		cmp	r3, #0
+ 124 0036 EAD1     		bne	.L6
+  19:.\main.c      ****     }
+  20:.\main.c      **** }
+ 125              		.loc 1 20 0
+ 126 0038 07F10807 		add	r7, r7, #8
+ 127 003c BD46     		mov	sp, r7
+ 128 003e 80BD     		pop	{r7, pc}
+ 129              		.cfi_endproc
+ 130              	.LFE30:
+ 131              		.size	check, .-check
+ 132              		.section	.rodata
+ 133              		.align	2
+ 134              	.LC0:
+ 135 0000 696E6974 		.ascii	"initializing...\000"
+ 135      69616C69 
+ 135      7A696E67 
+ 135      2E2E2E00 
+ 136              		.align	2
+ 137              	.LC1:
+ 138 0010 74657374 		.ascii	"testing timer...\000"
+ 138      696E6720 
+ 138      74696D65 
+ 138      722E2E2E 
+ 138      00
+ 139 0021 000000   		.align	2
+ 140              	.LC2:
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccrHY1Dz.s 			page 4
+
+
+ 141 0024 646F6E65 		.ascii	"done\000"
+ 141      00
+ 142 0029 000000   		.section	.text.main,"ax",%progbits
+ 143              		.align	2
+ 144              		.global	main
+ 145              		.thumb
+ 146              		.thumb_func
+ 147              		.type	main, %function
+ 148              	main:
+ 149              	.LFB31:
+  21:.\main.c      **** 
+  22:.\main.c      **** void main () {
+ 150              		.loc 1 22 0
+ 151              		.cfi_startproc
+ 152              		@ args = 0, pretend = 0, frame = 0
+ 153              		@ frame_needed = 1, uses_anonymous_args = 0
+ 154 0000 80B5     		push	{r7, lr}
+ 155              	.LCFI5:
+ 156              		.cfi_def_cfa_offset 8
+ 157 0002 00AF     		add	r7, sp, #0
+ 158              		.cfi_offset 14, -4
+ 159              		.cfi_offset 7, -8
+ 160              	.LCFI6:
+ 161              		.cfi_def_cfa_register 7
+  23:.\main.c      ****     LCD_Start();
+ 162              		.loc 1 23 0
+ 163 0004 FFF7FEFF 		bl	LCD_Start
+  24:.\main.c      ****     LCD_Position(0,0);
+ 164              		.loc 1 24 0
+ 165 0008 4FF00000 		mov	r0, #0
+ 166 000c 4FF00001 		mov	r1, #0
+ 167 0010 FFF7FEFF 		bl	LCD_Position
+  25:.\main.c      ****     LCD_PrintString("initializing...");
+ 168              		.loc 1 25 0
+ 169 0014 40F20000 		movw	r0, #:lower16:.LC0
+ 170 0018 C0F20000 		movt	r0, #:upper16:.LC0
+ 171 001c FFF7FEFF 		bl	LCD_PrintString
+  26:.\main.c      ****     CyGlobalIntEnable;
+ 172              		.loc 1 26 0
+ 173              	@ 26 ".\main.c" 1
+ 174 0020 62B6     		CPSIE   i
+ 175              	@ 0 "" 2
+  27:.\main.c      ****     ISR_StartEx(test);
+ 176              		.loc 1 27 0
+ 177              		.thumb
+ 178 0022 40F20000 		movw	r0, #:lower16:test
+ 179 0026 C0F20000 		movt	r0, #:upper16:test
+ 180 002a FFF7FEFF 		bl	ISR_StartEx
+  28:.\main.c      ****     Timer_Start();
+ 181              		.loc 1 28 0
+ 182 002e FFF7FEFF 		bl	Timer_Start
+  29:.\main.c      ****     
+  30:.\main.c      ****     LCD_Position(0,0);
+ 183              		.loc 1 30 0
+ 184 0032 4FF00000 		mov	r0, #0
+ 185 0036 4FF00001 		mov	r1, #0
+ 186 003a FFF7FEFF 		bl	LCD_Position
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccrHY1Dz.s 			page 5
+
+
+  31:.\main.c      ****     LCD_PrintString("testing timer...");
+ 187              		.loc 1 31 0
+ 188 003e 40F20000 		movw	r0, #:lower16:.LC1
+ 189 0042 C0F20000 		movt	r0, #:upper16:.LC1
+ 190 0046 FFF7FEFF 		bl	LCD_PrintString
+  32:.\main.c      ****     testing = true;
+ 191              		.loc 1 32 0
+ 192 004a 40F20003 		movw	r3, #:lower16:testing
+ 193 004e C0F20003 		movt	r3, #:upper16:testing
+ 194 0052 4FF00102 		mov	r2, #1
+ 195 0056 1A70     		strb	r2, [r3, #0]
+  33:.\main.c      ****     check();
+ 196              		.loc 1 33 0
+ 197 0058 FFF7FEFF 		bl	check
+  34:.\main.c      ****     Timer_WritePeriod(BUS_CLK_FREQ/REFRESH_RATE);
+ 198              		.loc 1 34 0
+ 199 005c 40F6DB30 		movw	r0, #3035
+ 200 0060 FFF7FEFF 		bl	Timer_WritePeriod
+  35:.\main.c      ****     check();
+ 201              		.loc 1 35 0
+ 202 0064 FFF7FEFF 		bl	check
+  36:.\main.c      ****     testing = false;
+ 203              		.loc 1 36 0
+ 204 0068 40F20003 		movw	r3, #:lower16:testing
+ 205 006c C0F20003 		movt	r3, #:upper16:testing
+ 206 0070 4FF00002 		mov	r2, #0
+ 207 0074 1A70     		strb	r2, [r3, #0]
+  37:.\main.c      ****     LCD_Position(1,0);
+ 208              		.loc 1 37 0
+ 209 0076 4FF00100 		mov	r0, #1
+ 210 007a 4FF00001 		mov	r1, #0
+ 211 007e FFF7FEFF 		bl	LCD_Position
+  38:.\main.c      ****     LCD_PrintString("done");
+ 212              		.loc 1 38 0
+ 213 0082 40F20000 		movw	r0, #:lower16:.LC2
+ 214 0086 C0F20000 		movt	r0, #:upper16:.LC2
+ 215 008a FFF7FEFF 		bl	LCD_PrintString
+  39:.\main.c      ****     LCD_Position(1,8);
+ 216              		.loc 1 39 0
+ 217 008e 4FF00100 		mov	r0, #1
+ 218 0092 4FF00801 		mov	r1, #8
+ 219 0096 FFF7FEFF 		bl	LCD_Position
+  40:.\main.c      ****     LCD_PrintNumber(count);
+ 220              		.loc 1 40 0
+ 221 009a 40F20003 		movw	r3, #:lower16:count
+ 222 009e C0F20003 		movt	r3, #:upper16:count
+ 223 00a2 1B88     		ldrh	r3, [r3, #0]
+ 224 00a4 1846     		mov	r0, r3
+ 225 00a6 FFF7FEFF 		bl	LCD_PrintNumber
+ 226              	.L9:
+  41:.\main.c      ****     
+  42:.\main.c      ****     while (true);
+ 227              		.loc 1 42 0
+ 228 00aa FEE7     		b	.L9
+ 229              		.cfi_endproc
+ 230              	.LFE31:
+ 231              		.size	main, .-main
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccrHY1Dz.s 			page 6
+
+
+ 232              		.text
+ 233              	.Letext0:
+ 234              		.section	.debug_loc,"",%progbits
+ 235              	.Ldebug_loc0:
+ 236              	.LLST0:
+ 237 0000 00000000 		.4byte	.LFB29
+ 238 0004 02000000 		.4byte	.LCFI0
+ 239 0008 0100     		.2byte	0x1
+ 240 000a 5D       		.byte	0x5d
+ 241 000b 02000000 		.4byte	.LCFI0
+ 242 000f 04000000 		.4byte	.LCFI1
+ 243 0013 0200     		.2byte	0x2
+ 244 0015 7D       		.byte	0x7d
+ 245 0016 04       		.sleb128 4
+ 246 0017 04000000 		.4byte	.LCFI1
+ 247 001b 32000000 		.4byte	.LFE29
+ 248 001f 0200     		.2byte	0x2
+ 249 0021 77       		.byte	0x77
+ 250 0022 04       		.sleb128 4
+ 251 0023 00000000 		.4byte	0x0
+ 252 0027 00000000 		.4byte	0x0
+ 253              	.LLST1:
+ 254 002b 00000000 		.4byte	.LFB30
+ 255 002f 02000000 		.4byte	.LCFI2
+ 256 0033 0100     		.2byte	0x1
+ 257 0035 5D       		.byte	0x5d
+ 258 0036 02000000 		.4byte	.LCFI2
+ 259 003a 04000000 		.4byte	.LCFI3
+ 260 003e 0200     		.2byte	0x2
+ 261 0040 7D       		.byte	0x7d
+ 262 0041 08       		.sleb128 8
+ 263 0042 04000000 		.4byte	.LCFI3
+ 264 0046 06000000 		.4byte	.LCFI4
+ 265 004a 0200     		.2byte	0x2
+ 266 004c 7D       		.byte	0x7d
+ 267 004d 10       		.sleb128 16
+ 268 004e 06000000 		.4byte	.LCFI4
+ 269 0052 40000000 		.4byte	.LFE30
+ 270 0056 0200     		.2byte	0x2
+ 271 0058 77       		.byte	0x77
+ 272 0059 10       		.sleb128 16
+ 273 005a 00000000 		.4byte	0x0
+ 274 005e 00000000 		.4byte	0x0
+ 275              	.LLST2:
+ 276 0062 00000000 		.4byte	.LFB31
+ 277 0066 02000000 		.4byte	.LCFI5
+ 278 006a 0100     		.2byte	0x1
+ 279 006c 5D       		.byte	0x5d
+ 280 006d 02000000 		.4byte	.LCFI5
+ 281 0071 04000000 		.4byte	.LCFI6
+ 282 0075 0200     		.2byte	0x2
+ 283 0077 7D       		.byte	0x7d
+ 284 0078 08       		.sleb128 8
+ 285 0079 04000000 		.4byte	.LCFI6
+ 286 007d AC000000 		.4byte	.LFE31
+ 287 0081 0200     		.2byte	0x2
+ 288 0083 77       		.byte	0x77
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccrHY1Dz.s 			page 7
+
+
+ 289 0084 08       		.sleb128 8
+ 290 0085 00000000 		.4byte	0x0
+ 291 0089 00000000 		.4byte	0x0
+ 292              		.file 2 "./Generated_Source/PSoC5/cytypes.h"
+ 293              		.file 3 "./Generated_Source/PSoC5/core_cm3.h"
+ 294              		.section	.debug_info
+ 295 0000 26010000 		.4byte	0x126
+ 296 0004 0200     		.2byte	0x2
+ 297 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 298 000a 04       		.byte	0x4
+ 299 000b 01       		.uleb128 0x1
+ 300 000c 56000000 		.4byte	.LASF18
+ 301 0010 01       		.byte	0x1
+ 302 0011 F2000000 		.4byte	.LASF19
+ 303 0015 8A000000 		.4byte	.LASF20
+ 304 0019 00000000 		.4byte	0x0
+ 305 001d 00000000 		.4byte	0x0
+ 306 0021 00000000 		.4byte	.Ldebug_ranges0+0x0
+ 307 0025 00000000 		.4byte	.Ldebug_line0
+ 308 0029 02       		.uleb128 0x2
+ 309 002a 01       		.byte	0x1
+ 310 002b 06       		.byte	0x6
+ 311 002c DB000000 		.4byte	.LASF0
+ 312 0030 02       		.uleb128 0x2
+ 313 0031 01       		.byte	0x1
+ 314 0032 08       		.byte	0x8
+ 315 0033 14000000 		.4byte	.LASF1
+ 316 0037 02       		.uleb128 0x2
+ 317 0038 02       		.byte	0x2
+ 318 0039 05       		.byte	0x5
+ 319 003a 80000000 		.4byte	.LASF2
+ 320 003e 02       		.uleb128 0x2
+ 321 003f 02       		.byte	0x2
+ 322 0040 07       		.byte	0x7
+ 323 0041 C8000000 		.4byte	.LASF3
+ 324 0045 02       		.uleb128 0x2
+ 325 0046 04       		.byte	0x4
+ 326 0047 05       		.byte	0x5
+ 327 0048 B7000000 		.4byte	.LASF4
+ 328 004c 02       		.uleb128 0x2
+ 329 004d 04       		.byte	0x4
+ 330 004e 07       		.byte	0x7
+ 331 004f 2D000000 		.4byte	.LASF5
+ 332 0053 02       		.uleb128 0x2
+ 333 0054 08       		.byte	0x8
+ 334 0055 05       		.byte	0x5
+ 335 0056 00000000 		.4byte	.LASF6
+ 336 005a 02       		.uleb128 0x2
+ 337 005b 08       		.byte	0x8
+ 338 005c 07       		.byte	0x7
+ 339 005d 3F000000 		.4byte	.LASF7
+ 340 0061 03       		.uleb128 0x3
+ 341 0062 04       		.byte	0x4
+ 342 0063 05       		.byte	0x5
+ 343 0064 696E7400 		.ascii	"int\000"
+ 344 0068 02       		.uleb128 0x2
+ 345 0069 04       		.byte	0x4
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccrHY1Dz.s 			page 8
+
+
+ 346 006a 07       		.byte	0x7
+ 347 006b 02010000 		.4byte	.LASF8
+ 348 006f 04       		.uleb128 0x4
+ 349 0070 27000000 		.4byte	.LASF9
+ 350 0074 02       		.byte	0x2
+ 351 0075 4C       		.byte	0x4c
+ 352 0076 30000000 		.4byte	0x30
+ 353 007a 04       		.uleb128 0x4
+ 354 007b FB000000 		.4byte	.LASF10
+ 355 007f 02       		.byte	0x2
+ 356 0080 4D       		.byte	0x4d
+ 357 0081 3E000000 		.4byte	0x3e
+ 358 0085 02       		.uleb128 0x2
+ 359 0086 04       		.byte	0x4
+ 360 0087 04       		.byte	0x4
+ 361 0088 EC000000 		.4byte	.LASF11
+ 362 008c 02       		.uleb128 0x2
+ 363 008d 08       		.byte	0x8
+ 364 008e 04       		.byte	0x4
+ 365 008f B0000000 		.4byte	.LASF12
+ 366 0093 02       		.uleb128 0x2
+ 367 0094 01       		.byte	0x1
+ 368 0095 08       		.byte	0x8
+ 369 0096 68000000 		.4byte	.LASF13
+ 370 009a 05       		.uleb128 0x5
+ 371 009b 04       		.byte	0x4
+ 372 009c 07       		.byte	0x7
+ 373 009d 06       		.uleb128 0x6
+ 374 009e 01       		.byte	0x1
+ 375 009f E7000000 		.4byte	.LASF21
+ 376 00a3 01       		.byte	0x1
+ 377 00a4 09       		.byte	0x9
+ 378 00a5 01       		.byte	0x1
+ 379 00a6 00000000 		.4byte	.LFB29
+ 380 00aa 32000000 		.4byte	.LFE29
+ 381 00ae 00000000 		.4byte	.LLST0
+ 382 00b2 07       		.uleb128 0x7
+ 383 00b3 01       		.byte	0x1
+ 384 00b4 0E000000 		.4byte	.LASF22
+ 385 00b8 01       		.byte	0x1
+ 386 00b9 0D       		.byte	0xd
+ 387 00ba 00000000 		.4byte	.LFB30
+ 388 00be 40000000 		.4byte	.LFE30
+ 389 00c2 2B000000 		.4byte	.LLST1
+ 390 00c6 D7000000 		.4byte	0xd7
+ 391 00ca 08       		.uleb128 0x8
+ 392 00cb 7400     		.ascii	"t\000"
+ 393 00cd 01       		.byte	0x1
+ 394 00ce 0E       		.byte	0xe
+ 395 00cf 6F000000 		.4byte	0x6f
+ 396 00d3 02       		.byte	0x2
+ 397 00d4 91       		.byte	0x91
+ 398 00d5 77       		.sleb128 -9
+ 399 00d6 00       		.byte	0x0
+ 400 00d7 09       		.uleb128 0x9
+ 401 00d8 01       		.byte	0x1
+ 402 00d9 22000000 		.4byte	.LASF23
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccrHY1Dz.s 			page 9
+
+
+ 403 00dd 01       		.byte	0x1
+ 404 00de 16       		.byte	0x16
+ 405 00df 00000000 		.4byte	.LFB31
+ 406 00e3 AC000000 		.4byte	.LFE31
+ 407 00e7 62000000 		.4byte	.LLST2
+ 408 00eb 0A       		.uleb128 0xa
+ 409 00ec 73000000 		.4byte	.LASF14
+ 410 00f0 03       		.byte	0x3
+ 411 00f1 CE06     		.2byte	0x6ce
+ 412 00f3 F9000000 		.4byte	0xf9
+ 413 00f7 01       		.byte	0x1
+ 414 00f8 01       		.byte	0x1
+ 415 00f9 0B       		.uleb128 0xb
+ 416 00fa 61000000 		.4byte	0x61
+ 417 00fe 0C       		.uleb128 0xc
+ 418 00ff 6D000000 		.4byte	.LASF15
+ 419 0103 01       		.byte	0x1
+ 420 0104 07       		.byte	0x7
+ 421 0105 7A000000 		.4byte	0x7a
+ 422 0109 01       		.byte	0x1
+ 423 010a 05       		.byte	0x5
+ 424 010b 03       		.byte	0x3
+ 425 010c 00000000 		.4byte	count
+ 426 0110 0C       		.uleb128 0xc
+ 427 0111 C0000000 		.4byte	.LASF16
+ 428 0115 01       		.byte	0x1
+ 429 0116 08       		.byte	0x8
+ 430 0117 22010000 		.4byte	0x122
+ 431 011b 01       		.byte	0x1
+ 432 011c 05       		.byte	0x5
+ 433 011d 03       		.byte	0x3
+ 434 011e 00000000 		.4byte	testing
+ 435 0122 02       		.uleb128 0x2
+ 436 0123 01       		.byte	0x1
+ 437 0124 02       		.byte	0x2
+ 438 0125 62000000 		.4byte	.LASF17
+ 439 0129 00       		.byte	0x0
+ 440              		.section	.debug_abbrev
+ 441 0000 01       		.uleb128 0x1
+ 442 0001 11       		.uleb128 0x11
+ 443 0002 01       		.byte	0x1
+ 444 0003 25       		.uleb128 0x25
+ 445 0004 0E       		.uleb128 0xe
+ 446 0005 13       		.uleb128 0x13
+ 447 0006 0B       		.uleb128 0xb
+ 448 0007 03       		.uleb128 0x3
+ 449 0008 0E       		.uleb128 0xe
+ 450 0009 1B       		.uleb128 0x1b
+ 451 000a 0E       		.uleb128 0xe
+ 452 000b 11       		.uleb128 0x11
+ 453 000c 01       		.uleb128 0x1
+ 454 000d 52       		.uleb128 0x52
+ 455 000e 01       		.uleb128 0x1
+ 456 000f 55       		.uleb128 0x55
+ 457 0010 06       		.uleb128 0x6
+ 458 0011 10       		.uleb128 0x10
+ 459 0012 06       		.uleb128 0x6
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccrHY1Dz.s 			page 10
+
+
+ 460 0013 00       		.byte	0x0
+ 461 0014 00       		.byte	0x0
+ 462 0015 02       		.uleb128 0x2
+ 463 0016 24       		.uleb128 0x24
+ 464 0017 00       		.byte	0x0
+ 465 0018 0B       		.uleb128 0xb
+ 466 0019 0B       		.uleb128 0xb
+ 467 001a 3E       		.uleb128 0x3e
+ 468 001b 0B       		.uleb128 0xb
+ 469 001c 03       		.uleb128 0x3
+ 470 001d 0E       		.uleb128 0xe
+ 471 001e 00       		.byte	0x0
+ 472 001f 00       		.byte	0x0
+ 473 0020 03       		.uleb128 0x3
+ 474 0021 24       		.uleb128 0x24
+ 475 0022 00       		.byte	0x0
+ 476 0023 0B       		.uleb128 0xb
+ 477 0024 0B       		.uleb128 0xb
+ 478 0025 3E       		.uleb128 0x3e
+ 479 0026 0B       		.uleb128 0xb
+ 480 0027 03       		.uleb128 0x3
+ 481 0028 08       		.uleb128 0x8
+ 482 0029 00       		.byte	0x0
+ 483 002a 00       		.byte	0x0
+ 484 002b 04       		.uleb128 0x4
+ 485 002c 16       		.uleb128 0x16
+ 486 002d 00       		.byte	0x0
+ 487 002e 03       		.uleb128 0x3
+ 488 002f 0E       		.uleb128 0xe
+ 489 0030 3A       		.uleb128 0x3a
+ 490 0031 0B       		.uleb128 0xb
+ 491 0032 3B       		.uleb128 0x3b
+ 492 0033 0B       		.uleb128 0xb
+ 493 0034 49       		.uleb128 0x49
+ 494 0035 13       		.uleb128 0x13
+ 495 0036 00       		.byte	0x0
+ 496 0037 00       		.byte	0x0
+ 497 0038 05       		.uleb128 0x5
+ 498 0039 24       		.uleb128 0x24
+ 499 003a 00       		.byte	0x0
+ 500 003b 0B       		.uleb128 0xb
+ 501 003c 0B       		.uleb128 0xb
+ 502 003d 3E       		.uleb128 0x3e
+ 503 003e 0B       		.uleb128 0xb
+ 504 003f 00       		.byte	0x0
+ 505 0040 00       		.byte	0x0
+ 506 0041 06       		.uleb128 0x6
+ 507 0042 2E       		.uleb128 0x2e
+ 508 0043 00       		.byte	0x0
+ 509 0044 3F       		.uleb128 0x3f
+ 510 0045 0C       		.uleb128 0xc
+ 511 0046 03       		.uleb128 0x3
+ 512 0047 0E       		.uleb128 0xe
+ 513 0048 3A       		.uleb128 0x3a
+ 514 0049 0B       		.uleb128 0xb
+ 515 004a 3B       		.uleb128 0x3b
+ 516 004b 0B       		.uleb128 0xb
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccrHY1Dz.s 			page 11
+
+
+ 517 004c 27       		.uleb128 0x27
+ 518 004d 0C       		.uleb128 0xc
+ 519 004e 11       		.uleb128 0x11
+ 520 004f 01       		.uleb128 0x1
+ 521 0050 12       		.uleb128 0x12
+ 522 0051 01       		.uleb128 0x1
+ 523 0052 40       		.uleb128 0x40
+ 524 0053 06       		.uleb128 0x6
+ 525 0054 00       		.byte	0x0
+ 526 0055 00       		.byte	0x0
+ 527 0056 07       		.uleb128 0x7
+ 528 0057 2E       		.uleb128 0x2e
+ 529 0058 01       		.byte	0x1
+ 530 0059 3F       		.uleb128 0x3f
+ 531 005a 0C       		.uleb128 0xc
+ 532 005b 03       		.uleb128 0x3
+ 533 005c 0E       		.uleb128 0xe
+ 534 005d 3A       		.uleb128 0x3a
+ 535 005e 0B       		.uleb128 0xb
+ 536 005f 3B       		.uleb128 0x3b
+ 537 0060 0B       		.uleb128 0xb
+ 538 0061 11       		.uleb128 0x11
+ 539 0062 01       		.uleb128 0x1
+ 540 0063 12       		.uleb128 0x12
+ 541 0064 01       		.uleb128 0x1
+ 542 0065 40       		.uleb128 0x40
+ 543 0066 06       		.uleb128 0x6
+ 544 0067 01       		.uleb128 0x1
+ 545 0068 13       		.uleb128 0x13
+ 546 0069 00       		.byte	0x0
+ 547 006a 00       		.byte	0x0
+ 548 006b 08       		.uleb128 0x8
+ 549 006c 34       		.uleb128 0x34
+ 550 006d 00       		.byte	0x0
+ 551 006e 03       		.uleb128 0x3
+ 552 006f 08       		.uleb128 0x8
+ 553 0070 3A       		.uleb128 0x3a
+ 554 0071 0B       		.uleb128 0xb
+ 555 0072 3B       		.uleb128 0x3b
+ 556 0073 0B       		.uleb128 0xb
+ 557 0074 49       		.uleb128 0x49
+ 558 0075 13       		.uleb128 0x13
+ 559 0076 02       		.uleb128 0x2
+ 560 0077 0A       		.uleb128 0xa
+ 561 0078 00       		.byte	0x0
+ 562 0079 00       		.byte	0x0
+ 563 007a 09       		.uleb128 0x9
+ 564 007b 2E       		.uleb128 0x2e
+ 565 007c 00       		.byte	0x0
+ 566 007d 3F       		.uleb128 0x3f
+ 567 007e 0C       		.uleb128 0xc
+ 568 007f 03       		.uleb128 0x3
+ 569 0080 0E       		.uleb128 0xe
+ 570 0081 3A       		.uleb128 0x3a
+ 571 0082 0B       		.uleb128 0xb
+ 572 0083 3B       		.uleb128 0x3b
+ 573 0084 0B       		.uleb128 0xb
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccrHY1Dz.s 			page 12
+
+
+ 574 0085 11       		.uleb128 0x11
+ 575 0086 01       		.uleb128 0x1
+ 576 0087 12       		.uleb128 0x12
+ 577 0088 01       		.uleb128 0x1
+ 578 0089 40       		.uleb128 0x40
+ 579 008a 06       		.uleb128 0x6
+ 580 008b 00       		.byte	0x0
+ 581 008c 00       		.byte	0x0
+ 582 008d 0A       		.uleb128 0xa
+ 583 008e 34       		.uleb128 0x34
+ 584 008f 00       		.byte	0x0
+ 585 0090 03       		.uleb128 0x3
+ 586 0091 0E       		.uleb128 0xe
+ 587 0092 3A       		.uleb128 0x3a
+ 588 0093 0B       		.uleb128 0xb
+ 589 0094 3B       		.uleb128 0x3b
+ 590 0095 05       		.uleb128 0x5
+ 591 0096 49       		.uleb128 0x49
+ 592 0097 13       		.uleb128 0x13
+ 593 0098 3F       		.uleb128 0x3f
+ 594 0099 0C       		.uleb128 0xc
+ 595 009a 3C       		.uleb128 0x3c
+ 596 009b 0C       		.uleb128 0xc
+ 597 009c 00       		.byte	0x0
+ 598 009d 00       		.byte	0x0
+ 599 009e 0B       		.uleb128 0xb
+ 600 009f 35       		.uleb128 0x35
+ 601 00a0 00       		.byte	0x0
+ 602 00a1 49       		.uleb128 0x49
+ 603 00a2 13       		.uleb128 0x13
+ 604 00a3 00       		.byte	0x0
+ 605 00a4 00       		.byte	0x0
+ 606 00a5 0C       		.uleb128 0xc
+ 607 00a6 34       		.uleb128 0x34
+ 608 00a7 00       		.byte	0x0
+ 609 00a8 03       		.uleb128 0x3
+ 610 00a9 0E       		.uleb128 0xe
+ 611 00aa 3A       		.uleb128 0x3a
+ 612 00ab 0B       		.uleb128 0xb
+ 613 00ac 3B       		.uleb128 0x3b
+ 614 00ad 0B       		.uleb128 0xb
+ 615 00ae 49       		.uleb128 0x49
+ 616 00af 13       		.uleb128 0x13
+ 617 00b0 3F       		.uleb128 0x3f
+ 618 00b1 0C       		.uleb128 0xc
+ 619 00b2 02       		.uleb128 0x2
+ 620 00b3 0A       		.uleb128 0xa
+ 621 00b4 00       		.byte	0x0
+ 622 00b5 00       		.byte	0x0
+ 623 00b6 00       		.byte	0x0
+ 624              		.section	.debug_pubnames,"",%progbits
+ 625 0000 40000000 		.4byte	0x40
+ 626 0004 0200     		.2byte	0x2
+ 627 0006 00000000 		.4byte	.Ldebug_info0
+ 628 000a 2A010000 		.4byte	0x12a
+ 629 000e 9D000000 		.4byte	0x9d
+ 630 0012 74657374 		.ascii	"test\000"
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccrHY1Dz.s 			page 13
+
+
+ 630      00
+ 631 0017 B2000000 		.4byte	0xb2
+ 632 001b 63686563 		.ascii	"check\000"
+ 632      6B00
+ 633 0021 D7000000 		.4byte	0xd7
+ 634 0025 6D61696E 		.ascii	"main\000"
+ 634      00
+ 635 002a FE000000 		.4byte	0xfe
+ 636 002e 636F756E 		.ascii	"count\000"
+ 636      7400
+ 637 0034 10010000 		.4byte	0x110
+ 638 0038 74657374 		.ascii	"testing\000"
+ 638      696E6700 
+ 639 0040 00000000 		.4byte	0x0
+ 640              		.section	.debug_aranges,"",%progbits
+ 641 0000 2C000000 		.4byte	0x2c
+ 642 0004 0200     		.2byte	0x2
+ 643 0006 00000000 		.4byte	.Ldebug_info0
+ 644 000a 04       		.byte	0x4
+ 645 000b 00       		.byte	0x0
+ 646 000c 0000     		.2byte	0x0
+ 647 000e 0000     		.2byte	0x0
+ 648 0010 00000000 		.4byte	.LFB29
+ 649 0014 32000000 		.4byte	.LFE29-.LFB29
+ 650 0018 00000000 		.4byte	.LFB30
+ 651 001c 40000000 		.4byte	.LFE30-.LFB30
+ 652 0020 00000000 		.4byte	.LFB31
+ 653 0024 AC000000 		.4byte	.LFE31-.LFB31
+ 654 0028 00000000 		.4byte	0x0
+ 655 002c 00000000 		.4byte	0x0
+ 656              		.section	.debug_ranges,"",%progbits
+ 657              	.Ldebug_ranges0:
+ 658 0000 00000000 		.4byte	.Ltext0
+ 659 0004 00000000 		.4byte	.Letext0
+ 660 0008 00000000 		.4byte	.LFB29
+ 661 000c 32000000 		.4byte	.LFE29
+ 662 0010 00000000 		.4byte	.LFB30
+ 663 0014 40000000 		.4byte	.LFE30
+ 664 0018 00000000 		.4byte	.LFB31
+ 665 001c AC000000 		.4byte	.LFE31
+ 666 0020 00000000 		.4byte	0x0
+ 667 0024 00000000 		.4byte	0x0
+ 668              		.section	.debug_str,"MS",%progbits,1
+ 669              	.LASF6:
+ 670 0000 6C6F6E67 		.ascii	"long long int\000"
+ 670      206C6F6E 
+ 670      6720696E 
+ 670      7400
+ 671              	.LASF22:
+ 672 000e 63686563 		.ascii	"check\000"
+ 672      6B00
+ 673              	.LASF1:
+ 674 0014 756E7369 		.ascii	"unsigned char\000"
+ 674      676E6564 
+ 674      20636861 
+ 674      7200
+ 675              	.LASF23:
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccrHY1Dz.s 			page 14
+
+
+ 676 0022 6D61696E 		.ascii	"main\000"
+ 676      00
+ 677              	.LASF9:
+ 678 0027 75696E74 		.ascii	"uint8\000"
+ 678      3800
+ 679              	.LASF5:
+ 680 002d 6C6F6E67 		.ascii	"long unsigned int\000"
+ 680      20756E73 
+ 680      69676E65 
+ 680      6420696E 
+ 680      7400
+ 681              	.LASF7:
+ 682 003f 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 682      206C6F6E 
+ 682      6720756E 
+ 682      7369676E 
+ 682      65642069 
+ 683              	.LASF18:
+ 684 0056 474E5520 		.ascii	"GNU C 4.4.1\000"
+ 684      4320342E 
+ 684      342E3100 
+ 685              	.LASF17:
+ 686 0062 5F426F6F 		.ascii	"_Bool\000"
+ 686      6C00
+ 687              	.LASF13:
+ 688 0068 63686172 		.ascii	"char\000"
+ 688      00
+ 689              	.LASF15:
+ 690 006d 636F756E 		.ascii	"count\000"
+ 690      7400
+ 691              	.LASF14:
+ 692 0073 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 692      52784275 
+ 692      66666572 
+ 692      00
+ 693              	.LASF2:
+ 694 0080 73686F72 		.ascii	"short int\000"
+ 694      7420696E 
+ 694      7400
+ 695              	.LASF20:
+ 696 008a 453A5C50 		.ascii	"E:\\PSoC Creator\\connect4\\trials.cydsn\000"
+ 696      536F4320 
+ 696      43726561 
+ 696      746F725C 
+ 696      636F6E6E 
+ 697              	.LASF12:
+ 698 00b0 646F7562 		.ascii	"double\000"
+ 698      6C6500
+ 699              	.LASF4:
+ 700 00b7 6C6F6E67 		.ascii	"long int\000"
+ 700      20696E74 
+ 700      00
+ 701              	.LASF16:
+ 702 00c0 74657374 		.ascii	"testing\000"
+ 702      696E6700 
+ 703              	.LASF3:
+ 704 00c8 73686F72 		.ascii	"short unsigned int\000"
+ARM GAS  C:\DOCUME~1\david\LOCALS~1\Temp\ccrHY1Dz.s 			page 15
+
+
+ 704      7420756E 
+ 704      7369676E 
+ 704      65642069 
+ 704      6E7400
+ 705              	.LASF0:
+ 706 00db 7369676E 		.ascii	"signed char\000"
+ 706      65642063 
+ 706      68617200 
+ 707              	.LASF21:
+ 708 00e7 74657374 		.ascii	"test\000"
+ 708      00
+ 709              	.LASF11:
+ 710 00ec 666C6F61 		.ascii	"float\000"
+ 710      7400
+ 711              	.LASF19:
+ 712 00f2 2E5C6D61 		.ascii	".\\main.c\000"
+ 712      696E2E63 
+ 712      00
+ 713              	.LASF10:
+ 714 00fb 75696E74 		.ascii	"uint16\000"
+ 714      313600
+ 715              	.LASF8:
+ 716 0102 756E7369 		.ascii	"unsigned int\000"
+ 716      676E6564 
+ 716      20696E74 
+ 716      00
+ 717              		.ident	"GCC: (Sourcery G++ Lite 2010q1-188) 4.4.1"

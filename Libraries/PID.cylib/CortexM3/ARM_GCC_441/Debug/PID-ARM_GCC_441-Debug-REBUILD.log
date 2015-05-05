@@ -1,0 +1,11 @@
+--------------- Rebuild Started: 06/15/2013 21:42:28 Project: PID.c, Configuration: ARM GCC 4.4.1 Debug ---------------
+In file included from .\PID.c:2:
+./PID.h:7: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'PID_toggle'
+arm-none-eabi-gcc.exe -I. -Wno-main -mcpu=cortex-m3 -mthumb -Wall -g -D DEBUG -Wa,-alh=.\CortexM3\ARM_GCC_441\Debug\PID.lst -ffunction-sections -c .\PID.c -o .\CortexM3\ARM_GCC_441\Debug\PID.o
+./PID.h:8: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'PID_mode'
+./PID.h:9: error: expected ')' before 'mode'
+.\PID.c:16: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'PID_toggle'
+.\PID.c:24: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'PID_mode'
+.\PID.c:31: error: expected ')' before 'newMode'
+The command 'arm-none-eabi-gcc.exe' failed with exit code '1'.
+--------------- Rebuild Failed: 06/15/2013 21:42:29 ---------------

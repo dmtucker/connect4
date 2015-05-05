@@ -1,0 +1,26 @@
+Last Modified Date & Time: 04/29/2013 17:19:06
+
+Project : part0
+		Schematic : TopDesign/TopDesign.cysch
+
+		LED	v 1.80	v 1.90
+
+Project : part1
+		Schematic : TopDesign/TopDesign.cysch
+
+		LCD	v 1.80	v 1.90
+		PWM_1	v 2.30	v 2.40
+		Pin_1	v 1.80	v 1.90
+		Pin_2	v 1.80	v 1.90
+
+Project : part0
+		Design Wide APIs
+
+		cy_boot	v 3.30	v 3.40
+
+Project : part1
+		Design Wide APIs
+
+		cy_boot	v 3.30	v 3.40
+
+

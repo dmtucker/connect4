@@ -1,0 +1,2136 @@
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\ccq6UoL9.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 18, 4
+  12              		.thumb
+  13              		.file	"PID.c"
+  14              		.section	.debug_abbrev,"",%progbits
+  15              	.Ldebug_abbrev0:
+  16              		.section	.debug_info,"",%progbits
+  17              	.Ldebug_info0:
+  18              		.section	.debug_line,"",%progbits
+  19              	.Ldebug_line0:
+  20 0000 29010000 		.text
+  20      02004500 
+  20      00000201 
+  20      FB0E0D00 
+  20      01010101 
+  21              	.Ltext0:
+  22              		.cfi_sections	.debug_frame
+  23              		.global	mode
+  24              		.bss
+  25              		.align	2
+  26              		.type	mode, %object
+  27              		.size	mode, 4
+  28              	mode:
+  29 0000 00000000 		.space	4
+  30              		.comm	Input,8,8
+  31              		.comm	Output,8,8
+  32              		.comm	Setpoint,8,8
+  33              		.comm	kp,8,8
+  34              		.comm	ki,8,8
+  35              		.comm	kd,8,8
+  36              		.comm	ITerm,8,8
+  37              		.comm	lastInput,8,8
+  38              		.comm	outMin,8,8
+  39              		.comm	outMax,8,8
+  40              		.section	.text.PID_toggle,"ax",%progbits
+  41              		.align	2
+  42              		.global	PID_toggle
+  43              		.thumb
+  44              		.thumb_func
+  45              		.type	PID_toggle, %function
+  46              	PID_toggle:
+  47              	.LFB29:
+  48              		.file 1 ".\\PID.c"
+   1:.\PID.c       **** #include <device.h>
+   2:.\PID.c       **** #include <stdbool.h>
+   3:.\PID.c       **** #include <PID.h>
+   4:.\PID.c       **** 
+   5:.\PID.c       **** 
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\ccq6UoL9.s 			page 2
+
+
+   6:.\PID.c       **** 
+   7:.\PID.c       **** 
+   8:.\PID.c       **** int mode = MANUAL;
+   9:.\PID.c       **** double Input, Output, Setpoint;
+  10:.\PID.c       **** double kp, ki, kd;
+  11:.\PID.c       **** double ITerm, lastInput;
+  12:.\PID.c       **** double outMin, outMax;
+  13:.\PID.c       **** 
+  14:.\PID.c       **** 
+  15:.\PID.c       **** 
+  16:.\PID.c       **** 
+  17:.\PID.c       **** int PID_toggle () {
+  49              		.loc 1 17 0
+  50              		.cfi_startproc
+  51              		@ args = 0, pretend = 0, frame = 0
+  52              		@ frame_needed = 1, uses_anonymous_args = 0
+  53 0000 80B5     		push	{r7, lr}
+  54              	.LCFI0:
+  55              		.cfi_def_cfa_offset 8
+  56 0002 00AF     		add	r7, sp, #0
+  57              		.cfi_offset 14, -4
+  58              		.cfi_offset 7, -8
+  59              	.LCFI1:
+  60              		.cfi_def_cfa_register 7
+  18:.\PID.c       ****     set_PID_mode((mode == MANUAL) ? AUTOMATIC : MANUAL);
+  61              		.loc 1 18 0
+  62 0004 40F20003 		movw	r3, #:lower16:mode
+  63 0008 C0F20003 		movt	r3, #:upper16:mode
+  64 000c 1B68     		ldr	r3, [r3, #0]
+  65 000e 002B     		cmp	r3, #0
+  66 0010 14BF     		ite	ne
+  67 0012 0023     		movne	r3, #0
+  68 0014 0123     		moveq	r3, #1
+  69 0016 1846     		mov	r0, r3
+  70 0018 FFF7FEFF 		bl	set_PID_mode
+  19:.\PID.c       ****     return mode;
+  71              		.loc 1 19 0
+  72 001c 40F20003 		movw	r3, #:lower16:mode
+  73 0020 C0F20003 		movt	r3, #:upper16:mode
+  74 0024 1B68     		ldr	r3, [r3, #0]
+  20:.\PID.c       **** }
+  75              		.loc 1 20 0
+  76 0026 1846     		mov	r0, r3
+  77 0028 80BD     		pop	{r7, pc}
+  78              		.cfi_endproc
+  79              	.LFE29:
+  80              		.size	PID_toggle, .-PID_toggle
+  81 002a 00BF     		.section	.text.PID_mode,"ax",%progbits
+  82              		.align	2
+  83              		.global	PID_mode
+  84              		.thumb
+  85              		.thumb_func
+  86              		.type	PID_mode, %function
+  87              	PID_mode:
+  88              	.LFB30:
+  21:.\PID.c       **** 
+  22:.\PID.c       **** 
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\ccq6UoL9.s 			page 3
+
+
+  23:.\PID.c       **** 
+  24:.\PID.c       **** 
+  25:.\PID.c       **** int PID_mode () {
+  89              		.loc 1 25 0
+  90              		.cfi_startproc
+  91              		@ args = 0, pretend = 0, frame = 0
+  92              		@ frame_needed = 1, uses_anonymous_args = 0
+  93              		@ link register save eliminated.
+  94 0000 80B4     		push	{r7}
+  95              	.LCFI2:
+  96              		.cfi_def_cfa_offset 4
+  97 0002 00AF     		add	r7, sp, #0
+  98              		.cfi_offset 7, -4
+  99              	.LCFI3:
+ 100              		.cfi_def_cfa_register 7
+  26:.\PID.c       ****     return mode;
+ 101              		.loc 1 26 0
+ 102 0004 40F20003 		movw	r3, #:lower16:mode
+ 103 0008 C0F20003 		movt	r3, #:upper16:mode
+ 104 000c 1B68     		ldr	r3, [r3, #0]
+  27:.\PID.c       **** }
+ 105              		.loc 1 27 0
+ 106 000e 1846     		mov	r0, r3
+ 107 0010 BD46     		mov	sp, r7
+ 108 0012 80BC     		pop	{r7}
+ 109 0014 7047     		bx	lr
+ 110              		.cfi_endproc
+ 111              	.LFE30:
+ 112              		.size	PID_mode, .-PID_mode
+ 113              		.global	__aeabi_dcmpgt
+ 114              		.global	__aeabi_dcmplt
+ 115 0016 00BF     		.section	.text.set_PID_mode,"ax",%progbits
+ 116              		.align	2
+ 117              		.global	set_PID_mode
+ 118              		.thumb
+ 119              		.thumb_func
+ 120              		.type	set_PID_mode, %function
+ 121              	set_PID_mode:
+ 122              	.LFB31:
+  28:.\PID.c       **** 
+  29:.\PID.c       **** 
+  30:.\PID.c       **** 
+  31:.\PID.c       **** 
+  32:.\PID.c       **** void set_PID_mode (int newMode) {
+ 123              		.loc 1 32 0
+ 124              		.cfi_startproc
+ 125              		@ args = 0, pretend = 0, frame = 8
+ 126              		@ frame_needed = 1, uses_anonymous_args = 0
+ 127 0000 90B5     		push	{r4, r7, lr}
+ 128              	.LCFI4:
+ 129              		.cfi_def_cfa_offset 12
+ 130 0002 83B0     		sub	sp, sp, #12
+ 131              	.LCFI5:
+ 132              		.cfi_def_cfa_offset 24
+ 133 0004 00AF     		add	r7, sp, #0
+ 134              		.cfi_offset 14, -4
+ 135              		.cfi_offset 7, -8
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\ccq6UoL9.s 			page 4
+
+
+ 136              		.cfi_offset 4, -12
+ 137              	.LCFI6:
+ 138              		.cfi_def_cfa_register 7
+ 139 0006 7860     		str	r0, [r7, #4]
+  33:.\PID.c       ****     if (newMode == AUTOMATIC && mode != AUTOMATIC) {
+ 140              		.loc 1 33 0
+ 141 0008 7B68     		ldr	r3, [r7, #4]
+ 142 000a 012B     		cmp	r3, #1
+ 143 000c 6BD1     		bne	.L6
+ 144 000e 40F20003 		movw	r3, #:lower16:mode
+ 145 0012 C0F20003 		movt	r3, #:upper16:mode
+ 146 0016 1B68     		ldr	r3, [r3, #0]
+ 147 0018 012B     		cmp	r3, #1
+ 148 001a 64D0     		beq	.L6
+  34:.\PID.c       ****         lastInput = Input;
+ 149              		.loc 1 34 0
+ 150 001c 40F20003 		movw	r3, #:lower16:Input
+ 151 0020 C0F20003 		movt	r3, #:upper16:Input
+ 152 0024 D3E90001 		ldrd	r0, [r3]
+ 153 0028 40F20003 		movw	r3, #:lower16:lastInput
+ 154 002c C0F20003 		movt	r3, #:upper16:lastInput
+ 155 0030 C3E90001 		strd	r0, [r3]
+  35:.\PID.c       ****         ITerm     = Output;
+ 156              		.loc 1 35 0
+ 157 0034 40F20003 		movw	r3, #:lower16:Output
+ 158 0038 C0F20003 		movt	r3, #:upper16:Output
+ 159 003c D3E90001 		ldrd	r0, [r3]
+ 160 0040 40F20003 		movw	r3, #:lower16:ITerm
+ 161 0044 C0F20003 		movt	r3, #:upper16:ITerm
+ 162 0048 C3E90001 		strd	r0, [r3]
+  36:.\PID.c       ****         if      (ITerm > outMax) ITerm = outMax;
+ 163              		.loc 1 36 0
+ 164 004c 40F20003 		movw	r3, #:lower16:ITerm
+ 165 0050 C0F20003 		movt	r3, #:upper16:ITerm
+ 166 0054 D3E90001 		ldrd	r0, [r3]
+ 167 0058 40F20003 		movw	r3, #:lower16:outMax
+ 168 005c C0F20003 		movt	r3, #:upper16:outMax
+ 169 0060 D3E90023 		ldrd	r2, [r3]
+ 170 0064 4FF0000C 		mov	ip, #0
+ 171 0068 6446     		mov	r4, ip
+ 172 006a FFF7FEFF 		bl	__aeabi_dcmpgt
+ 173 006e 0346     		mov	r3, r0
+ 174 0070 002B     		cmp	r3, #0
+ 175 0072 02D0     		beq	.L7
+ 176              	.L8:
+ 177 0074 4FF00103 		mov	r3, #1
+ 178 0078 1C46     		mov	r4, r3
+ 179              	.L7:
+ 180 007a E3B2     		uxtb	r3, r4
+ 181 007c 002B     		cmp	r3, #0
+ 182 007e 0CD0     		beq	.L9
+ 183 0080 40F20003 		movw	r3, #:lower16:outMax
+ 184 0084 C0F20003 		movt	r3, #:upper16:outMax
+ 185 0088 D3E90001 		ldrd	r0, [r3]
+ 186 008c 40F20003 		movw	r3, #:lower16:ITerm
+ 187 0090 C0F20003 		movt	r3, #:upper16:ITerm
+ 188 0094 C3E90001 		strd	r0, [r3]
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\ccq6UoL9.s 			page 5
+
+
+ 189 0098 25E0     		b	.L6
+ 190              	.L9:
+  37:.\PID.c       ****         else if (ITerm < outMin) ITerm = outMin;
+ 191              		.loc 1 37 0
+ 192 009a 40F20003 		movw	r3, #:lower16:ITerm
+ 193 009e C0F20003 		movt	r3, #:upper16:ITerm
+ 194 00a2 D3E90001 		ldrd	r0, [r3]
+ 195 00a6 40F20003 		movw	r3, #:lower16:outMin
+ 196 00aa C0F20003 		movt	r3, #:upper16:outMin
+ 197 00ae D3E90023 		ldrd	r2, [r3]
+ 198 00b2 4FF0000C 		mov	ip, #0
+ 199 00b6 6446     		mov	r4, ip
+ 200 00b8 FFF7FEFF 		bl	__aeabi_dcmplt
+ 201 00bc 0346     		mov	r3, r0
+ 202 00be 002B     		cmp	r3, #0
+ 203 00c0 02D0     		beq	.L10
+ 204              	.L11:
+ 205 00c2 4FF00103 		mov	r3, #1
+ 206 00c6 1C46     		mov	r4, r3
+ 207              	.L10:
+ 208 00c8 E3B2     		uxtb	r3, r4
+ 209 00ca 002B     		cmp	r3, #0
+ 210 00cc 0BD0     		beq	.L6
+ 211 00ce 40F20003 		movw	r3, #:lower16:outMin
+ 212 00d2 C0F20003 		movt	r3, #:upper16:outMin
+ 213 00d6 D3E90001 		ldrd	r0, [r3]
+ 214 00da 40F20003 		movw	r3, #:lower16:ITerm
+ 215 00de C0F20003 		movt	r3, #:upper16:ITerm
+ 216 00e2 C3E90001 		strd	r0, [r3]
+ 217              	.L6:
+  38:.\PID.c       ****     }
+  39:.\PID.c       ****     mode = newMode;
+ 218              		.loc 1 39 0
+ 219 00e6 40F20003 		movw	r3, #:lower16:mode
+ 220 00ea C0F20003 		movt	r3, #:upper16:mode
+ 221 00ee 7A68     		ldr	r2, [r7, #4]
+ 222 00f0 1A60     		str	r2, [r3, #0]
+  40:.\PID.c       **** }
+ 223              		.loc 1 40 0
+ 224 00f2 07F10C07 		add	r7, r7, #12
+ 225 00f6 BD46     		mov	sp, r7
+ 226 00f8 90BD     		pop	{r4, r7, pc}
+ 227              		.cfi_endproc
+ 228              	.LFE31:
+ 229              		.size	set_PID_mode, .-set_PID_mode
+ 230 00fa 00BF     		.section	.text.set_PID_input,"ax",%progbits
+ 231              		.align	2
+ 232              		.global	set_PID_input
+ 233              		.thumb
+ 234              		.thumb_func
+ 235              		.type	set_PID_input, %function
+ 236              	set_PID_input:
+ 237              	.LFB32:
+  41:.\PID.c       **** 
+  42:.\PID.c       **** 
+  43:.\PID.c       **** 
+  44:.\PID.c       **** 
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\ccq6UoL9.s 			page 6
+
+
+  45:.\PID.c       **** void set_PID_input (double newInput) {
+ 238              		.loc 1 45 0
+ 239              		.cfi_startproc
+ 240              		@ args = 0, pretend = 0, frame = 8
+ 241              		@ frame_needed = 1, uses_anonymous_args = 0
+ 242              		@ link register save eliminated.
+ 243 0000 80B4     		push	{r7}
+ 244              	.LCFI7:
+ 245              		.cfi_def_cfa_offset 4
+ 246 0002 83B0     		sub	sp, sp, #12
+ 247              	.LCFI8:
+ 248              		.cfi_def_cfa_offset 16
+ 249 0004 00AF     		add	r7, sp, #0
+ 250              		.cfi_offset 7, -4
+ 251              	.LCFI9:
+ 252              		.cfi_def_cfa_register 7
+ 253 0006 C7E90001 		strd	r0, [r7]
+  46:.\PID.c       ****     Input = newInput;
+ 254              		.loc 1 46 0
+ 255 000a 40F20003 		movw	r3, #:lower16:Input
+ 256 000e C0F20003 		movt	r3, #:upper16:Input
+ 257 0012 D7E90001 		ldrd	r0, [r7]
+ 258 0016 C3E90001 		strd	r0, [r3]
+  47:.\PID.c       **** }
+ 259              		.loc 1 47 0
+ 260 001a 07F10C07 		add	r7, r7, #12
+ 261 001e BD46     		mov	sp, r7
+ 262 0020 80BC     		pop	{r7}
+ 263 0022 7047     		bx	lr
+ 264              		.cfi_endproc
+ 265              	.LFE32:
+ 266              		.size	set_PID_input, .-set_PID_input
+ 267              		.section	.text.set_PID_setpoint,"ax",%progbits
+ 268              		.align	2
+ 269              		.global	set_PID_setpoint
+ 270              		.thumb
+ 271              		.thumb_func
+ 272              		.type	set_PID_setpoint, %function
+ 273              	set_PID_setpoint:
+ 274              	.LFB33:
+  48:.\PID.c       **** 
+  49:.\PID.c       **** 
+  50:.\PID.c       **** 
+  51:.\PID.c       **** 
+  52:.\PID.c       **** void set_PID_setpoint (double newSetpoint) {
+ 275              		.loc 1 52 0
+ 276              		.cfi_startproc
+ 277              		@ args = 0, pretend = 0, frame = 8
+ 278              		@ frame_needed = 1, uses_anonymous_args = 0
+ 279 0000 90B5     		push	{r4, r7, lr}
+ 280              	.LCFI10:
+ 281              		.cfi_def_cfa_offset 12
+ 282 0002 83B0     		sub	sp, sp, #12
+ 283              	.LCFI11:
+ 284              		.cfi_def_cfa_offset 24
+ 285 0004 00AF     		add	r7, sp, #0
+ 286              		.cfi_offset 14, -4
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\ccq6UoL9.s 			page 7
+
+
+ 287              		.cfi_offset 7, -8
+ 288              		.cfi_offset 4, -12
+ 289              	.LCFI12:
+ 290              		.cfi_def_cfa_register 7
+ 291 0006 C7E90001 		strd	r0, [r7]
+  53:.\PID.c       ****     Setpoint = newSetpoint;
+ 292              		.loc 1 53 0
+ 293 000a 40F20003 		movw	r3, #:lower16:Setpoint
+ 294 000e C0F20003 		movt	r3, #:upper16:Setpoint
+ 295 0012 D7E90001 		ldrd	r0, [r7]
+ 296 0016 C3E90001 		strd	r0, [r3]
+  54:.\PID.c       ****     if      (Setpoint > outMax) Setpoint = outMax;
+ 297              		.loc 1 54 0
+ 298 001a 40F20003 		movw	r3, #:lower16:Setpoint
+ 299 001e C0F20003 		movt	r3, #:upper16:Setpoint
+ 300 0022 D3E90001 		ldrd	r0, [r3]
+ 301 0026 40F20003 		movw	r3, #:lower16:outMax
+ 302 002a C0F20003 		movt	r3, #:upper16:outMax
+ 303 002e D3E90023 		ldrd	r2, [r3]
+ 304 0032 4FF0000C 		mov	ip, #0
+ 305 0036 6446     		mov	r4, ip
+ 306 0038 FFF7FEFF 		bl	__aeabi_dcmpgt
+ 307 003c 0346     		mov	r3, r0
+ 308 003e 002B     		cmp	r3, #0
+ 309 0040 02D0     		beq	.L16
+ 310              	.L17:
+ 311 0042 4FF00103 		mov	r3, #1
+ 312 0046 1C46     		mov	r4, r3
+ 313              	.L16:
+ 314 0048 E3B2     		uxtb	r3, r4
+ 315 004a 002B     		cmp	r3, #0
+ 316 004c 0CD0     		beq	.L18
+ 317 004e 40F20003 		movw	r3, #:lower16:outMax
+ 318 0052 C0F20003 		movt	r3, #:upper16:outMax
+ 319 0056 D3E90001 		ldrd	r0, [r3]
+ 320 005a 40F20003 		movw	r3, #:lower16:Setpoint
+ 321 005e C0F20003 		movt	r3, #:upper16:Setpoint
+ 322 0062 C3E90001 		strd	r0, [r3]
+ 323 0066 25E0     		b	.L22
+ 324              	.L18:
+  55:.\PID.c       ****     else if (Setpoint < outMin) Setpoint = outMin;
+ 325              		.loc 1 55 0
+ 326 0068 40F20003 		movw	r3, #:lower16:Setpoint
+ 327 006c C0F20003 		movt	r3, #:upper16:Setpoint
+ 328 0070 D3E90001 		ldrd	r0, [r3]
+ 329 0074 40F20003 		movw	r3, #:lower16:outMin
+ 330 0078 C0F20003 		movt	r3, #:upper16:outMin
+ 331 007c D3E90023 		ldrd	r2, [r3]
+ 332 0080 4FF0000C 		mov	ip, #0
+ 333 0084 6446     		mov	r4, ip
+ 334 0086 FFF7FEFF 		bl	__aeabi_dcmplt
+ 335 008a 0346     		mov	r3, r0
+ 336 008c 002B     		cmp	r3, #0
+ 337 008e 02D0     		beq	.L20
+ 338              	.L21:
+ 339 0090 4FF00103 		mov	r3, #1
+ 340 0094 1C46     		mov	r4, r3
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\ccq6UoL9.s 			page 8
+
+
+ 341              	.L20:
+ 342 0096 E3B2     		uxtb	r3, r4
+ 343 0098 002B     		cmp	r3, #0
+ 344 009a 0BD0     		beq	.L22
+ 345 009c 40F20003 		movw	r3, #:lower16:outMin
+ 346 00a0 C0F20003 		movt	r3, #:upper16:outMin
+ 347 00a4 D3E90001 		ldrd	r0, [r3]
+ 348 00a8 40F20003 		movw	r3, #:lower16:Setpoint
+ 349 00ac C0F20003 		movt	r3, #:upper16:Setpoint
+ 350 00b0 C3E90001 		strd	r0, [r3]
+ 351              	.L22:
+  56:.\PID.c       **** }
+ 352              		.loc 1 56 0
+ 353 00b4 07F10C07 		add	r7, r7, #12
+ 354 00b8 BD46     		mov	sp, r7
+ 355 00ba 90BD     		pop	{r4, r7, pc}
+ 356              		.cfi_endproc
+ 357              	.LFE33:
+ 358              		.size	set_PID_setpoint, .-set_PID_setpoint
+ 359              		.section	.text.set_PID_tunings,"ax",%progbits
+ 360              		.align	2
+ 361              		.global	set_PID_tunings
+ 362              		.thumb
+ 363              		.thumb_func
+ 364              		.type	set_PID_tunings, %function
+ 365              	set_PID_tunings:
+ 366              	.LFB34:
+  57:.\PID.c       **** 
+  58:.\PID.c       **** 
+  59:.\PID.c       **** 
+  60:.\PID.c       **** 
+  61:.\PID.c       **** void set_PID_tunings (double Kp, double Ki, double Kd) {
+ 367              		.loc 1 61 0
+ 368              		.cfi_startproc
+ 369              		@ args = 8, pretend = 0, frame = 16
+ 370              		@ frame_needed = 1, uses_anonymous_args = 0
+ 371              		@ link register save eliminated.
+ 372 0000 80B4     		push	{r7}
+ 373              	.LCFI13:
+ 374              		.cfi_def_cfa_offset 4
+ 375 0002 85B0     		sub	sp, sp, #20
+ 376              	.LCFI14:
+ 377              		.cfi_def_cfa_offset 24
+ 378 0004 00AF     		add	r7, sp, #0
+ 379              		.cfi_offset 7, -4
+ 380              	.LCFI15:
+ 381              		.cfi_def_cfa_register 7
+ 382 0006 C7E90201 		strd	r0, [r7, #8]
+ 383 000a C7E90023 		strd	r2, [r7]
+  62:.\PID.c       ****     kp = Kp;
+ 384              		.loc 1 62 0
+ 385 000e 40F20003 		movw	r3, #:lower16:kp
+ 386 0012 C0F20003 		movt	r3, #:upper16:kp
+ 387 0016 D7E90201 		ldrd	r0, [r7, #8]
+ 388 001a C3E90001 		strd	r0, [r3]
+  63:.\PID.c       ****     ki = Ki;
+ 389              		.loc 1 63 0
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\ccq6UoL9.s 			page 9
+
+
+ 390 001e 40F20003 		movw	r3, #:lower16:ki
+ 391 0022 C0F20003 		movt	r3, #:upper16:ki
+ 392 0026 D7E90001 		ldrd	r0, [r7]
+ 393 002a C3E90001 		strd	r0, [r3]
+  64:.\PID.c       ****     kd = Kd;
+ 394              		.loc 1 64 0
+ 395 002e 40F20003 		movw	r3, #:lower16:kd
+ 396 0032 C0F20003 		movt	r3, #:upper16:kd
+ 397 0036 D7E90601 		ldrd	r0, [r7, #24]
+ 398 003a C3E90001 		strd	r0, [r3]
+  65:.\PID.c       **** }
+ 399              		.loc 1 65 0
+ 400 003e 07F11407 		add	r7, r7, #20
+ 401 0042 BD46     		mov	sp, r7
+ 402 0044 80BC     		pop	{r7}
+ 403 0046 7047     		bx	lr
+ 404              		.cfi_endproc
+ 405              	.LFE34:
+ 406              		.size	set_PID_tunings, .-set_PID_tunings
+ 407              		.section	.text.set_PID_limits,"ax",%progbits
+ 408              		.align	2
+ 409              		.global	set_PID_limits
+ 410              		.thumb
+ 411              		.thumb_func
+ 412              		.type	set_PID_limits, %function
+ 413              	set_PID_limits:
+ 414              	.LFB35:
+  66:.\PID.c       **** 
+  67:.\PID.c       **** 
+  68:.\PID.c       **** 
+  69:.\PID.c       **** 
+  70:.\PID.c       **** void set_PID_limits (double min, double max) {
+ 415              		.loc 1 70 0
+ 416              		.cfi_startproc
+ 417              		@ args = 0, pretend = 0, frame = 16
+ 418              		@ frame_needed = 1, uses_anonymous_args = 0
+ 419 0000 90B5     		push	{r4, r7, lr}
+ 420              	.LCFI16:
+ 421              		.cfi_def_cfa_offset 12
+ 422 0002 85B0     		sub	sp, sp, #20
+ 423              	.LCFI17:
+ 424              		.cfi_def_cfa_offset 32
+ 425 0004 00AF     		add	r7, sp, #0
+ 426              		.cfi_offset 14, -4
+ 427              		.cfi_offset 7, -8
+ 428              		.cfi_offset 4, -12
+ 429              	.LCFI18:
+ 430              		.cfi_def_cfa_register 7
+ 431 0006 C7E90201 		strd	r0, [r7, #8]
+ 432 000a C7E90023 		strd	r2, [r7]
+  71:.\PID.c       ****    if (min > max) return;
+ 433              		.loc 1 71 0
+ 434 000e 4FF00003 		mov	r3, #0
+ 435 0012 1C46     		mov	r4, r3
+ 436 0014 D7E90201 		ldrd	r0, [r7, #8]
+ 437 0018 D7E90023 		ldrd	r2, [r7]
+ 438 001c FFF7FEFF 		bl	__aeabi_dcmpgt
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\ccq6UoL9.s 			page 10
+
+
+ 439 0020 0346     		mov	r3, r0
+ 440 0022 002B     		cmp	r3, #0
+ 441 0024 02D0     		beq	.L26
+ 442              	.L27:
+ 443 0026 4FF00103 		mov	r3, #1
+ 444 002a 1C46     		mov	r4, r3
+ 445              	.L26:
+ 446 002c E3B2     		uxtb	r3, r4
+ 447 002e 002B     		cmp	r3, #0
+ 448 0030 40F0AB80 		bne	.L42
+ 449              	.L28:
+  72:.\PID.c       ****    outMin = min;
+ 450              		.loc 1 72 0
+ 451 0034 40F20003 		movw	r3, #:lower16:outMin
+ 452 0038 C0F20003 		movt	r3, #:upper16:outMin
+ 453 003c D7E90201 		ldrd	r0, [r7, #8]
+ 454 0040 C3E90001 		strd	r0, [r3]
+  73:.\PID.c       ****    outMax = max;
+ 455              		.loc 1 73 0
+ 456 0044 40F20003 		movw	r3, #:lower16:outMax
+ 457 0048 C0F20003 		movt	r3, #:upper16:outMax
+ 458 004c D7E90001 		ldrd	r0, [r7]
+ 459 0050 C3E90001 		strd	r0, [r3]
+  74:.\PID.c       ****  
+  75:.\PID.c       ****    if      (Output > outMax) Output = outMax;
+ 460              		.loc 1 75 0
+ 461 0054 40F20003 		movw	r3, #:lower16:Output
+ 462 0058 C0F20003 		movt	r3, #:upper16:Output
+ 463 005c D3E90001 		ldrd	r0, [r3]
+ 464 0060 40F20003 		movw	r3, #:lower16:outMax
+ 465 0064 C0F20003 		movt	r3, #:upper16:outMax
+ 466 0068 D3E90023 		ldrd	r2, [r3]
+ 467 006c 4FF0000C 		mov	ip, #0
+ 468 0070 6446     		mov	r4, ip
+ 469 0072 FFF7FEFF 		bl	__aeabi_dcmpgt
+ 470 0076 0346     		mov	r3, r0
+ 471 0078 002B     		cmp	r3, #0
+ 472 007a 02D0     		beq	.L30
+ 473              	.L31:
+ 474 007c 4FF00103 		mov	r3, #1
+ 475 0080 1C46     		mov	r4, r3
+ 476              	.L30:
+ 477 0082 E3B2     		uxtb	r3, r4
+ 478 0084 002B     		cmp	r3, #0
+ 479 0086 0CD0     		beq	.L32
+ 480 0088 40F20003 		movw	r3, #:lower16:outMax
+ 481 008c C0F20003 		movt	r3, #:upper16:outMax
+ 482 0090 D3E90001 		ldrd	r0, [r3]
+ 483 0094 40F20003 		movw	r3, #:lower16:Output
+ 484 0098 C0F20003 		movt	r3, #:upper16:Output
+ 485 009c C3E90001 		strd	r0, [r3]
+ 486 00a0 25E0     		b	.L33
+ 487              	.L32:
+  76:.\PID.c       ****    else if (Output < outMin) Output = outMin;
+ 488              		.loc 1 76 0
+ 489 00a2 40F20003 		movw	r3, #:lower16:Output
+ 490 00a6 C0F20003 		movt	r3, #:upper16:Output
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\ccq6UoL9.s 			page 11
+
+
+ 491 00aa D3E90001 		ldrd	r0, [r3]
+ 492 00ae 40F20003 		movw	r3, #:lower16:outMin
+ 493 00b2 C0F20003 		movt	r3, #:upper16:outMin
+ 494 00b6 D3E90023 		ldrd	r2, [r3]
+ 495 00ba 4FF0000C 		mov	ip, #0
+ 496 00be 6446     		mov	r4, ip
+ 497 00c0 FFF7FEFF 		bl	__aeabi_dcmplt
+ 498 00c4 0346     		mov	r3, r0
+ 499 00c6 002B     		cmp	r3, #0
+ 500 00c8 02D0     		beq	.L34
+ 501              	.L35:
+ 502 00ca 4FF00103 		mov	r3, #1
+ 503 00ce 1C46     		mov	r4, r3
+ 504              	.L34:
+ 505 00d0 E3B2     		uxtb	r3, r4
+ 506 00d2 002B     		cmp	r3, #0
+ 507 00d4 0BD0     		beq	.L33
+ 508 00d6 40F20003 		movw	r3, #:lower16:outMin
+ 509 00da C0F20003 		movt	r3, #:upper16:outMin
+ 510 00de D3E90001 		ldrd	r0, [r3]
+ 511 00e2 40F20003 		movw	r3, #:lower16:Output
+ 512 00e6 C0F20003 		movt	r3, #:upper16:Output
+ 513 00ea C3E90001 		strd	r0, [r3]
+ 514              	.L33:
+  77:.\PID.c       ****  
+  78:.\PID.c       ****    if      (ITerm > outMax) ITerm = outMax;
+ 515              		.loc 1 78 0
+ 516 00ee 40F20003 		movw	r3, #:lower16:ITerm
+ 517 00f2 C0F20003 		movt	r3, #:upper16:ITerm
+ 518 00f6 D3E90001 		ldrd	r0, [r3]
+ 519 00fa 40F20003 		movw	r3, #:lower16:outMax
+ 520 00fe C0F20003 		movt	r3, #:upper16:outMax
+ 521 0102 D3E90023 		ldrd	r2, [r3]
+ 522 0106 4FF0000C 		mov	ip, #0
+ 523 010a 6446     		mov	r4, ip
+ 524 010c FFF7FEFF 		bl	__aeabi_dcmpgt
+ 525 0110 0346     		mov	r3, r0
+ 526 0112 002B     		cmp	r3, #0
+ 527 0114 02D0     		beq	.L36
+ 528              	.L37:
+ 529 0116 4FF00103 		mov	r3, #1
+ 530 011a 1C46     		mov	r4, r3
+ 531              	.L36:
+ 532 011c E3B2     		uxtb	r3, r4
+ 533 011e 002B     		cmp	r3, #0
+ 534 0120 0CD0     		beq	.L38
+ 535 0122 40F20003 		movw	r3, #:lower16:outMax
+ 536 0126 C0F20003 		movt	r3, #:upper16:outMax
+ 537 012a D3E90001 		ldrd	r0, [r3]
+ 538 012e 40F20003 		movw	r3, #:lower16:ITerm
+ 539 0132 C0F20003 		movt	r3, #:upper16:ITerm
+ 540 0136 C3E90001 		strd	r0, [r3]
+ 541 013a 27E0     		b	.L41
+ 542              	.L38:
+  79:.\PID.c       ****    else if (ITerm < outMin) ITerm = outMin;
+ 543              		.loc 1 79 0
+ 544 013c 40F20003 		movw	r3, #:lower16:ITerm
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\ccq6UoL9.s 			page 12
+
+
+ 545 0140 C0F20003 		movt	r3, #:upper16:ITerm
+ 546 0144 D3E90001 		ldrd	r0, [r3]
+ 547 0148 40F20003 		movw	r3, #:lower16:outMin
+ 548 014c C0F20003 		movt	r3, #:upper16:outMin
+ 549 0150 D3E90023 		ldrd	r2, [r3]
+ 550 0154 4FF0000C 		mov	ip, #0
+ 551 0158 6446     		mov	r4, ip
+ 552 015a FFF7FEFF 		bl	__aeabi_dcmplt
+ 553 015e 0346     		mov	r3, r0
+ 554 0160 002B     		cmp	r3, #0
+ 555 0162 02D0     		beq	.L39
+ 556              	.L40:
+ 557 0164 4FF00103 		mov	r3, #1
+ 558 0168 1C46     		mov	r4, r3
+ 559              	.L39:
+ 560 016a E3B2     		uxtb	r3, r4
+ 561 016c 002B     		cmp	r3, #0
+ 562 016e 0DD0     		beq	.L41
+ 563 0170 40F20003 		movw	r3, #:lower16:outMin
+ 564 0174 C0F20003 		movt	r3, #:upper16:outMin
+ 565 0178 D3E90001 		ldrd	r0, [r3]
+ 566 017c 40F20003 		movw	r3, #:lower16:ITerm
+ 567 0180 C0F20003 		movt	r3, #:upper16:ITerm
+ 568 0184 C3E90001 		strd	r0, [r3]
+ 569 0188 00E0     		b	.L41
+ 570              	.L42:
+ 571              		.loc 1 71 0
+ 572 018a 00BF     		nop
+ 573              	.L41:
+  80:.\PID.c       **** }
+ 574              		.loc 1 80 0
+ 575 018c 07F11407 		add	r7, r7, #20
+ 576 0190 BD46     		mov	sp, r7
+ 577 0192 90BD     		pop	{r4, r7, pc}
+ 578              		.cfi_endproc
+ 579              	.LFE35:
+ 580              		.size	set_PID_limits, .-set_PID_limits
+ 581              		.global	__aeabi_dsub
+ 582              		.global	__aeabi_dmul
+ 583              		.global	__aeabi_dadd
+ 584              		.section	.text.PID_controller,"ax",%progbits
+ 585              		.align	2
+ 586              		.global	PID_controller
+ 587              		.thumb
+ 588              		.thumb_func
+ 589              		.type	PID_controller, %function
+ 590              	PID_controller:
+ 591              	.LFB36:
+  81:.\PID.c       **** 
+  82:.\PID.c       **** 
+  83:.\PID.c       **** 
+  84:.\PID.c       **** 
+  85:.\PID.c       **** void PID_controller () {
+ 592              		.loc 1 85 0
+ 593              		.cfi_startproc
+ 594              		@ args = 0, pretend = 0, frame = 16
+ 595              		@ frame_needed = 1, uses_anonymous_args = 0
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\ccq6UoL9.s 			page 13
+
+
+ 596 0000 B0B5     		push	{r4, r5, r7, lr}
+ 597              	.LCFI19:
+ 598              		.cfi_def_cfa_offset 16
+ 599 0002 84B0     		sub	sp, sp, #16
+ 600              	.LCFI20:
+ 601              		.cfi_def_cfa_offset 32
+ 602 0004 00AF     		add	r7, sp, #0
+ 603              		.cfi_offset 14, -4
+ 604              		.cfi_offset 7, -8
+ 605              		.cfi_offset 5, -12
+ 606              		.cfi_offset 4, -16
+ 607              	.LCFI21:
+ 608              		.cfi_def_cfa_register 7
+  86:.\PID.c       ****     if (mode != AUTOMATIC) return;
+ 609              		.loc 1 86 0
+ 610 0006 40F20003 		movw	r3, #:lower16:mode
+ 611 000a C0F20003 		movt	r3, #:upper16:mode
+ 612 000e 1B68     		ldr	r3, [r3, #0]
+ 613 0010 012B     		cmp	r3, #1
+ 614 0012 40F02581 		bne	.L58
+ 615              	.L44:
+  87:.\PID.c       ****     
+  88:.\PID.c       ****     // Proportional
+  89:.\PID.c       ****     double error = Setpoint - Input;
+ 616              		.loc 1 89 0
+ 617 0016 40F20003 		movw	r3, #:lower16:Setpoint
+ 618 001a C0F20003 		movt	r3, #:upper16:Setpoint
+ 619 001e D3E90001 		ldrd	r0, [r3]
+ 620 0022 40F20003 		movw	r3, #:lower16:Input
+ 621 0026 C0F20003 		movt	r3, #:upper16:Input
+ 622 002a D3E90023 		ldrd	r2, [r3]
+ 623 002e FFF7FEFF 		bl	__aeabi_dsub
+ 624 0032 0246     		mov	r2, r0
+ 625 0034 0B46     		mov	r3, r1
+ 626 0036 C7E90023 		strd	r2, [r7]
+  90:.\PID.c       ****     
+  91:.\PID.c       ****     // Integral
+  92:.\PID.c       ****     ITerm += ki*error;
+ 627              		.loc 1 92 0
+ 628 003a 40F20003 		movw	r3, #:lower16:ki
+ 629 003e C0F20003 		movt	r3, #:upper16:ki
+ 630 0042 D3E90023 		ldrd	r2, [r3]
+ 631 0046 1046     		mov	r0, r2
+ 632 0048 1946     		mov	r1, r3
+ 633 004a D7E90023 		ldrd	r2, [r7]
+ 634 004e FFF7FEFF 		bl	__aeabi_dmul
+ 635 0052 0246     		mov	r2, r0
+ 636 0054 0B46     		mov	r3, r1
+ 637 0056 1046     		mov	r0, r2
+ 638 0058 1946     		mov	r1, r3
+ 639 005a 40F20003 		movw	r3, #:lower16:ITerm
+ 640 005e C0F20003 		movt	r3, #:upper16:ITerm
+ 641 0062 D3E90023 		ldrd	r2, [r3]
+ 642 0066 FFF7FEFF 		bl	__aeabi_dadd
+ 643 006a 0246     		mov	r2, r0
+ 644 006c 0B46     		mov	r3, r1
+ 645 006e 1046     		mov	r0, r2
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\ccq6UoL9.s 			page 14
+
+
+ 646 0070 1946     		mov	r1, r3
+ 647 0072 40F20003 		movw	r3, #:lower16:ITerm
+ 648 0076 C0F20003 		movt	r3, #:upper16:ITerm
+ 649 007a C3E90001 		strd	r0, [r3]
+  93:.\PID.c       ****     if      (ITerm > outMax) ITerm = outMax;
+ 650              		.loc 1 93 0
+ 651 007e 40F20003 		movw	r3, #:lower16:ITerm
+ 652 0082 C0F20003 		movt	r3, #:upper16:ITerm
+ 653 0086 D3E90001 		ldrd	r0, [r3]
+ 654 008a 40F20003 		movw	r3, #:lower16:outMax
+ 655 008e C0F20003 		movt	r3, #:upper16:outMax
+ 656 0092 D3E90023 		ldrd	r2, [r3]
+ 657 0096 4FF0000C 		mov	ip, #0
+ 658 009a 6446     		mov	r4, ip
+ 659 009c FFF7FEFF 		bl	__aeabi_dcmpgt
+ 660 00a0 0346     		mov	r3, r0
+ 661 00a2 002B     		cmp	r3, #0
+ 662 00a4 02D0     		beq	.L46
+ 663              	.L47:
+ 664 00a6 4FF00103 		mov	r3, #1
+ 665 00aa 1C46     		mov	r4, r3
+ 666              	.L46:
+ 667 00ac E3B2     		uxtb	r3, r4
+ 668 00ae 002B     		cmp	r3, #0
+ 669 00b0 0CD0     		beq	.L48
+ 670 00b2 40F20003 		movw	r3, #:lower16:outMax
+ 671 00b6 C0F20003 		movt	r3, #:upper16:outMax
+ 672 00ba D3E90001 		ldrd	r0, [r3]
+ 673 00be 40F20003 		movw	r3, #:lower16:ITerm
+ 674 00c2 C0F20003 		movt	r3, #:upper16:ITerm
+ 675 00c6 C3E90001 		strd	r0, [r3]
+ 676 00ca 25E0     		b	.L49
+ 677              	.L48:
+  94:.\PID.c       ****     else if (ITerm < outMin) ITerm = outMin;
+ 678              		.loc 1 94 0
+ 679 00cc 40F20003 		movw	r3, #:lower16:ITerm
+ 680 00d0 C0F20003 		movt	r3, #:upper16:ITerm
+ 681 00d4 D3E90001 		ldrd	r0, [r3]
+ 682 00d8 40F20003 		movw	r3, #:lower16:outMin
+ 683 00dc C0F20003 		movt	r3, #:upper16:outMin
+ 684 00e0 D3E90023 		ldrd	r2, [r3]
+ 685 00e4 4FF0000C 		mov	ip, #0
+ 686 00e8 6446     		mov	r4, ip
+ 687 00ea FFF7FEFF 		bl	__aeabi_dcmplt
+ 688 00ee 0346     		mov	r3, r0
+ 689 00f0 002B     		cmp	r3, #0
+ 690 00f2 02D0     		beq	.L50
+ 691              	.L51:
+ 692 00f4 4FF00103 		mov	r3, #1
+ 693 00f8 1C46     		mov	r4, r3
+ 694              	.L50:
+ 695 00fa E3B2     		uxtb	r3, r4
+ 696 00fc 002B     		cmp	r3, #0
+ 697 00fe 0BD0     		beq	.L49
+ 698 0100 40F20003 		movw	r3, #:lower16:outMin
+ 699 0104 C0F20003 		movt	r3, #:upper16:outMin
+ 700 0108 D3E90001 		ldrd	r0, [r3]
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\ccq6UoL9.s 			page 15
+
+
+ 701 010c 40F20003 		movw	r3, #:lower16:ITerm
+ 702 0110 C0F20003 		movt	r3, #:upper16:ITerm
+ 703 0114 C3E90001 		strd	r0, [r3]
+ 704              	.L49:
+  95:.\PID.c       ****     
+  96:.\PID.c       ****     // Derivative
+  97:.\PID.c       ****     double dInput = Input-lastInput;
+ 705              		.loc 1 97 0
+ 706 0118 40F20003 		movw	r3, #:lower16:Input
+ 707 011c C0F20003 		movt	r3, #:upper16:Input
+ 708 0120 D3E90001 		ldrd	r0, [r3]
+ 709 0124 40F20003 		movw	r3, #:lower16:lastInput
+ 710 0128 C0F20003 		movt	r3, #:upper16:lastInput
+ 711 012c D3E90023 		ldrd	r2, [r3]
+ 712 0130 FFF7FEFF 		bl	__aeabi_dsub
+ 713 0134 0246     		mov	r2, r0
+ 714 0136 0B46     		mov	r3, r1
+ 715 0138 C7E90223 		strd	r2, [r7, #8]
+  98:.\PID.c       ****     lastInput = Input;
+ 716              		.loc 1 98 0
+ 717 013c 40F20003 		movw	r3, #:lower16:Input
+ 718 0140 C0F20003 		movt	r3, #:upper16:Input
+ 719 0144 D3E90001 		ldrd	r0, [r3]
+ 720 0148 40F20003 		movw	r3, #:lower16:lastInput
+ 721 014c C0F20003 		movt	r3, #:upper16:lastInput
+ 722 0150 C3E90001 		strd	r0, [r3]
+  99:.\PID.c       **** 
+ 100:.\PID.c       ****     // controller
+ 101:.\PID.c       ****     Output = kp*error + ITerm - kd*dInput;
+ 723              		.loc 1 101 0
+ 724 0154 40F20003 		movw	r3, #:lower16:kp
+ 725 0158 C0F20003 		movt	r3, #:upper16:kp
+ 726 015c D3E90023 		ldrd	r2, [r3]
+ 727 0160 1046     		mov	r0, r2
+ 728 0162 1946     		mov	r1, r3
+ 729 0164 D7E90023 		ldrd	r2, [r7]
+ 730 0168 FFF7FEFF 		bl	__aeabi_dmul
+ 731 016c 0246     		mov	r2, r0
+ 732 016e 0B46     		mov	r3, r1
+ 733 0170 1046     		mov	r0, r2
+ 734 0172 1946     		mov	r1, r3
+ 735 0174 40F20003 		movw	r3, #:lower16:ITerm
+ 736 0178 C0F20003 		movt	r3, #:upper16:ITerm
+ 737 017c D3E90023 		ldrd	r2, [r3]
+ 738 0180 FFF7FEFF 		bl	__aeabi_dadd
+ 739 0184 0246     		mov	r2, r0
+ 740 0186 0B46     		mov	r3, r1
+ 741 0188 1446     		mov	r4, r2
+ 742 018a 1D46     		mov	r5, r3
+ 743 018c 40F20003 		movw	r3, #:lower16:kd
+ 744 0190 C0F20003 		movt	r3, #:upper16:kd
+ 745 0194 D3E90023 		ldrd	r2, [r3]
+ 746 0198 1046     		mov	r0, r2
+ 747 019a 1946     		mov	r1, r3
+ 748 019c D7E90223 		ldrd	r2, [r7, #8]
+ 749 01a0 FFF7FEFF 		bl	__aeabi_dmul
+ 750 01a4 0246     		mov	r2, r0
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\ccq6UoL9.s 			page 16
+
+
+ 751 01a6 0B46     		mov	r3, r1
+ 752 01a8 2046     		mov	r0, r4
+ 753 01aa 2946     		mov	r1, r5
+ 754 01ac FFF7FEFF 		bl	__aeabi_dsub
+ 755 01b0 0246     		mov	r2, r0
+ 756 01b2 0B46     		mov	r3, r1
+ 757 01b4 1046     		mov	r0, r2
+ 758 01b6 1946     		mov	r1, r3
+ 759 01b8 40F20003 		movw	r3, #:lower16:Output
+ 760 01bc C0F20003 		movt	r3, #:upper16:Output
+ 761 01c0 C3E90001 		strd	r0, [r3]
+ 102:.\PID.c       ****     if      (Output > outMax) Output = outMax;
+ 762              		.loc 1 102 0
+ 763 01c4 40F20003 		movw	r3, #:lower16:Output
+ 764 01c8 C0F20003 		movt	r3, #:upper16:Output
+ 765 01cc D3E90001 		ldrd	r0, [r3]
+ 766 01d0 40F20003 		movw	r3, #:lower16:outMax
+ 767 01d4 C0F20003 		movt	r3, #:upper16:outMax
+ 768 01d8 D3E90023 		ldrd	r2, [r3]
+ 769 01dc 4FF0000C 		mov	ip, #0
+ 770 01e0 6446     		mov	r4, ip
+ 771 01e2 FFF7FEFF 		bl	__aeabi_dcmpgt
+ 772 01e6 0346     		mov	r3, r0
+ 773 01e8 002B     		cmp	r3, #0
+ 774 01ea 02D0     		beq	.L52
+ 775              	.L53:
+ 776 01ec 4FF00103 		mov	r3, #1
+ 777 01f0 1C46     		mov	r4, r3
+ 778              	.L52:
+ 779 01f2 E3B2     		uxtb	r3, r4
+ 780 01f4 002B     		cmp	r3, #0
+ 781 01f6 0CD0     		beq	.L54
+ 782 01f8 40F20003 		movw	r3, #:lower16:outMax
+ 783 01fc C0F20003 		movt	r3, #:upper16:outMax
+ 784 0200 D3E90001 		ldrd	r0, [r3]
+ 785 0204 40F20003 		movw	r3, #:lower16:Output
+ 786 0208 C0F20003 		movt	r3, #:upper16:Output
+ 787 020c C3E90001 		strd	r0, [r3]
+ 788 0210 27E0     		b	.L57
+ 789              	.L54:
+ 103:.\PID.c       ****     else if (Output < outMin) Output = outMin;
+ 790              		.loc 1 103 0
+ 791 0212 40F20003 		movw	r3, #:lower16:Output
+ 792 0216 C0F20003 		movt	r3, #:upper16:Output
+ 793 021a D3E90001 		ldrd	r0, [r3]
+ 794 021e 40F20003 		movw	r3, #:lower16:outMin
+ 795 0222 C0F20003 		movt	r3, #:upper16:outMin
+ 796 0226 D3E90023 		ldrd	r2, [r3]
+ 797 022a 4FF0000C 		mov	ip, #0
+ 798 022e 6446     		mov	r4, ip
+ 799 0230 FFF7FEFF 		bl	__aeabi_dcmplt
+ 800 0234 0346     		mov	r3, r0
+ 801 0236 002B     		cmp	r3, #0
+ 802 0238 02D0     		beq	.L55
+ 803              	.L56:
+ 804 023a 4FF00103 		mov	r3, #1
+ 805 023e 1C46     		mov	r4, r3
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\ccq6UoL9.s 			page 17
+
+
+ 806              	.L55:
+ 807 0240 E3B2     		uxtb	r3, r4
+ 808 0242 002B     		cmp	r3, #0
+ 809 0244 0DD0     		beq	.L57
+ 810 0246 40F20003 		movw	r3, #:lower16:outMin
+ 811 024a C0F20003 		movt	r3, #:upper16:outMin
+ 812 024e D3E90001 		ldrd	r0, [r3]
+ 813 0252 40F20003 		movw	r3, #:lower16:Output
+ 814 0256 C0F20003 		movt	r3, #:upper16:Output
+ 815 025a C3E90001 		strd	r0, [r3]
+ 816 025e 00E0     		b	.L57
+ 817              	.L58:
+ 818              		.loc 1 86 0
+ 819 0260 00BF     		nop
+ 820              	.L57:
+ 104:.\PID.c       **** }
+ 821              		.loc 1 104 0
+ 822 0262 07F11007 		add	r7, r7, #16
+ 823 0266 BD46     		mov	sp, r7
+ 824 0268 B0BD     		pop	{r4, r5, r7, pc}
+ 825              		.cfi_endproc
+ 826              	.LFE36:
+ 827              		.size	PID_controller, .-PID_controller
+ 828 026a 00BF     		.section	.text.PID_output,"ax",%progbits
+ 829              		.align	2
+ 830              		.global	PID_output
+ 831              		.thumb
+ 832              		.thumb_func
+ 833              		.type	PID_output, %function
+ 834              	PID_output:
+ 835              	.LFB37:
+ 105:.\PID.c       **** 
+ 106:.\PID.c       **** 
+ 107:.\PID.c       **** 
+ 108:.\PID.c       **** 
+ 109:.\PID.c       **** double PID_output () {
+ 836              		.loc 1 109 0
+ 837              		.cfi_startproc
+ 838              		@ args = 0, pretend = 0, frame = 0
+ 839              		@ frame_needed = 1, uses_anonymous_args = 0
+ 840              		@ link register save eliminated.
+ 841 0000 80B4     		push	{r7}
+ 842              	.LCFI22:
+ 843              		.cfi_def_cfa_offset 4
+ 844 0002 00AF     		add	r7, sp, #0
+ 845              		.cfi_offset 7, -4
+ 846              	.LCFI23:
+ 847              		.cfi_def_cfa_register 7
+ 110:.\PID.c       ****     return Output;
+ 848              		.loc 1 110 0
+ 849 0004 40F20003 		movw	r3, #:lower16:Output
+ 850 0008 C0F20003 		movt	r3, #:upper16:Output
+ 851 000c D3E90023 		ldrd	r2, [r3]
+ 111:.\PID.c       **** }
+ 852              		.loc 1 111 0
+ 853 0010 1046     		mov	r0, r2
+ 854 0012 1946     		mov	r1, r3
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\ccq6UoL9.s 			page 18
+
+
+ 855 0014 BD46     		mov	sp, r7
+ 856 0016 80BC     		pop	{r7}
+ 857 0018 7047     		bx	lr
+ 858              		.cfi_endproc
+ 859              	.LFE37:
+ 860              		.size	PID_output, .-PID_output
+ 861 001a 00BF     		.text
+ 862              	.Letext0:
+ 863              		.section	.debug_loc,"",%progbits
+ 864              	.Ldebug_loc0:
+ 865              	.LLST0:
+ 866 0000 00000000 		.4byte	.LFB29
+ 867 0004 02000000 		.4byte	.LCFI0
+ 868 0008 0100     		.2byte	0x1
+ 869 000a 5D       		.byte	0x5d
+ 870 000b 02000000 		.4byte	.LCFI0
+ 871 000f 04000000 		.4byte	.LCFI1
+ 872 0013 0200     		.2byte	0x2
+ 873 0015 7D       		.byte	0x7d
+ 874 0016 08       		.sleb128 8
+ 875 0017 04000000 		.4byte	.LCFI1
+ 876 001b 2A000000 		.4byte	.LFE29
+ 877 001f 0200     		.2byte	0x2
+ 878 0021 77       		.byte	0x77
+ 879 0022 08       		.sleb128 8
+ 880 0023 00000000 		.4byte	0x0
+ 881 0027 00000000 		.4byte	0x0
+ 882              	.LLST1:
+ 883 002b 00000000 		.4byte	.LFB30
+ 884 002f 02000000 		.4byte	.LCFI2
+ 885 0033 0100     		.2byte	0x1
+ 886 0035 5D       		.byte	0x5d
+ 887 0036 02000000 		.4byte	.LCFI2
+ 888 003a 04000000 		.4byte	.LCFI3
+ 889 003e 0200     		.2byte	0x2
+ 890 0040 7D       		.byte	0x7d
+ 891 0041 04       		.sleb128 4
+ 892 0042 04000000 		.4byte	.LCFI3
+ 893 0046 16000000 		.4byte	.LFE30
+ 894 004a 0200     		.2byte	0x2
+ 895 004c 77       		.byte	0x77
+ 896 004d 04       		.sleb128 4
+ 897 004e 00000000 		.4byte	0x0
+ 898 0052 00000000 		.4byte	0x0
+ 899              	.LLST2:
+ 900 0056 00000000 		.4byte	.LFB31
+ 901 005a 02000000 		.4byte	.LCFI4
+ 902 005e 0100     		.2byte	0x1
+ 903 0060 5D       		.byte	0x5d
+ 904 0061 02000000 		.4byte	.LCFI4
+ 905 0065 04000000 		.4byte	.LCFI5
+ 906 0069 0200     		.2byte	0x2
+ 907 006b 7D       		.byte	0x7d
+ 908 006c 0C       		.sleb128 12
+ 909 006d 04000000 		.4byte	.LCFI5
+ 910 0071 06000000 		.4byte	.LCFI6
+ 911 0075 0200     		.2byte	0x2
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\ccq6UoL9.s 			page 19
+
+
+ 912 0077 7D       		.byte	0x7d
+ 913 0078 18       		.sleb128 24
+ 914 0079 06000000 		.4byte	.LCFI6
+ 915 007d FA000000 		.4byte	.LFE31
+ 916 0081 0200     		.2byte	0x2
+ 917 0083 77       		.byte	0x77
+ 918 0084 18       		.sleb128 24
+ 919 0085 00000000 		.4byte	0x0
+ 920 0089 00000000 		.4byte	0x0
+ 921              	.LLST3:
+ 922 008d 00000000 		.4byte	.LFB32
+ 923 0091 02000000 		.4byte	.LCFI7
+ 924 0095 0100     		.2byte	0x1
+ 925 0097 5D       		.byte	0x5d
+ 926 0098 02000000 		.4byte	.LCFI7
+ 927 009c 04000000 		.4byte	.LCFI8
+ 928 00a0 0200     		.2byte	0x2
+ 929 00a2 7D       		.byte	0x7d
+ 930 00a3 04       		.sleb128 4
+ 931 00a4 04000000 		.4byte	.LCFI8
+ 932 00a8 06000000 		.4byte	.LCFI9
+ 933 00ac 0200     		.2byte	0x2
+ 934 00ae 7D       		.byte	0x7d
+ 935 00af 10       		.sleb128 16
+ 936 00b0 06000000 		.4byte	.LCFI9
+ 937 00b4 24000000 		.4byte	.LFE32
+ 938 00b8 0200     		.2byte	0x2
+ 939 00ba 77       		.byte	0x77
+ 940 00bb 10       		.sleb128 16
+ 941 00bc 00000000 		.4byte	0x0
+ 942 00c0 00000000 		.4byte	0x0
+ 943              	.LLST4:
+ 944 00c4 00000000 		.4byte	.LFB33
+ 945 00c8 02000000 		.4byte	.LCFI10
+ 946 00cc 0100     		.2byte	0x1
+ 947 00ce 5D       		.byte	0x5d
+ 948 00cf 02000000 		.4byte	.LCFI10
+ 949 00d3 04000000 		.4byte	.LCFI11
+ 950 00d7 0200     		.2byte	0x2
+ 951 00d9 7D       		.byte	0x7d
+ 952 00da 0C       		.sleb128 12
+ 953 00db 04000000 		.4byte	.LCFI11
+ 954 00df 06000000 		.4byte	.LCFI12
+ 955 00e3 0200     		.2byte	0x2
+ 956 00e5 7D       		.byte	0x7d
+ 957 00e6 18       		.sleb128 24
+ 958 00e7 06000000 		.4byte	.LCFI12
+ 959 00eb BC000000 		.4byte	.LFE33
+ 960 00ef 0200     		.2byte	0x2
+ 961 00f1 77       		.byte	0x77
+ 962 00f2 18       		.sleb128 24
+ 963 00f3 00000000 		.4byte	0x0
+ 964 00f7 00000000 		.4byte	0x0
+ 965              	.LLST5:
+ 966 00fb 00000000 		.4byte	.LFB34
+ 967 00ff 02000000 		.4byte	.LCFI13
+ 968 0103 0100     		.2byte	0x1
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\ccq6UoL9.s 			page 20
+
+
+ 969 0105 5D       		.byte	0x5d
+ 970 0106 02000000 		.4byte	.LCFI13
+ 971 010a 04000000 		.4byte	.LCFI14
+ 972 010e 0200     		.2byte	0x2
+ 973 0110 7D       		.byte	0x7d
+ 974 0111 04       		.sleb128 4
+ 975 0112 04000000 		.4byte	.LCFI14
+ 976 0116 06000000 		.4byte	.LCFI15
+ 977 011a 0200     		.2byte	0x2
+ 978 011c 7D       		.byte	0x7d
+ 979 011d 18       		.sleb128 24
+ 980 011e 06000000 		.4byte	.LCFI15
+ 981 0122 48000000 		.4byte	.LFE34
+ 982 0126 0200     		.2byte	0x2
+ 983 0128 77       		.byte	0x77
+ 984 0129 18       		.sleb128 24
+ 985 012a 00000000 		.4byte	0x0
+ 986 012e 00000000 		.4byte	0x0
+ 987              	.LLST6:
+ 988 0132 00000000 		.4byte	.LFB35
+ 989 0136 02000000 		.4byte	.LCFI16
+ 990 013a 0100     		.2byte	0x1
+ 991 013c 5D       		.byte	0x5d
+ 992 013d 02000000 		.4byte	.LCFI16
+ 993 0141 04000000 		.4byte	.LCFI17
+ 994 0145 0200     		.2byte	0x2
+ 995 0147 7D       		.byte	0x7d
+ 996 0148 0C       		.sleb128 12
+ 997 0149 04000000 		.4byte	.LCFI17
+ 998 014d 06000000 		.4byte	.LCFI18
+ 999 0151 0200     		.2byte	0x2
+ 1000 0153 7D       		.byte	0x7d
+ 1001 0154 20       		.sleb128 32
+ 1002 0155 06000000 		.4byte	.LCFI18
+ 1003 0159 94010000 		.4byte	.LFE35
+ 1004 015d 0200     		.2byte	0x2
+ 1005 015f 77       		.byte	0x77
+ 1006 0160 20       		.sleb128 32
+ 1007 0161 00000000 		.4byte	0x0
+ 1008 0165 00000000 		.4byte	0x0
+ 1009              	.LLST7:
+ 1010 0169 00000000 		.4byte	.LFB36
+ 1011 016d 02000000 		.4byte	.LCFI19
+ 1012 0171 0100     		.2byte	0x1
+ 1013 0173 5D       		.byte	0x5d
+ 1014 0174 02000000 		.4byte	.LCFI19
+ 1015 0178 04000000 		.4byte	.LCFI20
+ 1016 017c 0200     		.2byte	0x2
+ 1017 017e 7D       		.byte	0x7d
+ 1018 017f 10       		.sleb128 16
+ 1019 0180 04000000 		.4byte	.LCFI20
+ 1020 0184 06000000 		.4byte	.LCFI21
+ 1021 0188 0200     		.2byte	0x2
+ 1022 018a 7D       		.byte	0x7d
+ 1023 018b 20       		.sleb128 32
+ 1024 018c 06000000 		.4byte	.LCFI21
+ 1025 0190 6A020000 		.4byte	.LFE36
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\ccq6UoL9.s 			page 21
+
+
+ 1026 0194 0200     		.2byte	0x2
+ 1027 0196 77       		.byte	0x77
+ 1028 0197 20       		.sleb128 32
+ 1029 0198 00000000 		.4byte	0x0
+ 1030 019c 00000000 		.4byte	0x0
+ 1031              	.LLST8:
+ 1032 01a0 00000000 		.4byte	.LFB37
+ 1033 01a4 02000000 		.4byte	.LCFI22
+ 1034 01a8 0100     		.2byte	0x1
+ 1035 01aa 5D       		.byte	0x5d
+ 1036 01ab 02000000 		.4byte	.LCFI22
+ 1037 01af 04000000 		.4byte	.LCFI23
+ 1038 01b3 0200     		.2byte	0x2
+ 1039 01b5 7D       		.byte	0x7d
+ 1040 01b6 04       		.sleb128 4
+ 1041 01b7 04000000 		.4byte	.LCFI23
+ 1042 01bb 1A000000 		.4byte	.LFE37
+ 1043 01bf 0200     		.2byte	0x2
+ 1044 01c1 77       		.byte	0x77
+ 1045 01c2 04       		.sleb128 4
+ 1046 01c3 00000000 		.4byte	0x0
+ 1047 01c7 00000000 		.4byte	0x0
+ 1048              		.file 2 "./Generated_Source/PSoC5/core_cm3.h"
+ 1049              		.section	.debug_info
+ 1050 0000 C6020000 		.4byte	0x2c6
+ 1051 0004 0200     		.2byte	0x2
+ 1052 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 1053 000a 04       		.byte	0x4
+ 1054 000b 01       		.uleb128 0x1
+ 1055 000c 50010000 		.4byte	.LASF34
+ 1056 0010 01       		.byte	0x1
+ 1057 0011 0E000000 		.4byte	.LASF35
+ 1058 0015 24000000 		.4byte	.LASF36
+ 1059 0019 00000000 		.4byte	0x0
+ 1060 001d 00000000 		.4byte	0x0
+ 1061 0021 00000000 		.4byte	.Ldebug_ranges0+0x0
+ 1062 0025 00000000 		.4byte	.Ldebug_line0
+ 1063 0029 02       		.uleb128 0x2
+ 1064 002a 01       		.byte	0x1
+ 1065 002b 06       		.byte	0x6
+ 1066 002c 9D010000 		.4byte	.LASF0
+ 1067 0030 02       		.uleb128 0x2
+ 1068 0031 01       		.byte	0x1
+ 1069 0032 08       		.byte	0x8
+ 1070 0033 83000000 		.4byte	.LASF1
+ 1071 0037 02       		.uleb128 0x2
+ 1072 0038 02       		.byte	0x2
+ 1073 0039 05       		.byte	0x5
+ 1074 003a 74010000 		.4byte	.LASF2
+ 1075 003e 02       		.uleb128 0x2
+ 1076 003f 02       		.byte	0x2
+ 1077 0040 07       		.byte	0x7
+ 1078 0041 A9000000 		.4byte	.LASF3
+ 1079 0045 02       		.uleb128 0x2
+ 1080 0046 04       		.byte	0x4
+ 1081 0047 05       		.byte	0x5
+ 1082 0048 7E010000 		.4byte	.LASF4
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\ccq6UoL9.s 			page 22
+
+
+ 1083 004c 02       		.uleb128 0x2
+ 1084 004d 04       		.byte	0x4
+ 1085 004e 07       		.byte	0x7
+ 1086 004f E1000000 		.4byte	.LASF5
+ 1087 0053 02       		.uleb128 0x2
+ 1088 0054 08       		.byte	0x8
+ 1089 0055 05       		.byte	0x5
+ 1090 0056 00000000 		.4byte	.LASF6
+ 1091 005a 02       		.uleb128 0x2
+ 1092 005b 08       		.byte	0x8
+ 1093 005c 07       		.byte	0x7
+ 1094 005d 18010000 		.4byte	.LASF7
+ 1095 0061 03       		.uleb128 0x3
+ 1096 0062 04       		.byte	0x4
+ 1097 0063 05       		.byte	0x5
+ 1098 0064 696E7400 		.ascii	"int\000"
+ 1099 0068 02       		.uleb128 0x2
+ 1100 0069 04       		.byte	0x4
+ 1101 006a 07       		.byte	0x7
+ 1102 006b 0B010000 		.4byte	.LASF8
+ 1103 006f 02       		.uleb128 0x2
+ 1104 0070 04       		.byte	0x4
+ 1105 0071 04       		.byte	0x4
+ 1106 0072 7D000000 		.4byte	.LASF9
+ 1107 0076 02       		.uleb128 0x2
+ 1108 0077 08       		.byte	0x8
+ 1109 0078 04       		.byte	0x4
+ 1110 0079 6B000000 		.4byte	.LASF10
+ 1111 007d 02       		.uleb128 0x2
+ 1112 007e 01       		.byte	0x1
+ 1113 007f 08       		.byte	0x8
+ 1114 0080 66010000 		.4byte	.LASF11
+ 1115 0084 04       		.uleb128 0x4
+ 1116 0085 04       		.byte	0x4
+ 1117 0086 07       		.byte	0x7
+ 1118 0087 05       		.uleb128 0x5
+ 1119 0088 01       		.byte	0x1
+ 1120 0089 72000000 		.4byte	.LASF12
+ 1121 008d 01       		.byte	0x1
+ 1122 008e 11       		.byte	0x11
+ 1123 008f 61000000 		.4byte	0x61
+ 1124 0093 00000000 		.4byte	.LFB29
+ 1125 0097 2A000000 		.4byte	.LFE29
+ 1126 009b 00000000 		.4byte	.LLST0
+ 1127 009f 05       		.uleb128 0x5
+ 1128 00a0 01       		.byte	0x1
+ 1129 00a1 6B010000 		.4byte	.LASF13
+ 1130 00a5 01       		.byte	0x1
+ 1131 00a6 19       		.byte	0x19
+ 1132 00a7 61000000 		.4byte	0x61
+ 1133 00ab 00000000 		.4byte	.LFB30
+ 1134 00af 16000000 		.4byte	.LFE30
+ 1135 00b3 2B000000 		.4byte	.LLST1
+ 1136 00b7 06       		.uleb128 0x6
+ 1137 00b8 01       		.byte	0x1
+ 1138 00b9 90010000 		.4byte	.LASF14
+ 1139 00bd 01       		.byte	0x1
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\ccq6UoL9.s 			page 23
+
+
+ 1140 00be 20       		.byte	0x20
+ 1141 00bf 01       		.byte	0x1
+ 1142 00c0 00000000 		.4byte	.LFB31
+ 1143 00c4 FA000000 		.4byte	.LFE31
+ 1144 00c8 56000000 		.4byte	.LLST2
+ 1145 00cc DF000000 		.4byte	0xdf
+ 1146 00d0 07       		.uleb128 0x7
+ 1147 00d1 4C000000 		.4byte	.LASF16
+ 1148 00d5 01       		.byte	0x1
+ 1149 00d6 20       		.byte	0x20
+ 1150 00d7 61000000 		.4byte	0x61
+ 1151 00db 02       		.byte	0x2
+ 1152 00dc 91       		.byte	0x91
+ 1153 00dd 6C       		.sleb128 -20
+ 1154 00de 00       		.byte	0x0
+ 1155 00df 06       		.uleb128 0x6
+ 1156 00e0 01       		.byte	0x1
+ 1157 00e1 16000000 		.4byte	.LASF15
+ 1158 00e5 01       		.byte	0x1
+ 1159 00e6 2D       		.byte	0x2d
+ 1160 00e7 01       		.byte	0x1
+ 1161 00e8 00000000 		.4byte	.LFB32
+ 1162 00ec 24000000 		.4byte	.LFE32
+ 1163 00f0 8D000000 		.4byte	.LLST3
+ 1164 00f4 07010000 		.4byte	0x107
+ 1165 00f8 07       		.uleb128 0x7
+ 1166 00f9 87010000 		.4byte	.LASF17
+ 1167 00fd 01       		.byte	0x1
+ 1168 00fe 2D       		.byte	0x2d
+ 1169 00ff 76000000 		.4byte	0x76
+ 1170 0103 02       		.byte	0x2
+ 1171 0104 91       		.byte	0x91
+ 1172 0105 70       		.sleb128 -16
+ 1173 0106 00       		.byte	0x0
+ 1174 0107 06       		.uleb128 0x6
+ 1175 0108 01       		.byte	0x1
+ 1176 0109 98000000 		.4byte	.LASF18
+ 1177 010d 01       		.byte	0x1
+ 1178 010e 34       		.byte	0x34
+ 1179 010f 01       		.byte	0x1
+ 1180 0110 00000000 		.4byte	.LFB33
+ 1181 0114 BC000000 		.4byte	.LFE33
+ 1182 0118 C4000000 		.4byte	.LLST4
+ 1183 011c 2F010000 		.4byte	0x12f
+ 1184 0120 07       		.uleb128 0x7
+ 1185 0121 FF000000 		.4byte	.LASF19
+ 1186 0125 01       		.byte	0x1
+ 1187 0126 34       		.byte	0x34
+ 1188 0127 76000000 		.4byte	0x76
+ 1189 012b 02       		.byte	0x2
+ 1190 012c 91       		.byte	0x91
+ 1191 012d 68       		.sleb128 -24
+ 1192 012e 00       		.byte	0x0
+ 1193 012f 06       		.uleb128 0x6
+ 1194 0130 01       		.byte	0x1
+ 1195 0131 5B000000 		.4byte	.LASF20
+ 1196 0135 01       		.byte	0x1
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\ccq6UoL9.s 			page 24
+
+
+ 1197 0136 3D       		.byte	0x3d
+ 1198 0137 01       		.byte	0x1
+ 1199 0138 00000000 		.4byte	.LFB34
+ 1200 013c 48000000 		.4byte	.LFE34
+ 1201 0140 FB000000 		.4byte	.LLST5
+ 1202 0144 70010000 		.4byte	0x170
+ 1203 0148 08       		.uleb128 0x8
+ 1204 0149 4B7000   		.ascii	"Kp\000"
+ 1205 014c 01       		.byte	0x1
+ 1206 014d 3D       		.byte	0x3d
+ 1207 014e 76000000 		.4byte	0x76
+ 1208 0152 02       		.byte	0x2
+ 1209 0153 91       		.byte	0x91
+ 1210 0154 70       		.sleb128 -16
+ 1211 0155 08       		.uleb128 0x8
+ 1212 0156 4B6900   		.ascii	"Ki\000"
+ 1213 0159 01       		.byte	0x1
+ 1214 015a 3D       		.byte	0x3d
+ 1215 015b 76000000 		.4byte	0x76
+ 1216 015f 02       		.byte	0x2
+ 1217 0160 91       		.byte	0x91
+ 1218 0161 68       		.sleb128 -24
+ 1219 0162 08       		.uleb128 0x8
+ 1220 0163 4B6400   		.ascii	"Kd\000"
+ 1221 0166 01       		.byte	0x1
+ 1222 0167 3D       		.byte	0x3d
+ 1223 0168 76000000 		.4byte	0x76
+ 1224 016c 02       		.byte	0x2
+ 1225 016d 91       		.byte	0x91
+ 1226 016e 00       		.sleb128 0
+ 1227 016f 00       		.byte	0x0
+ 1228 0170 06       		.uleb128 0x6
+ 1229 0171 01       		.byte	0x1
+ 1230 0172 BC000000 		.4byte	.LASF21
+ 1231 0176 01       		.byte	0x1
+ 1232 0177 46       		.byte	0x46
+ 1233 0178 01       		.byte	0x1
+ 1234 0179 00000000 		.4byte	.LFB35
+ 1235 017d 94010000 		.4byte	.LFE35
+ 1236 0181 32010000 		.4byte	.LLST6
+ 1237 0185 A6010000 		.4byte	0x1a6
+ 1238 0189 08       		.uleb128 0x8
+ 1239 018a 6D696E00 		.ascii	"min\000"
+ 1240 018e 01       		.byte	0x1
+ 1241 018f 46       		.byte	0x46
+ 1242 0190 76000000 		.4byte	0x76
+ 1243 0194 02       		.byte	0x2
+ 1244 0195 91       		.byte	0x91
+ 1245 0196 68       		.sleb128 -24
+ 1246 0197 08       		.uleb128 0x8
+ 1247 0198 6D617800 		.ascii	"max\000"
+ 1248 019c 01       		.byte	0x1
+ 1249 019d 46       		.byte	0x46
+ 1250 019e 76000000 		.4byte	0x76
+ 1251 01a2 02       		.byte	0x2
+ 1252 01a3 91       		.byte	0x91
+ 1253 01a4 60       		.sleb128 -32
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\ccq6UoL9.s 			page 25
+
+
+ 1254 01a5 00       		.byte	0x0
+ 1255 01a6 09       		.uleb128 0x9
+ 1256 01a7 01       		.byte	0x1
+ 1257 01a8 D2000000 		.4byte	.LASF37
+ 1258 01ac 01       		.byte	0x1
+ 1259 01ad 55       		.byte	0x55
+ 1260 01ae 00000000 		.4byte	.LFB36
+ 1261 01b2 6A020000 		.4byte	.LFE36
+ 1262 01b6 69010000 		.4byte	.LLST7
+ 1263 01ba DB010000 		.4byte	0x1db
+ 1264 01be 0A       		.uleb128 0xa
+ 1265 01bf 4A010000 		.4byte	.LASF22
+ 1266 01c3 01       		.byte	0x1
+ 1267 01c4 59       		.byte	0x59
+ 1268 01c5 76000000 		.4byte	0x76
+ 1269 01c9 02       		.byte	0x2
+ 1270 01ca 91       		.byte	0x91
+ 1271 01cb 60       		.sleb128 -32
+ 1272 01cc 0A       		.uleb128 0xa
+ 1273 01cd CB000000 		.4byte	.LASF23
+ 1274 01d1 01       		.byte	0x1
+ 1275 01d2 61       		.byte	0x61
+ 1276 01d3 76000000 		.4byte	0x76
+ 1277 01d7 02       		.byte	0x2
+ 1278 01d8 91       		.byte	0x91
+ 1279 01d9 68       		.sleb128 -24
+ 1280 01da 00       		.byte	0x0
+ 1281 01db 05       		.uleb128 0x5
+ 1282 01dc 01       		.byte	0x1
+ 1283 01dd A9010000 		.4byte	.LASF24
+ 1284 01e1 01       		.byte	0x1
+ 1285 01e2 6D       		.byte	0x6d
+ 1286 01e3 76000000 		.4byte	0x76
+ 1287 01e7 00000000 		.4byte	.LFB37
+ 1288 01eb 1A000000 		.4byte	.LFE37
+ 1289 01ef A0010000 		.4byte	.LLST8
+ 1290 01f3 0B       		.uleb128 0xb
+ 1291 01f4 38010000 		.4byte	.LASF25
+ 1292 01f8 02       		.byte	0x2
+ 1293 01f9 CE06     		.2byte	0x6ce
+ 1294 01fb 01020000 		.4byte	0x201
+ 1295 01ff 01       		.byte	0x1
+ 1296 0200 01       		.byte	0x1
+ 1297 0201 0C       		.uleb128 0xc
+ 1298 0202 61000000 		.4byte	0x61
+ 1299 0206 0D       		.uleb128 0xd
+ 1300 0207 45010000 		.4byte	.LASF26
+ 1301 020b 01       		.byte	0x1
+ 1302 020c 08       		.byte	0x8
+ 1303 020d 61000000 		.4byte	0x61
+ 1304 0211 01       		.byte	0x1
+ 1305 0212 05       		.byte	0x5
+ 1306 0213 03       		.byte	0x3
+ 1307 0214 00000000 		.4byte	mode
+ 1308 0218 0D       		.uleb128 0xd
+ 1309 0219 F3000000 		.4byte	.LASF27
+ 1310 021d 01       		.byte	0x1
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\ccq6UoL9.s 			page 26
+
+
+ 1311 021e 09       		.byte	0x9
+ 1312 021f 76000000 		.4byte	0x76
+ 1313 0223 01       		.byte	0x1
+ 1314 0224 05       		.byte	0x5
+ 1315 0225 03       		.byte	0x3
+ 1316 0226 00000000 		.4byte	Input
+ 1317 022a 0D       		.uleb128 0xd
+ 1318 022b 45000000 		.4byte	.LASF28
+ 1319 022f 01       		.byte	0x1
+ 1320 0230 09       		.byte	0x9
+ 1321 0231 76000000 		.4byte	0x76
+ 1322 0235 01       		.byte	0x1
+ 1323 0236 05       		.byte	0x5
+ 1324 0237 03       		.byte	0x3
+ 1325 0238 00000000 		.4byte	Output
+ 1326 023c 0D       		.uleb128 0xd
+ 1327 023d 2F010000 		.4byte	.LASF29
+ 1328 0241 01       		.byte	0x1
+ 1329 0242 09       		.byte	0x9
+ 1330 0243 76000000 		.4byte	0x76
+ 1331 0247 01       		.byte	0x1
+ 1332 0248 05       		.byte	0x5
+ 1333 0249 03       		.byte	0x3
+ 1334 024a 00000000 		.4byte	Setpoint
+ 1335 024e 0E       		.uleb128 0xe
+ 1336 024f 6B7000   		.ascii	"kp\000"
+ 1337 0252 01       		.byte	0x1
+ 1338 0253 0A       		.byte	0xa
+ 1339 0254 76000000 		.4byte	0x76
+ 1340 0258 01       		.byte	0x1
+ 1341 0259 05       		.byte	0x5
+ 1342 025a 03       		.byte	0x3
+ 1343 025b 00000000 		.4byte	kp
+ 1344 025f 0E       		.uleb128 0xe
+ 1345 0260 6B6900   		.ascii	"ki\000"
+ 1346 0263 01       		.byte	0x1
+ 1347 0264 0A       		.byte	0xa
+ 1348 0265 76000000 		.4byte	0x76
+ 1349 0269 01       		.byte	0x1
+ 1350 026a 05       		.byte	0x5
+ 1351 026b 03       		.byte	0x3
+ 1352 026c 00000000 		.4byte	ki
+ 1353 0270 0E       		.uleb128 0xe
+ 1354 0271 6B6400   		.ascii	"kd\000"
+ 1355 0274 01       		.byte	0x1
+ 1356 0275 0A       		.byte	0xa
+ 1357 0276 76000000 		.4byte	0x76
+ 1358 027a 01       		.byte	0x1
+ 1359 027b 05       		.byte	0x5
+ 1360 027c 03       		.byte	0x3
+ 1361 027d 00000000 		.4byte	kd
+ 1362 0281 0D       		.uleb128 0xd
+ 1363 0282 F9000000 		.4byte	.LASF30
+ 1364 0286 01       		.byte	0x1
+ 1365 0287 0B       		.byte	0xb
+ 1366 0288 76000000 		.4byte	0x76
+ 1367 028c 01       		.byte	0x1
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\ccq6UoL9.s 			page 27
+
+
+ 1368 028d 05       		.byte	0x5
+ 1369 028e 03       		.byte	0x3
+ 1370 028f 00000000 		.4byte	ITerm
+ 1371 0293 0D       		.uleb128 0xd
+ 1372 0294 5C010000 		.4byte	.LASF31
+ 1373 0298 01       		.byte	0x1
+ 1374 0299 0B       		.byte	0xb
+ 1375 029a 76000000 		.4byte	0x76
+ 1376 029e 01       		.byte	0x1
+ 1377 029f 05       		.byte	0x5
+ 1378 02a0 03       		.byte	0x3
+ 1379 02a1 00000000 		.4byte	lastInput
+ 1380 02a5 0D       		.uleb128 0xd
+ 1381 02a6 91000000 		.4byte	.LASF32
+ 1382 02aa 01       		.byte	0x1
+ 1383 02ab 0C       		.byte	0xc
+ 1384 02ac 76000000 		.4byte	0x76
+ 1385 02b0 01       		.byte	0x1
+ 1386 02b1 05       		.byte	0x5
+ 1387 02b2 03       		.byte	0x3
+ 1388 02b3 00000000 		.4byte	outMin
+ 1389 02b7 0D       		.uleb128 0xd
+ 1390 02b8 54000000 		.4byte	.LASF33
+ 1391 02bc 01       		.byte	0x1
+ 1392 02bd 0C       		.byte	0xc
+ 1393 02be 76000000 		.4byte	0x76
+ 1394 02c2 01       		.byte	0x1
+ 1395 02c3 05       		.byte	0x5
+ 1396 02c4 03       		.byte	0x3
+ 1397 02c5 00000000 		.4byte	outMax
+ 1398 02c9 00       		.byte	0x0
+ 1399              		.section	.debug_abbrev
+ 1400 0000 01       		.uleb128 0x1
+ 1401 0001 11       		.uleb128 0x11
+ 1402 0002 01       		.byte	0x1
+ 1403 0003 25       		.uleb128 0x25
+ 1404 0004 0E       		.uleb128 0xe
+ 1405 0005 13       		.uleb128 0x13
+ 1406 0006 0B       		.uleb128 0xb
+ 1407 0007 03       		.uleb128 0x3
+ 1408 0008 0E       		.uleb128 0xe
+ 1409 0009 1B       		.uleb128 0x1b
+ 1410 000a 0E       		.uleb128 0xe
+ 1411 000b 11       		.uleb128 0x11
+ 1412 000c 01       		.uleb128 0x1
+ 1413 000d 52       		.uleb128 0x52
+ 1414 000e 01       		.uleb128 0x1
+ 1415 000f 55       		.uleb128 0x55
+ 1416 0010 06       		.uleb128 0x6
+ 1417 0011 10       		.uleb128 0x10
+ 1418 0012 06       		.uleb128 0x6
+ 1419 0013 00       		.byte	0x0
+ 1420 0014 00       		.byte	0x0
+ 1421 0015 02       		.uleb128 0x2
+ 1422 0016 24       		.uleb128 0x24
+ 1423 0017 00       		.byte	0x0
+ 1424 0018 0B       		.uleb128 0xb
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\ccq6UoL9.s 			page 28
+
+
+ 1425 0019 0B       		.uleb128 0xb
+ 1426 001a 3E       		.uleb128 0x3e
+ 1427 001b 0B       		.uleb128 0xb
+ 1428 001c 03       		.uleb128 0x3
+ 1429 001d 0E       		.uleb128 0xe
+ 1430 001e 00       		.byte	0x0
+ 1431 001f 00       		.byte	0x0
+ 1432 0020 03       		.uleb128 0x3
+ 1433 0021 24       		.uleb128 0x24
+ 1434 0022 00       		.byte	0x0
+ 1435 0023 0B       		.uleb128 0xb
+ 1436 0024 0B       		.uleb128 0xb
+ 1437 0025 3E       		.uleb128 0x3e
+ 1438 0026 0B       		.uleb128 0xb
+ 1439 0027 03       		.uleb128 0x3
+ 1440 0028 08       		.uleb128 0x8
+ 1441 0029 00       		.byte	0x0
+ 1442 002a 00       		.byte	0x0
+ 1443 002b 04       		.uleb128 0x4
+ 1444 002c 24       		.uleb128 0x24
+ 1445 002d 00       		.byte	0x0
+ 1446 002e 0B       		.uleb128 0xb
+ 1447 002f 0B       		.uleb128 0xb
+ 1448 0030 3E       		.uleb128 0x3e
+ 1449 0031 0B       		.uleb128 0xb
+ 1450 0032 00       		.byte	0x0
+ 1451 0033 00       		.byte	0x0
+ 1452 0034 05       		.uleb128 0x5
+ 1453 0035 2E       		.uleb128 0x2e
+ 1454 0036 00       		.byte	0x0
+ 1455 0037 3F       		.uleb128 0x3f
+ 1456 0038 0C       		.uleb128 0xc
+ 1457 0039 03       		.uleb128 0x3
+ 1458 003a 0E       		.uleb128 0xe
+ 1459 003b 3A       		.uleb128 0x3a
+ 1460 003c 0B       		.uleb128 0xb
+ 1461 003d 3B       		.uleb128 0x3b
+ 1462 003e 0B       		.uleb128 0xb
+ 1463 003f 49       		.uleb128 0x49
+ 1464 0040 13       		.uleb128 0x13
+ 1465 0041 11       		.uleb128 0x11
+ 1466 0042 01       		.uleb128 0x1
+ 1467 0043 12       		.uleb128 0x12
+ 1468 0044 01       		.uleb128 0x1
+ 1469 0045 40       		.uleb128 0x40
+ 1470 0046 06       		.uleb128 0x6
+ 1471 0047 00       		.byte	0x0
+ 1472 0048 00       		.byte	0x0
+ 1473 0049 06       		.uleb128 0x6
+ 1474 004a 2E       		.uleb128 0x2e
+ 1475 004b 01       		.byte	0x1
+ 1476 004c 3F       		.uleb128 0x3f
+ 1477 004d 0C       		.uleb128 0xc
+ 1478 004e 03       		.uleb128 0x3
+ 1479 004f 0E       		.uleb128 0xe
+ 1480 0050 3A       		.uleb128 0x3a
+ 1481 0051 0B       		.uleb128 0xb
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\ccq6UoL9.s 			page 29
+
+
+ 1482 0052 3B       		.uleb128 0x3b
+ 1483 0053 0B       		.uleb128 0xb
+ 1484 0054 27       		.uleb128 0x27
+ 1485 0055 0C       		.uleb128 0xc
+ 1486 0056 11       		.uleb128 0x11
+ 1487 0057 01       		.uleb128 0x1
+ 1488 0058 12       		.uleb128 0x12
+ 1489 0059 01       		.uleb128 0x1
+ 1490 005a 40       		.uleb128 0x40
+ 1491 005b 06       		.uleb128 0x6
+ 1492 005c 01       		.uleb128 0x1
+ 1493 005d 13       		.uleb128 0x13
+ 1494 005e 00       		.byte	0x0
+ 1495 005f 00       		.byte	0x0
+ 1496 0060 07       		.uleb128 0x7
+ 1497 0061 05       		.uleb128 0x5
+ 1498 0062 00       		.byte	0x0
+ 1499 0063 03       		.uleb128 0x3
+ 1500 0064 0E       		.uleb128 0xe
+ 1501 0065 3A       		.uleb128 0x3a
+ 1502 0066 0B       		.uleb128 0xb
+ 1503 0067 3B       		.uleb128 0x3b
+ 1504 0068 0B       		.uleb128 0xb
+ 1505 0069 49       		.uleb128 0x49
+ 1506 006a 13       		.uleb128 0x13
+ 1507 006b 02       		.uleb128 0x2
+ 1508 006c 0A       		.uleb128 0xa
+ 1509 006d 00       		.byte	0x0
+ 1510 006e 00       		.byte	0x0
+ 1511 006f 08       		.uleb128 0x8
+ 1512 0070 05       		.uleb128 0x5
+ 1513 0071 00       		.byte	0x0
+ 1514 0072 03       		.uleb128 0x3
+ 1515 0073 08       		.uleb128 0x8
+ 1516 0074 3A       		.uleb128 0x3a
+ 1517 0075 0B       		.uleb128 0xb
+ 1518 0076 3B       		.uleb128 0x3b
+ 1519 0077 0B       		.uleb128 0xb
+ 1520 0078 49       		.uleb128 0x49
+ 1521 0079 13       		.uleb128 0x13
+ 1522 007a 02       		.uleb128 0x2
+ 1523 007b 0A       		.uleb128 0xa
+ 1524 007c 00       		.byte	0x0
+ 1525 007d 00       		.byte	0x0
+ 1526 007e 09       		.uleb128 0x9
+ 1527 007f 2E       		.uleb128 0x2e
+ 1528 0080 01       		.byte	0x1
+ 1529 0081 3F       		.uleb128 0x3f
+ 1530 0082 0C       		.uleb128 0xc
+ 1531 0083 03       		.uleb128 0x3
+ 1532 0084 0E       		.uleb128 0xe
+ 1533 0085 3A       		.uleb128 0x3a
+ 1534 0086 0B       		.uleb128 0xb
+ 1535 0087 3B       		.uleb128 0x3b
+ 1536 0088 0B       		.uleb128 0xb
+ 1537 0089 11       		.uleb128 0x11
+ 1538 008a 01       		.uleb128 0x1
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\ccq6UoL9.s 			page 30
+
+
+ 1539 008b 12       		.uleb128 0x12
+ 1540 008c 01       		.uleb128 0x1
+ 1541 008d 40       		.uleb128 0x40
+ 1542 008e 06       		.uleb128 0x6
+ 1543 008f 01       		.uleb128 0x1
+ 1544 0090 13       		.uleb128 0x13
+ 1545 0091 00       		.byte	0x0
+ 1546 0092 00       		.byte	0x0
+ 1547 0093 0A       		.uleb128 0xa
+ 1548 0094 34       		.uleb128 0x34
+ 1549 0095 00       		.byte	0x0
+ 1550 0096 03       		.uleb128 0x3
+ 1551 0097 0E       		.uleb128 0xe
+ 1552 0098 3A       		.uleb128 0x3a
+ 1553 0099 0B       		.uleb128 0xb
+ 1554 009a 3B       		.uleb128 0x3b
+ 1555 009b 0B       		.uleb128 0xb
+ 1556 009c 49       		.uleb128 0x49
+ 1557 009d 13       		.uleb128 0x13
+ 1558 009e 02       		.uleb128 0x2
+ 1559 009f 0A       		.uleb128 0xa
+ 1560 00a0 00       		.byte	0x0
+ 1561 00a1 00       		.byte	0x0
+ 1562 00a2 0B       		.uleb128 0xb
+ 1563 00a3 34       		.uleb128 0x34
+ 1564 00a4 00       		.byte	0x0
+ 1565 00a5 03       		.uleb128 0x3
+ 1566 00a6 0E       		.uleb128 0xe
+ 1567 00a7 3A       		.uleb128 0x3a
+ 1568 00a8 0B       		.uleb128 0xb
+ 1569 00a9 3B       		.uleb128 0x3b
+ 1570 00aa 05       		.uleb128 0x5
+ 1571 00ab 49       		.uleb128 0x49
+ 1572 00ac 13       		.uleb128 0x13
+ 1573 00ad 3F       		.uleb128 0x3f
+ 1574 00ae 0C       		.uleb128 0xc
+ 1575 00af 3C       		.uleb128 0x3c
+ 1576 00b0 0C       		.uleb128 0xc
+ 1577 00b1 00       		.byte	0x0
+ 1578 00b2 00       		.byte	0x0
+ 1579 00b3 0C       		.uleb128 0xc
+ 1580 00b4 35       		.uleb128 0x35
+ 1581 00b5 00       		.byte	0x0
+ 1582 00b6 49       		.uleb128 0x49
+ 1583 00b7 13       		.uleb128 0x13
+ 1584 00b8 00       		.byte	0x0
+ 1585 00b9 00       		.byte	0x0
+ 1586 00ba 0D       		.uleb128 0xd
+ 1587 00bb 34       		.uleb128 0x34
+ 1588 00bc 00       		.byte	0x0
+ 1589 00bd 03       		.uleb128 0x3
+ 1590 00be 0E       		.uleb128 0xe
+ 1591 00bf 3A       		.uleb128 0x3a
+ 1592 00c0 0B       		.uleb128 0xb
+ 1593 00c1 3B       		.uleb128 0x3b
+ 1594 00c2 0B       		.uleb128 0xb
+ 1595 00c3 49       		.uleb128 0x49
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\ccq6UoL9.s 			page 31
+
+
+ 1596 00c4 13       		.uleb128 0x13
+ 1597 00c5 3F       		.uleb128 0x3f
+ 1598 00c6 0C       		.uleb128 0xc
+ 1599 00c7 02       		.uleb128 0x2
+ 1600 00c8 0A       		.uleb128 0xa
+ 1601 00c9 00       		.byte	0x0
+ 1602 00ca 00       		.byte	0x0
+ 1603 00cb 0E       		.uleb128 0xe
+ 1604 00cc 34       		.uleb128 0x34
+ 1605 00cd 00       		.byte	0x0
+ 1606 00ce 03       		.uleb128 0x3
+ 1607 00cf 08       		.uleb128 0x8
+ 1608 00d0 3A       		.uleb128 0x3a
+ 1609 00d1 0B       		.uleb128 0xb
+ 1610 00d2 3B       		.uleb128 0x3b
+ 1611 00d3 0B       		.uleb128 0xb
+ 1612 00d4 49       		.uleb128 0x49
+ 1613 00d5 13       		.uleb128 0x13
+ 1614 00d6 3F       		.uleb128 0x3f
+ 1615 00d7 0C       		.uleb128 0xc
+ 1616 00d8 02       		.uleb128 0x2
+ 1617 00d9 0A       		.uleb128 0xa
+ 1618 00da 00       		.byte	0x0
+ 1619 00db 00       		.byte	0x0
+ 1620 00dc 00       		.byte	0x0
+ 1621              		.section	.debug_pubnames,"",%progbits
+ 1622 0000 19010000 		.4byte	0x119
+ 1623 0004 0200     		.2byte	0x2
+ 1624 0006 00000000 		.4byte	.Ldebug_info0
+ 1625 000a CA020000 		.4byte	0x2ca
+ 1626 000e 87000000 		.4byte	0x87
+ 1627 0012 5049445F 		.ascii	"PID_toggle\000"
+ 1627      746F6767 
+ 1627      6C6500
+ 1628 001d 9F000000 		.4byte	0x9f
+ 1629 0021 5049445F 		.ascii	"PID_mode\000"
+ 1629      6D6F6465 
+ 1629      00
+ 1630 002a B7000000 		.4byte	0xb7
+ 1631 002e 7365745F 		.ascii	"set_PID_mode\000"
+ 1631      5049445F 
+ 1631      6D6F6465 
+ 1631      00
+ 1632 003b DF000000 		.4byte	0xdf
+ 1633 003f 7365745F 		.ascii	"set_PID_input\000"
+ 1633      5049445F 
+ 1633      696E7075 
+ 1633      7400
+ 1634 004d 07010000 		.4byte	0x107
+ 1635 0051 7365745F 		.ascii	"set_PID_setpoint\000"
+ 1635      5049445F 
+ 1635      73657470 
+ 1635      6F696E74 
+ 1635      00
+ 1636 0062 2F010000 		.4byte	0x12f
+ 1637 0066 7365745F 		.ascii	"set_PID_tunings\000"
+ 1637      5049445F 
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\ccq6UoL9.s 			page 32
+
+
+ 1637      74756E69 
+ 1637      6E677300 
+ 1638 0076 70010000 		.4byte	0x170
+ 1639 007a 7365745F 		.ascii	"set_PID_limits\000"
+ 1639      5049445F 
+ 1639      6C696D69 
+ 1639      747300
+ 1640 0089 A6010000 		.4byte	0x1a6
+ 1641 008d 5049445F 		.ascii	"PID_controller\000"
+ 1641      636F6E74 
+ 1641      726F6C6C 
+ 1641      657200
+ 1642 009c DB010000 		.4byte	0x1db
+ 1643 00a0 5049445F 		.ascii	"PID_output\000"
+ 1643      6F757470 
+ 1643      757400
+ 1644 00ab 06020000 		.4byte	0x206
+ 1645 00af 6D6F6465 		.ascii	"mode\000"
+ 1645      00
+ 1646 00b4 18020000 		.4byte	0x218
+ 1647 00b8 496E7075 		.ascii	"Input\000"
+ 1647      7400
+ 1648 00be 2A020000 		.4byte	0x22a
+ 1649 00c2 4F757470 		.ascii	"Output\000"
+ 1649      757400
+ 1650 00c9 3C020000 		.4byte	0x23c
+ 1651 00cd 53657470 		.ascii	"Setpoint\000"
+ 1651      6F696E74 
+ 1651      00
+ 1652 00d6 4E020000 		.4byte	0x24e
+ 1653 00da 6B7000   		.ascii	"kp\000"
+ 1654 00dd 5F020000 		.4byte	0x25f
+ 1655 00e1 6B6900   		.ascii	"ki\000"
+ 1656 00e4 70020000 		.4byte	0x270
+ 1657 00e8 6B6400   		.ascii	"kd\000"
+ 1658 00eb 81020000 		.4byte	0x281
+ 1659 00ef 49546572 		.ascii	"ITerm\000"
+ 1659      6D00
+ 1660 00f5 93020000 		.4byte	0x293
+ 1661 00f9 6C617374 		.ascii	"lastInput\000"
+ 1661      496E7075 
+ 1661      7400
+ 1662 0103 A5020000 		.4byte	0x2a5
+ 1663 0107 6F75744D 		.ascii	"outMin\000"
+ 1663      696E00
+ 1664 010e B7020000 		.4byte	0x2b7
+ 1665 0112 6F75744D 		.ascii	"outMax\000"
+ 1665      617800
+ 1666 0119 00000000 		.4byte	0x0
+ 1667              		.section	.debug_aranges,"",%progbits
+ 1668 0000 5C000000 		.4byte	0x5c
+ 1669 0004 0200     		.2byte	0x2
+ 1670 0006 00000000 		.4byte	.Ldebug_info0
+ 1671 000a 04       		.byte	0x4
+ 1672 000b 00       		.byte	0x0
+ 1673 000c 0000     		.2byte	0x0
+ 1674 000e 0000     		.2byte	0x0
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\ccq6UoL9.s 			page 33
+
+
+ 1675 0010 00000000 		.4byte	.LFB29
+ 1676 0014 2A000000 		.4byte	.LFE29-.LFB29
+ 1677 0018 00000000 		.4byte	.LFB30
+ 1678 001c 16000000 		.4byte	.LFE30-.LFB30
+ 1679 0020 00000000 		.4byte	.LFB31
+ 1680 0024 FA000000 		.4byte	.LFE31-.LFB31
+ 1681 0028 00000000 		.4byte	.LFB32
+ 1682 002c 24000000 		.4byte	.LFE32-.LFB32
+ 1683 0030 00000000 		.4byte	.LFB33
+ 1684 0034 BC000000 		.4byte	.LFE33-.LFB33
+ 1685 0038 00000000 		.4byte	.LFB34
+ 1686 003c 48000000 		.4byte	.LFE34-.LFB34
+ 1687 0040 00000000 		.4byte	.LFB35
+ 1688 0044 94010000 		.4byte	.LFE35-.LFB35
+ 1689 0048 00000000 		.4byte	.LFB36
+ 1690 004c 6A020000 		.4byte	.LFE36-.LFB36
+ 1691 0050 00000000 		.4byte	.LFB37
+ 1692 0054 1A000000 		.4byte	.LFE37-.LFB37
+ 1693 0058 00000000 		.4byte	0x0
+ 1694 005c 00000000 		.4byte	0x0
+ 1695              		.section	.debug_ranges,"",%progbits
+ 1696              	.Ldebug_ranges0:
+ 1697 0000 00000000 		.4byte	.Ltext0
+ 1698 0004 00000000 		.4byte	.Letext0
+ 1699 0008 00000000 		.4byte	.LFB29
+ 1700 000c 2A000000 		.4byte	.LFE29
+ 1701 0010 00000000 		.4byte	.LFB30
+ 1702 0014 16000000 		.4byte	.LFE30
+ 1703 0018 00000000 		.4byte	.LFB31
+ 1704 001c FA000000 		.4byte	.LFE31
+ 1705 0020 00000000 		.4byte	.LFB32
+ 1706 0024 24000000 		.4byte	.LFE32
+ 1707 0028 00000000 		.4byte	.LFB33
+ 1708 002c BC000000 		.4byte	.LFE33
+ 1709 0030 00000000 		.4byte	.LFB34
+ 1710 0034 48000000 		.4byte	.LFE34
+ 1711 0038 00000000 		.4byte	.LFB35
+ 1712 003c 94010000 		.4byte	.LFE35
+ 1713 0040 00000000 		.4byte	.LFB36
+ 1714 0044 6A020000 		.4byte	.LFE36
+ 1715 0048 00000000 		.4byte	.LFB37
+ 1716 004c 1A000000 		.4byte	.LFE37
+ 1717 0050 00000000 		.4byte	0x0
+ 1718 0054 00000000 		.4byte	0x0
+ 1719              		.section	.debug_str,"MS",%progbits,1
+ 1720              	.LASF6:
+ 1721 0000 6C6F6E67 		.ascii	"long long int\000"
+ 1721      206C6F6E 
+ 1721      6720696E 
+ 1721      7400
+ 1722              	.LASF35:
+ 1723 000e 2E5C5049 		.ascii	".\\PID.c\000"
+ 1723      442E6300 
+ 1724              	.LASF15:
+ 1725 0016 7365745F 		.ascii	"set_PID_input\000"
+ 1725      5049445F 
+ 1725      696E7075 
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\ccq6UoL9.s 			page 34
+
+
+ 1725      7400
+ 1726              	.LASF36:
+ 1727 0024 463A5C50 		.ascii	"F:\\PSoC Creator\\lab4\\part2.cydsn\000"
+ 1727      536F4320 
+ 1727      43726561 
+ 1727      746F725C 
+ 1727      6C616234 
+ 1728              	.LASF28:
+ 1729 0045 4F757470 		.ascii	"Output\000"
+ 1729      757400
+ 1730              	.LASF16:
+ 1731 004c 6E65774D 		.ascii	"newMode\000"
+ 1731      6F646500 
+ 1732              	.LASF33:
+ 1733 0054 6F75744D 		.ascii	"outMax\000"
+ 1733      617800
+ 1734              	.LASF20:
+ 1735 005b 7365745F 		.ascii	"set_PID_tunings\000"
+ 1735      5049445F 
+ 1735      74756E69 
+ 1735      6E677300 
+ 1736              	.LASF10:
+ 1737 006b 646F7562 		.ascii	"double\000"
+ 1737      6C6500
+ 1738              	.LASF12:
+ 1739 0072 5049445F 		.ascii	"PID_toggle\000"
+ 1739      746F6767 
+ 1739      6C6500
+ 1740              	.LASF9:
+ 1741 007d 666C6F61 		.ascii	"float\000"
+ 1741      7400
+ 1742              	.LASF1:
+ 1743 0083 756E7369 		.ascii	"unsigned char\000"
+ 1743      676E6564 
+ 1743      20636861 
+ 1743      7200
+ 1744              	.LASF32:
+ 1745 0091 6F75744D 		.ascii	"outMin\000"
+ 1745      696E00
+ 1746              	.LASF18:
+ 1747 0098 7365745F 		.ascii	"set_PID_setpoint\000"
+ 1747      5049445F 
+ 1747      73657470 
+ 1747      6F696E74 
+ 1747      00
+ 1748              	.LASF3:
+ 1749 00a9 73686F72 		.ascii	"short unsigned int\000"
+ 1749      7420756E 
+ 1749      7369676E 
+ 1749      65642069 
+ 1749      6E7400
+ 1750              	.LASF21:
+ 1751 00bc 7365745F 		.ascii	"set_PID_limits\000"
+ 1751      5049445F 
+ 1751      6C696D69 
+ 1751      747300
+ 1752              	.LASF23:
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\ccq6UoL9.s 			page 35
+
+
+ 1753 00cb 64496E70 		.ascii	"dInput\000"
+ 1753      757400
+ 1754              	.LASF37:
+ 1755 00d2 5049445F 		.ascii	"PID_controller\000"
+ 1755      636F6E74 
+ 1755      726F6C6C 
+ 1755      657200
+ 1756              	.LASF5:
+ 1757 00e1 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1757      20756E73 
+ 1757      69676E65 
+ 1757      6420696E 
+ 1757      7400
+ 1758              	.LASF27:
+ 1759 00f3 496E7075 		.ascii	"Input\000"
+ 1759      7400
+ 1760              	.LASF30:
+ 1761 00f9 49546572 		.ascii	"ITerm\000"
+ 1761      6D00
+ 1762              	.LASF19:
+ 1763 00ff 6E657753 		.ascii	"newSetpoint\000"
+ 1763      6574706F 
+ 1763      696E7400 
+ 1764              	.LASF8:
+ 1765 010b 756E7369 		.ascii	"unsigned int\000"
+ 1765      676E6564 
+ 1765      20696E74 
+ 1765      00
+ 1766              	.LASF7:
+ 1767 0118 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1767      206C6F6E 
+ 1767      6720756E 
+ 1767      7369676E 
+ 1767      65642069 
+ 1768              	.LASF29:
+ 1769 012f 53657470 		.ascii	"Setpoint\000"
+ 1769      6F696E74 
+ 1769      00
+ 1770              	.LASF25:
+ 1771 0138 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 1771      52784275 
+ 1771      66666572 
+ 1771      00
+ 1772              	.LASF26:
+ 1773 0145 6D6F6465 		.ascii	"mode\000"
+ 1773      00
+ 1774              	.LASF22:
+ 1775 014a 6572726F 		.ascii	"error\000"
+ 1775      7200
+ 1776              	.LASF34:
+ 1777 0150 474E5520 		.ascii	"GNU C 4.4.1\000"
+ 1777      4320342E 
+ 1777      342E3100 
+ 1778              	.LASF31:
+ 1779 015c 6C617374 		.ascii	"lastInput\000"
+ 1779      496E7075 
+ 1779      7400
+ARM GAS  C:\Users\dmtucker\AppData\Local\Temp\ccq6UoL9.s 			page 36
+
+
+ 1780              	.LASF11:
+ 1781 0166 63686172 		.ascii	"char\000"
+ 1781      00
+ 1782              	.LASF13:
+ 1783 016b 5049445F 		.ascii	"PID_mode\000"
+ 1783      6D6F6465 
+ 1783      00
+ 1784              	.LASF2:
+ 1785 0174 73686F72 		.ascii	"short int\000"
+ 1785      7420696E 
+ 1785      7400
+ 1786              	.LASF4:
+ 1787 017e 6C6F6E67 		.ascii	"long int\000"
+ 1787      20696E74 
+ 1787      00
+ 1788              	.LASF17:
+ 1789 0187 6E657749 		.ascii	"newInput\000"
+ 1789      6E707574 
+ 1789      00
+ 1790              	.LASF14:
+ 1791 0190 7365745F 		.ascii	"set_PID_mode\000"
+ 1791      5049445F 
+ 1791      6D6F6465 
+ 1791      00
+ 1792              	.LASF0:
+ 1793 019d 7369676E 		.ascii	"signed char\000"
+ 1793      65642063 
+ 1793      68617200 
+ 1794              	.LASF24:
+ 1795 01a9 5049445F 		.ascii	"PID_output\000"
+ 1795      6F757470 
+ 1795      757400
+ 1796              		.ident	"GCC: (Sourcery G++ Lite 2010q1-188) 4.4.1"

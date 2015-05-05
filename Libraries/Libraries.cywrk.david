@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CyXmlSerializer>
+<!--This file is machine generated and read. It is not intended to be edited by hand.-->
+<!--Due to this, there is no schema for this file.-->
+<CyGuid_843a90a4-0c4b-4e44-991d-05e7fb117a21 type_name="CyDesigner.Common.ProjMgmt.Model.CyPrjMgmtWrkspcCustomData" version="4">
+<CyGuid_fdba8dfd-b15b-4469-9bbb-9e40c3e70997 type_name="CyDesigner.Common.Base.CyCustomData" version="2">
+<userData>
+<dataGuid v="1b906a0f-a7b6-4e4d-a428-82f98b53cb35">
+<CyGuid_1b906a0f-a7b6-4e4d-a428-82f98b53cb35 type_name="CyDesigner.Common.ProjMgmt.GUI.CyExplorerWindow+CyExplorerWindowState" version="3" SelectedTab="Source">
+<TreeKeys>
+<v>Source</v>
+<v>Components</v>
+<v>Output</v>
+</TreeKeys>
+<TreeStates>
+<CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237 type_name="CyDesigner.Common.Base.Controls.CyTreeViewState" version="1" SelectedNodeId="Libraries\LED\Header Files\matrix.h">
+<ExpandedNodeIds>
+<v>Libraries</v>
+<v>Libraries\LCD</v>
+<v>Libraries\LCD\Header Files</v>
+<v>Libraries\LCD\Header Files\display.h</v>
+<v>Libraries\LCD\Source Files</v>
+<v>Libraries\LCD\Source Files\display.c</v>
+<v>Libraries\LED</v>
+<v>Libraries\LED\Header Files</v>
+<v>Libraries\LED\Header Files\alphabet-mosaic.h</v>
+<v>Libraries\LED\Header Files\alphabets.h</v>
+<v>Libraries\LED\Header Files\matrix.h</v>
+<v>Libraries\LED\Source Files</v>
+<v>Libraries\LED\Source Files\alphabets.c</v>
+<v>Libraries\LED\Source Files\matrix.c</v>
+<v>Libraries\PID</v>
+<v>Libraries\PID\Header Files</v>
+<v>Libraries\PID\Header Files\PID.h</v>
+<v>Libraries\PID\Source Files</v>
+<v>Libraries\PID\Source Files\PID.c</v>
+</ExpandedNodeIds>
+<VisibleNodeIds>
+<v>Libraries</v>
+<v>Libraries\LCD</v>
+<v>Libraries\LCD\Header Files</v>
+<v>Libraries\LCD\Header Files\display.h</v>
+<v>Libraries\LCD\Source Files</v>
+<v>Libraries\LCD\Source Files\display.c</v>
+<v>Libraries\LED</v>
+<v>Libraries\LED\Header Files</v>
+<v>Libraries\LED\Header Files\alphabet-mosaic.h</v>
+<v>Libraries\LED\Header Files\alphabets.h</v>
+<v>Libraries\LED\Header Files\matrix.h</v>
+<v>Libraries\LED\Source Files</v>
+<v>Libraries\LED\Source Files\alphabets.c</v>
+<v>Libraries\LED\Source Files\matrix.c</v>
+<v>Libraries\PID</v>
+<v>Libraries\PID\Header Files</v>
+<v>Libraries\PID\Header Files\PID.h</v>
+<v>Libraries\PID\Source Files</v>
+<v>Libraries\PID\Source Files\PID.c</v>
+</VisibleNodeIds>
+</CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237>
+<CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237 type_name="CyDesigner.Common.Base.Controls.CyTreeViewState" version="1" SelectedNodeId="">
+<ExpandedNodeIds>
+<v>Libraries</v>
+<v>Libraries\LCD</v>
+<v>Libraries\LED</v>
+<v>Libraries\PID</v>
+</ExpandedNodeIds>
+<VisibleNodeIds>
+<v>Libraries</v>
+<v>Libraries\LCD</v>
+<v>Libraries\LED</v>
+<v>Libraries\PID</v>
+</VisibleNodeIds>
+</CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237>
+<CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237 type_name="CyDesigner.Common.Base.Controls.CyTreeViewState" version="1" SelectedNodeId="">
+<ExpandedNodeIds>
+<v>Libraries</v>
+<v>Libraries\LCD</v>
+<v>Libraries\LCD\CortexM3</v>
+<v>Libraries\LCD\CortexM3\ARM_GCC_441</v>
+<v>Libraries\LCD\CortexM3\ARM_GCC_441\Debug</v>
+<v>Libraries\LCD\CortexM3\ARM_GCC_441\Debug\Listing Files</v>
+<v>Libraries\LCD\CortexM3\ARM_GCC_441\Debug\LCD.a</v>
+<v>Libraries\LED</v>
+<v>Libraries\LED\CortexM3</v>
+<v>Libraries\LED\CortexM3\ARM_GCC_441</v>
+<v>Libraries\LED\CortexM3\ARM_GCC_441\Debug</v>
+<v>Libraries\LED\CortexM3\ARM_GCC_441\Debug\LED.a</v>
+<v>Libraries\PID</v>
+<v>Libraries\PID\CortexM3</v>
+<v>Libraries\PID\CortexM3\ARM_GCC_441</v>
+<v>Libraries\PID\CortexM3\ARM_GCC_441\Debug</v>
+<v>Libraries\PID\CortexM3\ARM_GCC_441\Debug\PID.a</v>
+</ExpandedNodeIds>
+<VisibleNodeIds>
+<v>Libraries</v>
+<v>Libraries\LCD</v>
+<v>Libraries\LCD\CortexM3</v>
+<v>Libraries\LCD\CortexM3\ARM_GCC_441</v>
+<v>Libraries\LCD\CortexM3\ARM_GCC_441\Debug</v>
+<v>Libraries\LCD\CortexM3\ARM_GCC_441\Debug\Listing Files</v>
+<v>Libraries\LCD\CortexM3\ARM_GCC_441\Debug\LCD.a</v>
+<v>Libraries\LED</v>
+<v>Libraries\LED\CortexM3</v>
+<v>Libraries\LED\CortexM3\ARM_GCC_441</v>
+<v>Libraries\LED\CortexM3\ARM_GCC_441\Debug</v>
+<v>Libraries\LED\CortexM3\ARM_GCC_441\Debug\LED.a</v>
+<v>Libraries\PID</v>
+<v>Libraries\PID\CortexM3</v>
+<v>Libraries\PID\CortexM3\ARM_GCC_441</v>
+<v>Libraries\PID\CortexM3\ARM_GCC_441\Debug</v>
+<v>Libraries\PID\CortexM3\ARM_GCC_441\Debug\PID.a</v>
+</VisibleNodeIds>
+</CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237>
+</TreeStates>
+<TreeKeysV2>
+<v>Datasheet</v>
+</TreeKeysV2>
+<TreeStatesV2>
+<CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237 type_name="CyDesigner.Common.Base.Controls.CyTreeViewState" version="1" SelectedNodeId="">
+<ExpandedNodeIds>
+<v>Libraries</v>
+</ExpandedNodeIds>
+<VisibleNodeIds>
+<v>Libraries</v>
+</VisibleNodeIds>
+</CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237>
+</TreeStatesV2>
+</CyGuid_1b906a0f-a7b6-4e4d-a428-82f98b53cb35>
+</dataGuid>
+<dataGuid v="5f2be1a5-0687-4501-bb8c-cf21cb8211bf">
+<CyGuid_5f2be1a5-0687-4501-bb8c-cf21cb8211bf type_name="CyDesigner.Common.ProjMgmt.GUI.CyBookmarkData" version="1">
+<indicators />
+</CyGuid_5f2be1a5-0687-4501-bb8c-cf21cb8211bf>
+</dataGuid>
+<dataGuid v="6c335137-fa19-46ce-bc2d-2fbeb6d5f2a2">
+<CyGuid_70084457-cd6a-4593-9ed0-7f6eeb432dc2 type_name="CyDesigner.Common.ProjMgmt.GUI.CyDependenciesCustomData" version="1">
+<dictName v=".\LED.cylib\LED.cyprj">
+<listName>
+<v>.\PID.cylib\PID.cyprj</v>
+</listName>
+</dictName>
+</CyGuid_70084457-cd6a-4593-9ed0-7f6eeb432dc2>
+</dataGuid>
+</userData>
+</CyGuid_fdba8dfd-b15b-4469-9bbb-9e40c3e70997>
+<Unloaded />
+<OpenDocs>
+<name v=".\LED.cylib\matrix.c" />
+<name v=".\LED.cylib\matrix.h" />
+</OpenDocs>
+<config v="" />
+</CyGuid_843a90a4-0c4b-4e44-991d-05e7fb117a21>
+</CyXmlSerializer>
